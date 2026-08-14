@@ -1,13 +1,14 @@
 [versions]
-agp = "9.3.1"
-coreKtx = "1.10.1"
+agp = "8.3.2"
+coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-material = "1.10.0"
-activityKtx = "1.8.0"
+material = "1.11.0"
+activityKtx = "1.8.2"
 constraintlayout = "2.1.4"
+kotlin = "1.9.23"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -21,4 +22,4 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue1">
+
+
+    <ImageView
+        android:id="@+id/icarrow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/arrow"
+        android:scaleType="fitStart"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="125dp"
+        android:layout_marginStart="15dp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/img"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-516dp"/>
+
+
+    <ImageView
+        android:layout_width="170dp"
+        android:id="@+id/logo_preview"
+        android:layout_height="170dp"
+        android:src="@drawable/iclogo"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="130dp"/>
+
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter24_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Esqueceu sua \n senha?"
+        android:gravity="center"
+        android:layout_marginTop="250dp"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        />
+
+
+    <TextView
+        android:id="@+id/emaildig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter24_medium"
+        android:text="Digite o e-mail utilizado na sua conta."
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/txtTitulo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="24dp"
+        android:letterSpacing="0.02"/>
+
+    <EditText
+        android:id="@+id/login_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="E-mail"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/grey"
+        android:textSize="16sp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/rounded_corner"
+        app:layout_constraintTop_toBottomOf="@id/emaildig"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/white"
+        android:padding="13dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:drawableStart="@drawable/letter"
+        android:drawablePadding="8dp"/>
+
+    <Button
+        android:id="@+id/forgotbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="13dp"
+        android:text="Receber e-mail"
+        android:fontFamily="@font/istokweb_bold"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green1"
+        app:layout_constraintTop_toBottomOf="@id/login_input"/>
+
+    <TextView
+        android:id="@+id/txtDetalhe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter24_medium"
+        android:text="Caso sua conta exista, você receberá \n um e-mail para redefinir sua senha."
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/forgotbtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="24dp"
+        android:letterSpacing="0.02"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

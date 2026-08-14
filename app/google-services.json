@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1066710561089",
+    "project_id": "vita-sendemail",
+    "storage_bucket": "vita-sendemail.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066710561089:android:e0961d5fe2638336c9b1c0",
+        "android_client_info": {
+          "package_name": "com.example.vita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjcNnYU9TDEoHgBCLWeCF107ZA1vF5JTY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
