@@ -9,25 +9,23 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ForgotActivity : AppCompatActivity() {
 
-    // Declaração do Binding e da Auth do Firebase
     private lateinit var binding: ActivityForgotBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var dbManager: JsonBD
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Infla o layout e define como a view principal
         binding = ActivityForgotBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
+        dbManager = JsonBD(this)
 
-        // Seta de voltar
         binding.icarrow.setOnClickListener {
             finish()
         }
 
-        // Botão para enviar e-mail
         binding.forgotbtn.setOnClickListener {
             val email = binding.loginInput.text.toString().trim()
 
@@ -37,20 +35,31 @@ class ForgotActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // 1. Valida se o e-mail existe no banco de dados JSON local
+            if (!dbManager.emailExists(email)) {
+                binding.loginInput.error = "Este e-mail não está cadastrado"
+                binding.loginInput.requestFocus()
+                Toast.makeText(
+                    this,
+                    "E-mail não encontrado no banco de dados local.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            // 2. Se o e-mail existe no JSON, dispara o e-mail via Firebase
             auth.useAppLanguage()
 
-            // Configuração para forçar a abertura do app via link
             val actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl("https://vita-sendemail.firebaseapp.com/__/auth/action") // Seu domínio do Firebase
+                .setUrl("https://vita-sendemail.firebaseapp.com/__/auth/action")
                 .setHandleCodeInApp(true)
                 .setAndroidPackageName(
-                    packageName, // Pega o nome do pacote atual dinamicamente
-                    true,        // Tenta instalar pela Play Store caso não tenha o app
-                    "21"         // SDK Mínimo
+                    packageName,
+                    true,
+                    "21"
                 )
                 .build()
 
-            // Envia o e-mail passando a configuração do Deep Link
             auth.sendPasswordResetEmail(email, actionCodeSettings)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {

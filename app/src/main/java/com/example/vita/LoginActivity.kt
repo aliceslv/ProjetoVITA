@@ -8,36 +8,32 @@ import com.example.vita.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
-    // Declaração da variável do binding
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var dbManager: JsonBD
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Infla o layout e define como a view principal
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Botão de voltar (Seta)
+        dbManager = JsonBD(this)
+
         binding.icarrow.setOnClickListener {
-            finish() // Fecha a Activity atual e volta para a anterior
+            finish()
         }
 
-        // Navegação para a tela de Cadastro
         binding.createBtn2.setOnClickListener {
             val intent = Intent(this, CadastroActivity::class.java)
             startActivity(intent)
         }
 
-        // Navegação para a tela de Reset
         binding.forgotBtn3.setOnClickListener {
             val intent = Intent(this, ForgotActivity::class.java)
             startActivity(intent)
         }
 
-        // Ação do botão Entrar
         binding.loginBtn.setOnClickListener {
-
             val email = binding.edtEmail.text.toString().trim()
             val senha = binding.edtSenha.text.toString()
 
@@ -53,11 +49,27 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            Toast.makeText(
-                this,
-                "Login realizado com sucesso!",
-                Toast.LENGTH_SHORT
-            ).show()
+            // Valida as credenciais comparando com o JSON local
+            val loginValido = dbManager.validateLogin(email, senha)
+
+            if (loginValido) {
+                Toast.makeText(
+                    this,
+                    "Login realizado com sucesso!",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Redireciona para a tela principal (ex: MainActivity)
+                // val intent = Intent(this, MainActivity::class.java)
+                // startActivity(intent)
+                // finish()
+            } else {
+                Toast.makeText(
+                    this,
+                    "E-mail ou senha incorretos!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 }
