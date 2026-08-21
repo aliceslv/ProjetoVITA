@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue1">
+    android:background="@drawable/gradientbg">
 
 
     <ImageView
@@ -18,15 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="125dp"
         android:layout_marginStart="15dp"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/img"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="-516dp"/>
-
 
     <ImageView
         android:layout_width="170dp"

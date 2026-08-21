@@ -6,7 +6,7 @@
     android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue1"
+    android:background="@drawable/gradientbg"
     tools:context=".LoginActivity">
 
     <ImageView
@@ -20,14 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="125dp"
         android:layout_marginStart="15dp"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/img"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="-512dp"/>
 
     <ImageView
         android:id="@+id/iclogo"

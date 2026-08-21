@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GoalsActivity"
+    android:background="@drawable/gradientbg">
+
+    <ImageView
+        android:id="@+id/icarrow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/arrow"
+        android:scaleType="fitStart"
+        android:clickable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="125dp"
+        android:layout_marginStart="15dp"/>
+
+    <ImageView
+        android:id="@+id/iclogo"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:src="@drawable/iclogo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suas metas"
+        android:fontFamily="@font/inter24_bold"
+        android:textColor="@color/white"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        android:letterSpacing="0.01"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="30dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/weightlossbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cornerRadius="16dp"
+        android:backgroundTint="@color/green1"
+        android:layout_marginTop="75dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:padding="30dp"
+        android:text="Emagrecimento"
+        android:fontFamily="@font/inter24_bold"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        app:icon="@drawable/weightloss"
+        app:iconSize="30dp"
+        app:iconPadding="10dp"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitulo"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/maintainbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cornerRadius="16dp"
+        android:backgroundTint="@color/green1"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:padding="30dp"
+        android:text="Manter peso"
+        android:fontFamily="@font/inter24_bold"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        app:icon="@drawable/keepweight"
+        app:iconSize="30dp"
+        app:iconPadding="10dp"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@+id/weightlossbtn"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/growthbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cornerRadius="16dp"
+        android:backgroundTint="@color/green1"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:padding="30dp"
+        android:text="Ganho de massa"
+        android:fontFamily="@font/inter24_bold"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        app:icon="@drawable/img_1"
+        app:iconSize="30dp"
+        app:iconPadding="10dp"
+        android:gravity="start"
+        app:layout_constraintTop_toBottomOf="@+id/maintainbtn"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
