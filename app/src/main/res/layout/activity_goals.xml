@@ -41,7 +41,7 @@
         android:letterSpacing="0.01"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="170dp"
         android:layout_marginStart="30dp"/>
 
     <com.google.android.material.button.MaterialButton
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         app:cornerRadius="16dp"
         android:backgroundTint="@color/green1"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="80dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:padding="30dp"
