@@ -124,12 +124,14 @@ class IdrActivity : AppCompatActivity() {
                         idr = idr
                     )
 
-                    Toast.makeText(this, "Perfil cadastrado e salvo com sucesso!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Perfil cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
 
-                    // Redireciona para a tela principal (ex: MainActivity)
-                    // val intent = Intent(this, MainActivity::class.java)
-                    // startActivity(intent)
-                    // finish()
+                    // 5. Redireciona para a MainActivity limpando o histórico de telas de cadastro
+                    val intent = Intent(this, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    startActivity(intent)
+                    finish()
                 } else {
                     val erro = task.exception?.message ?: "Erro ao cadastrar usuário no Firebase."
                     Toast.makeText(this, erro, Toast.LENGTH_LONG).show()
