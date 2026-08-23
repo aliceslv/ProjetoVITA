@@ -41,68 +41,157 @@
         android:letterSpacing="0.01"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="180dp"
         android:layout_marginStart="30dp"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/weightlossbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cornerRadius="16dp"
-        android:backgroundTint="@color/green1"
+        android:id="@+id/btnweightloss"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="80dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:padding="30dp"
+        android:backgroundTint="@color/green1"
+        app:cornerRadius="16dp"
+        android:fontFamily="@font/inter24_bold"
+        android:paddingStart="95dp"
         android:text="Emagrecimento"
-        android:fontFamily="@font/inter24_bold"
-        android:textSize="22sp"
-        android:textColor="@color/white"
-        app:icon="@drawable/weightloss"
-        app:iconSize="30dp"
-        app:iconPadding="10dp"
-        android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitulo"/>
+        android:textSize="20sp"
+        android:gravity="center_vertical|start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTitulo" />
+
+    <ImageView
+        android:id="@+id/circleWL"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:alpha="0.2"
+        android:src="@drawable/circle"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toStartOf="@id/btnweightloss"
+        app:layout_constraintTop_toTopOf="@id/btnweightloss"
+        app:layout_constraintBottom_toBottomOf="@id/btnweightloss" />
+
+    <ImageView
+        android:id="@+id/icWL"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/img_6"
+        app:layout_constraintStart_toStartOf="@id/circleWL"
+        app:layout_constraintEnd_toEndOf="@id/circleWL"
+        app:layout_constraintTop_toTopOf="@id/circleWL"
+        app:layout_constraintBottom_toBottomOf="@id/circleWL" />
+
+    <ImageView
+        android:id="@+id/arrowWL"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/next"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="@id/btnweightloss"
+        app:layout_constraintTop_toTopOf="@id/btnweightloss"
+        app:layout_constraintBottom_toBottomOf="@id/btnweightloss" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/maintainbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cornerRadius="16dp"
+        android:id="@+id/btnKW"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="@color/green1"
-        android:layout_marginTop="6dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:padding="30dp"
+        app:cornerRadius="16dp"
+        android:fontFamily="@font/inter24_bold"
+        android:paddingStart="95dp"
         android:text="Manter peso"
-        android:fontFamily="@font/inter24_bold"
-        android:textSize="22sp"
-        android:textColor="@color/white"
-        app:icon="@drawable/keepweight"
-        app:iconSize="30dp"
-        app:iconPadding="10dp"
-        android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@+id/weightlossbtn"/>
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center_vertical|start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnweightloss" />
+
+    <ImageView
+        android:id="@+id/circleKW"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:alpha="0.2"
+        android:src="@drawable/circle"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toStartOf="@id/btnKW"
+        app:layout_constraintTop_toTopOf="@id/btnKW"
+        app:layout_constraintBottom_toBottomOf="@id/btnKW" />
+
+    <ImageView
+        android:id="@+id/icKW"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/img_7"
+        app:layout_constraintStart_toStartOf="@id/circleKW"
+        app:layout_constraintEnd_toEndOf="@id/circleKW"
+        app:layout_constraintTop_toTopOf="@id/circleKW"
+        app:layout_constraintBottom_toBottomOf="@id/circleKW" />
+
+    <ImageView
+        android:id="@+id/arrowKW"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/next"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="@id/btnKW"
+        app:layout_constraintTop_toTopOf="@id/btnKW"
+        app:layout_constraintBottom_toBottomOf="@id/btnKW" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/growthbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cornerRadius="16dp"
+        android:id="@+id/btnGW"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="15dp"
         android:backgroundTint="@color/green1"
-        android:layout_marginTop="6dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:padding="30dp"
-        android:text="Ganho de massa"
+        app:cornerRadius="16dp"
         android:fontFamily="@font/inter24_bold"
-        android:textSize="22sp"
-        android:textColor="@color/white"
-        app:icon="@drawable/img_1"
-        app:iconSize="30dp"
-        app:iconPadding="10dp"
-        android:gravity="start"
-        app:layout_constraintTop_toBottomOf="@+id/maintainbtn"/>
+        android:paddingStart="95dp"
+        android:text="Ganho de massa"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center_vertical|start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnKW" />
+
+    <ImageView
+        android:id="@+id/circleGW"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:alpha="0.2"
+        android:src="@drawable/circle"
+        android:layout_marginStart="24dp"
+        app:layout_constraintStart_toStartOf="@id/btnGW"
+        app:layout_constraintTop_toTopOf="@id/btnGW"
+        app:layout_constraintBottom_toBottomOf="@id/btnGW" />
+
+    <ImageView
+        android:id="@+id/icGW"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/img_8"
+        app:layout_constraintStart_toStartOf="@id/circleGW"
+        app:layout_constraintEnd_toEndOf="@id/circleGW"
+        app:layout_constraintTop_toTopOf="@id/circleGW"
+        app:layout_constraintBottom_toBottomOf="@id/circleGW" />
+
+    <ImageView
+        android:id="@+id/arrowGW"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/next"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="@id/btnGW"
+        app:layout_constraintTop_toTopOf="@id/btnGW"
+        app:layout_constraintBottom_toBottomOf="@id/btnGW" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
