@@ -18,7 +18,7 @@
         android:clickable="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="125dp"
+        android:layout_marginTop="80dp"
         android:layout_marginStart="15dp"/>
 
     <ImageView
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="130dp" />
+        android:layout_marginTop="86dp" />
 
     <TextView
         android:id="@+id/txtTitulo"
@@ -45,7 +45,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="250dp"/>
+        android:layout_marginTop="190dp"
+        />
 
     <LinearLayout
         android:id="@+id/layoutLogin"
@@ -92,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@id/layoutLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="15dp">
 
         <EditText
             android:id="@+id/edtNome"

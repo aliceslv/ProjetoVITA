@@ -1,215 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Informations"
-    android:background="@drawable/gradientbg">
+    android:background="@drawable/gradientbg"
+    android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/icarrow"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/arrow"
-        android:scaleType="fitStart"
-        android:clickable="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="125dp"
-        android:layout_marginStart="15dp"/>
-
-    <ImageView
-        android:id="@+id/iclogo"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:src="@drawable/iclogo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/txtTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nos dê suas \ninformações pessoais"
-        android:fontFamily="@font/inter24_bold"
-        android:textColor="@color/white"
-        android:textSize="28dp"
-        android:textStyle="bold"
-        android:letterSpacing="0.01"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="170dp"
-        android:layout_marginStart="30dp"/>
-
-    <TextView
-        android:id="@+id/txtsubtitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="para personalizarmos sua experiência"
-        android:fontFamily="@font/inter24_italic"
-        android:textColor="@color/grey"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:letterSpacing="0.01"
-        app:layout_constraintStart_toStartOf="@id/txtTitulo"
-        app:layout_constraintTop_toBottomOf="@id/txtTitulo"
-        android:layout_marginTop="4dp"/>
-
-    <TextView
-        android:id="@+id/txtpeso"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Peso (em kg):"
-        android:fontFamily="@font/inter24_semibold"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@id/txtsubtitulo"
-        app:layout_constraintTop_toBottomOf="@id/txtsubtitulo"
-        android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:id="@+id/edtPeso"
+    <!-- O ConstraintLayout agora agrupa todos os elementos mantendo o seu design -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Ex: 70 kg"
-        android:textColor="@color/black"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/white"
-        android:textColorHint="@color/grey"
-        android:textSize="16sp"
-        android:inputType="numberDecimal"
-        android:padding="13dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintTop_toBottomOf="@id/txtpeso"
-        android:layout_marginTop="12dp"/>
+        android:paddingBottom="30dp">
 
-    <TextView
-        android:id="@+id/txtaltura"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Altura (em cm):"
-        android:fontFamily="@font/inter24_semibold"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@id/txtpeso"
-        app:layout_constraintTop_toBottomOf="@id/edtPeso"
-        android:layout_marginTop="30dp"/>
+        <ImageView
+            android:id="@+id/icarrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/arrow"
+            android:scaleType="fitStart"
+            android:clickable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="125dp"
+            android:layout_marginStart="15dp"/>
 
-    <EditText
-        android:id="@+id/edtAltura"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ex: 160 cm"
-        android:textColor="@color/black"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/white"
-        android:textColorHint="@color/grey"
-        android:textSize="16sp"
-        android:inputType="number"
-        android:padding="13dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintTop_toBottomOf="@id/txtaltura"
-        android:layout_marginTop="12dp"/>
+        <ImageView
+            android:id="@+id/iclogo"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:src="@drawable/iclogo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        android:id="@+id/txtpesometa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Peso meta (em kg):"
-        android:fontFamily="@font/inter24_semibold"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@id/txtpeso"
-        app:layout_constraintTop_toBottomOf="@id/edtAltura"
-        android:layout_marginTop="30dp"/>
+        <TextView
+            android:id="@+id/txtTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nos dê suas \ninformações pessoais"
+            android:fontFamily="@font/inter24_bold"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.01"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="170dp"
+            android:layout_marginStart="30dp"/>
 
-    <EditText
-        android:id="@+id/edtPesoMeta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ex: 60 kg"
-        android:textColor="@color/black"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/white"
-        android:textColorHint="@color/grey"
-        android:textSize="16sp"
-        android:inputType="number"
-        android:padding="13dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintTop_toBottomOf="@id/txtpesometa"
-        android:layout_marginTop="12dp"/>
+        <TextView
+            android:id="@+id/txtsubtitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="para personalizarmos sua experiência"
+            android:fontFamily="@font/inter24_italic"
+            android:textColor="@color/grey"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.01"
+            app:layout_constraintStart_toStartOf="@id/txtTitulo"
+            app:layout_constraintTop_toBottomOf="@id/txtTitulo"
+            android:layout_marginTop="4dp"/>
 
-    <TextView
-        android:id="@+id/txtsexo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sexo (M ou F):"
-        android:fontFamily="@font/inter24_semibold"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@id/txtpeso"
-        app:layout_constraintTop_toBottomOf="@id/edtPesoMeta"
-        android:layout_marginTop="30dp"/>
+        <TextView
+            android:id="@+id/txtpeso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Peso (em kg):"
+            android:fontFamily="@font/inter24_semibold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/txtsubtitulo"
+            app:layout_constraintTop_toBottomOf="@id/txtsubtitulo"
+            android:layout_marginTop="20dp"/>
 
-    <Spinner
-        android:id="@+id/spinnerSexo"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtsexo"
-        android:background="@drawable/dropdownbg"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:spinnerMode="dropdown"/>
+        <EditText
+            android:id="@+id/edtPeso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ex: 70 kg"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            android:inputType="numberDecimal"
+            android:padding="13dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintTop_toBottomOf="@id/txtpeso"
+            android:layout_marginTop="12dp"/>
 
-    <TextView
-        android:id="@+id/txtnasc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Data de nascimento (DD/MM/YYYY):"
-        android:fontFamily="@font/inter24_semibold"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="@id/txtpeso"
-        app:layout_constraintTop_toBottomOf="@id/spinnerSexo"
-        android:layout_marginTop="30dp"/>
+        <TextView
+            android:id="@+id/txtaltura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Altura (em cm):"
+            android:fontFamily="@font/inter24_semibold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/txtpeso"
+            app:layout_constraintTop_toBottomOf="@id/edtPeso"
+            android:layout_marginTop="30dp"/>
 
-    <EditText
-        android:id="@+id/edtNasc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ex: 01/01/2000"
-        android:textColor="@color/black"
-        android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/white"
-        android:textColorHint="@color/grey"
-        android:textSize="16sp"
-        android:inputType="date"
-        android:padding="13dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintTop_toBottomOf="@id/txtnasc"
-        android:layout_marginTop="12dp"/>
+        <EditText
+            android:id="@+id/edtAltura"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ex: 160 cm"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            android:inputType="number"
+            android:padding="13dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintTop_toBottomOf="@id/txtaltura"
+            android:layout_marginTop="12dp"/>
 
-    <Button
-        android:id="@+id/continueBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:padding="13dp"
-        android:text="Continuar"
-        android:fontFamily="@font/istokweb_bold"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/green1"
-        app:layout_constraintTop_toBottomOf="@id/edtNasc"/>
+        <TextView
+            android:id="@+id/txtpesometa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Peso meta (em kg):"
+            android:fontFamily="@font/inter24_semibold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/txtpeso"
+            app:layout_constraintTop_toBottomOf="@id/edtAltura"
+            android:layout_marginTop="30dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/edtPesoMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ex: 60 kg"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            android:inputType="number"
+            android:padding="13dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintTop_toBottomOf="@id/txtpesometa"
+            android:layout_marginTop="12dp"/>
+
+        <TextView
+            android:id="@+id/txtsexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sexo (M ou F):"
+            android:fontFamily="@font/inter24_semibold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/txtpeso"
+            app:layout_constraintTop_toBottomOf="@id/edtPesoMeta"
+            android:layout_marginTop="30dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerSexo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtsexo"
+            android:background="@drawable/dropdownbg"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:spinnerMode="dropdown"/>
+
+        <TextView
+            android:id="@+id/txtnasc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data de nascimento (DD/MM/YYYY):"
+            android:fontFamily="@font/inter24_semibold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="@id/txtpeso"
+            app:layout_constraintTop_toBottomOf="@id/spinnerSexo"
+            android:layout_marginTop="30dp"/>
+
+        <EditText
+            android:id="@+id/edtNasc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ex: 01/01/2000"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            android:inputType="date"
+            android:padding="13dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintTop_toBottomOf="@id/txtnasc"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/continueBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:padding="13dp"
+            android:text="Continuar"
+            android:backgroundTint="@color/green1"
+            android:fontFamily="@font/istokweb_bold"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/edtNasc"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
