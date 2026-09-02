@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <!-- START FRAGMENT -->
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.vita.StartFragment"
+        android:label="StartFragment"
+        tools:layout="@layout/fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_cadastroFragment"
+            app:destination="@id/cadastroFragment" />
+    </fragment>
+
+    <!-- LOGIN FRAGMENT -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.vita.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_cadastroFragment"
+            app:destination="@id/cadastroFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotFragment"
+            app:destination="@id/forgotFragment" />
+    </fragment>
+
+    <!-- FORGOT / RECUPERAR SENHA FRAGMENT -->
+    <fragment
+        android:id="@+id/forgotFragment"
+        android:name="com.example.vita.ForgotFragment"
+        android:label="ForgotFragment"
+        tools:layout="@layout/fragment_forgot" />
+
+    <!-- CADASTRO FRAGMENT -->
+    <fragment
+        android:id="@+id/cadastroFragment"
+        android:name="com.example.vita.CadastroFragment"
+        android:label="CadastroFragment"
+        tools:layout="@layout/fragment_cadastro">
+        <action
+            android:id="@+id/action_cadastroFragment_to_goalsFragment"
+            app:destination="@id/goalsFragment" />
+        <action
+            android:id="@+id/action_cadastroFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <!-- GOALS FRAGMENT -->
+    <fragment
+        android:id="@+id/goalsFragment"
+        android:name="com.example.vita.GoalsFragment"
+        android:label="GoalsFragment"
+        tools:layout="@layout/fragment_goals">
+        <action
+            android:id="@+id/action_goalsFragment_to_informationsFragment"
+            app:destination="@id/informationsFragment" />
+    </fragment>
+
+    <!-- INFORMATIONS FRAGMENT -->
+    <fragment
+        android:id="@+id/informationsFragment"
+        android:name="com.example.vita.InformationsFragment"
+        android:label="InformationsFragment"
+        tools:layout="@layout/fragment_informations">
+        <action
+            android:id="@+id/action_informationsFragment_to_workoutFragment"
+            app:destination="@id/workoutFragment" />
+    </fragment>
+
+    <!-- WORKOUT FRAGMENT -->
+    <fragment
+        android:id="@+id/workoutFragment"
+        android:name="com.example.vita.WorkoutFragment"
+        android:label="WorkoutFragment"
+        tools:layout="@layout/fragment_workout">
+        <action
+            android:id="@+id/action_workoutFragment_to_idrFragment"
+            app:destination="@id/idrFragment" />
+    </fragment>
+
+    <!-- IDR FRAGMENT -->
+    <fragment
+        android:id="@+id/idrFragment"
+        android:name="com.example.vita.IdrFragment"
+        android:label="IdrFragment"
+        tools:layout="@layout/fragment_idr" />
+
+</navigation>

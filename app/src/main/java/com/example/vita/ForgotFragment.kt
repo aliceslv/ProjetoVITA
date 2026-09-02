@@ -1,29 +1,42 @@
 package com.example.vita
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.example.vita.databinding.ActivityForgotBinding
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.vita.databinding.FragmentForgotBinding
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 
-class ForgotActivity : AppCompatActivity() {
+class ForgotFragment : Fragment() {
 
-    private lateinit var binding: ActivityForgotBinding
+    private var _binding: FragmentForgotBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var auth: FirebaseAuth
     private lateinit var dbManager: JsonBD
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentForgotBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivityForgotBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
-        dbManager = JsonBD(this)
+        dbManager = JsonBD(requireContext())
 
+        // Volta para a tela anterior
         binding.icarrow.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
         }
 
         binding.forgotbtn.setOnClickListener {
@@ -40,21 +53,21 @@ class ForgotActivity : AppCompatActivity() {
                 binding.loginInput.error = "Este e-mail não está cadastrado"
                 binding.loginInput.requestFocus()
                 Toast.makeText(
-                    this,
+                    requireContext(),
                     "E-mail não encontrado no banco de dados local.",
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }
 
-            // 2. Se o e-mail existe no JSON, dispara o e-mail via Firebase
+            // 2. Dispara e-mail via Firebase
             auth.useAppLanguage()
 
             val actionCodeSettings = ActionCodeSettings.newBuilder()
                 .setUrl("https://vita-sendemail.firebaseapp.com/__/auth/action")
                 .setHandleCodeInApp(true)
                 .setAndroidPackageName(
-                    packageName,
+                    requireContext().packageName,
                     true,
                     "21"
                 )
@@ -64,20 +77,25 @@ class ForgotActivity : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(
-                            baseContext,
+                            requireContext(),
                             "Link enviado! Verifique sua caixa de entrada.",
                             Toast.LENGTH_LONG
                         ).show()
-                        finish()
+                        findNavController().navigateUp()
                     } else {
                         val erro = task.exception?.localizedMessage ?: "Erro desconhecido"
                         Toast.makeText(
-                            baseContext,
+                            requireContext(),
                             "Falha ao enviar: $erro",
                             Toast.LENGTH_LONG
                         ).show()
                     }
                 }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IdrActivity"
+    tools:context=".IdrFragment"
     android:background="@drawable/gradientbg"
     android:gravity="center">
 
@@ -44,8 +44,7 @@
         android:textColor="@color/white"
         android:textSize="30sp"
         android:layout_marginTop="150dp"
-        android:layout_marginStart="40dp"
-        />
+        android:layout_marginStart="40dp" />
 
     <LinearLayout
         android:id="@+id/cardCalorias"
@@ -100,6 +99,5 @@
         android:textSize="22sp"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/cardCalorias"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

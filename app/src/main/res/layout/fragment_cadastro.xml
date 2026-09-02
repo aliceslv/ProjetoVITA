@@ -3,11 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradientbg"
-    tools:context=".LoginActivity">
+    tools:context=".CadastroFragment">
 
     <ImageView
         android:id="@+id/icarrow"
@@ -35,7 +34,7 @@
         android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Conecte-se à \n sua conta"
+        android:text="Criar conta"
         android:fontFamily="@font/inter24_bold"
         android:textColor="@color/white"
         android:textSize="32sp"
@@ -48,31 +47,31 @@
         android:layout_marginTop="190dp"/>
 
     <LinearLayout
-        android:id="@+id/layoutCriarConta"
+        android:id="@+id/layoutLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintTop_toBottomOf="@id/txtTitulo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/txtNaoTemConta"
+            android:id="@+id/txtJaTemConta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Não tem uma conta?"
+            android:text="Já tem uma conta?"
             android:fontFamily="@font/inter24_medium"
             android:textColor="@color/white"
             android:textSize="13sp"/>
 
         <Button
-            android:id="@+id/createBtn2"
+            android:id="@+id/loginBtn3"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
-            android:text="Criar conta"
+            android:text="Fazer login"
             android:fontFamily="@font/istokweb_bold"
             android:textSize="12sp"
             android:textColor="@color/white"
@@ -84,57 +83,38 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutEsqueceuSenha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/layoutCriarConta"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/txtEsqueceuSenha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Esqueceu a senha?"
-            android:fontFamily="@font/inter24_medium"
-            android:textColor="@color/white"
-            android:textSize="13sp"/>
-
-        <Button
-            android:id="@+id/forgotBtn3"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginStart="8dp"
-            android:text="Recuperar senha"
-            android:fontFamily="@font/istokweb_bold"
-            android:textSize="12sp"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/blue5"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="0dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/boxLogin"
+        android:id="@+id/boxCreate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:clipToOutline="true"
-        app:layout_constraintTop_toBottomOf="@id/layoutEsqueceuSenha"
+        app:layout_constraintTop_toBottomOf="@id/layoutLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp">
+
+        <EditText
+            android:id="@+id/edtNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome"
+            android:textColor="@color/black"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            android:inputType="textPersonName"
+            android:padding="13dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:drawableStart="@drawable/profile"
+            android:drawablePadding="8dp"/>
 
         <EditText
             android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="E-mail"
             android:textColor="@color/black"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/white"
@@ -142,11 +122,11 @@
             android:textSize="16sp"
             android:inputType="textEmailAddress"
             android:padding="13dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:drawableStart="@drawable/letter"
             android:drawablePadding="8dp"/>
-
 
         <EditText
             android:id="@+id/edtSenha"
@@ -169,18 +149,18 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/createBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:padding="13dp"
-        android:text="Entrar"
+        android:text="Registrar"
         android:fontFamily="@font/istokweb_bold"
         android:textSize="18sp"
         android:textColor="@color/white"
         android:backgroundTint="@color/green1"
-        app:layout_constraintTop_toBottomOf="@id/boxLogin"/>
+        app:layout_constraintTop_toBottomOf="@id/boxCreate"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GoalsActivity"
+    tools:context=".GoalsFragment"
     android:background="@drawable/gradientbg">
 
     <ImageView
@@ -195,6 +195,5 @@
         app:layout_constraintEnd_toEndOf="@id/btnGW"
         app:layout_constraintTop_toTopOf="@id/btnGW"
         app:layout_constraintBottom_toBottomOf="@id/btnGW" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
