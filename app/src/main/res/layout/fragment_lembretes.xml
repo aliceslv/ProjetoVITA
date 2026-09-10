@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue3"
+    >
+
+    <TextView
+        android:id="@+id/btnVoltar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:text="←"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/txtTopo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lembretes"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:fontFamily="@font/inter24_semibold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp" />
+
+    <View
+        android:id="@+id/linhaTopo"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#193552"
+        app:layout_constraintTop_toBottomOf="@id/txtTopo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp" />
+
+    <ScrollView
+        android:id="@+id/scrollLembretes"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/linhaTopo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seus lembretes"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:fontFamily="@font/inter24_bold" />
+
+            <TextView
+                android:id="@+id/txtDescricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Receba notificações nos horários certos para \nregistrar refeições, beber água e cuidar da sua rotina."
+                android:textColor="@color/grey"
+                android:fontFamily="@font/inter24_regular"
+                android:textSize="14sp"
+                android:layout_marginTop="6dp" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Refeições"
+                android:textColor="@color/grey2"
+                android:textSize="15sp"
+                android:fontFamily="@font/inter24_semibold"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="8dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:background="@drawable/bg_icone">
+
+                <TextView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/iccafe"
+                    android:textSize="20sp"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Café da manhã"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="08:00 • Todos os dias"
+                        android:fontFamily="@font/inter24_regular"
+                        android:textColor="#8195AA"
+                        android:textSize="12sp"
+                        android:layout_marginTop="3dp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_icone">
+
+                <TextView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/icalmoco"
+                    android:textSize="20sp"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Almoço"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12:30 • Seg a Sex"
+                        android:textColor="#8195AA"
+                        android:fontFamily="@font/inter24_regular"
+                        android:textSize="12sp"
+                        android:layout_marginTop="3dp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_icone">
+
+                <TextView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/iclanche"
+                    android:textColor="#8EA1B6"
+                    android:textSize="24sp"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lanche da tarde"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="16:00 • Todos os dias"
+                        android:textColor="#8195AA"
+                        android:fontFamily="@font/inter24_regular"
+                        android:textSize="12sp"
+                        android:layout_marginTop="3dp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_icone">
+
+                <TextView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/icjantar"
+                    android:textSize="20sp"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jantar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="19:30 • Todos os dias"
+                        android:textColor="#8195AA"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/inter24_regular"
+                        android:layout_marginTop="3dp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hidratação"
+                android:textColor="#8EA1B6"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:background="@drawable/bg_icone">
+
+                <TextView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/icagua"
+                    android:textSize="20sp"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Beber água"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="A cada 2h • 08:00 - 22:00"
+                        android:textColor="#8195AA"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/inter24_regular"
+                        android:layout_marginTop="3dp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saúde e Atividade"
+                android:textColor="#8EA1B6"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="8dp"
+                android:background="@drawable/bg_icone">
+
+                <TextView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/iclua"
+                    android:textColor="#9A83E8"
+                    android:textSize="25sp"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hora de dormir"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="22:30 • Todos os dias"
+                        android:textColor="#8195AA"
+                        android:fontFamily="@font/inter24_regular"
+                        android:textSize="12sp"
+                        android:layout_marginTop="3dp" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="48dp"
+                    android:layout_height="40dp"
+                    android:checked="true" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

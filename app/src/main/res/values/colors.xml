@@ -4,10 +4,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name = "blue1">#0A2343</color>
     <color name = "blue2">#18406E</color>
+    <color name = "blue3">#0B1A2E</color>
     <color name = "green1">#178047</color>
-    <color name = "blue3">#112842</color>
+    <color name = "blue4">#112842</color>
     <color name = "grey">#798797</color>
-    <color name="blue4">#B30A2343</color>
-    <color name="blue5">#801E5EBE</color>
+    <color name="grey2">#9FB3C8</color>
+    <color name="grey3">#47495E</color>
+    <color name="blue5">#B30A2343</color>
+    <color name="blue6">#801E5EBE</color>
+    <color name ="color_ic">#80FFFFF</color>
 
 </resources>
