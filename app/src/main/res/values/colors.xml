@@ -13,5 +13,9 @@
     <color name="blue5">#B30A2343</color>
     <color name="blue6">#801E5EBE</color>
     <color name ="color_ic">#80FFFFF</color>
+    <color name="blue7">#19688E</color>
+    <color name="orange">#9E5832</color>
+    <color name="pink">#99297B</color>
+    <color name="purple">#673AB7</color>
 
 </resources>
