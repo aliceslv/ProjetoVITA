@@ -147,7 +147,7 @@
                     android:layout_height="35dp"
                     android:max="100"
                     android:progress="80"
-                    android:progressTint="#4CCB63" />
+                    android:progressTint="#20D36B" />
 
                 <TextView
                     android:layout_width="match_parent"
