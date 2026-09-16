@@ -12,7 +12,7 @@
         android:id="@+id/imgPerfil"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/icuser"
+        android:src="@drawable/profile2"
         android:scaleType="centerInside"
         android:contentDescription="Perfil"
         android:layout_marginStart="12dp"
@@ -30,7 +30,8 @@
         android:fontFamily="@font/inter24_medium"
         android:textSize="14sp"
         android:gravity="center"
-        android:background="@color/blue4"
+        android:background="@drawable/rounded_corner4"
+        android:backgroundTint="@color/blue4"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginTop="24dp"
@@ -51,6 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
+            android:id="@+id/calorias"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -84,37 +86,17 @@
 
 
 
-    <View
-        android:id="@+id/linhaCategoria"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="@color/green1"
-        app:layout_constraintTop_toBottomOf="@id/menuCategorias"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/linhaDireita" />
-
-    <View
-        android:id="@+id/linhaDireita"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#193552"
-        app:layout_constraintTop_toBottomOf="@id/menuCategorias"
-        app:layout_constraintStart_toEndOf="@id/linhaCategoria"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-
     <TextView
         android:id="@+id/txtCalorias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Calorias"
-        android:textColor="@color/grey2"
+        android:textColor="@color/white"
         android:fontFamily="@font/inter24_semibold"
         android:textSize="14sp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@id/linhaCategoria"
+        app:layout_constraintTop_toBottomOf="@id/menuCategorias"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -149,7 +131,8 @@
         android:layout_height="450dp"
         android:orientation="vertical"
         android:padding="15dp"
-        android:background="@color/blue4"
+        android:background="@drawable/rounded_corner4"
+        android:backgroundTint="@color/blue4"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginTop="10dp"
@@ -244,7 +227,7 @@
         <ImageView
             android:id="@+id/btnUsuario"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:src="@drawable/icuser"
             android:scaleType="centerInside"
@@ -256,7 +239,7 @@
         <ImageView
             android:id="@+id/btnLivro"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:src="@drawable/iclivro"
             android:scaleType="centerInside"
@@ -266,7 +249,7 @@
         <ImageView
             android:id="@+id/btnEscala"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
             android:src="@drawable/icescala"
             android:scaleType="centerInside"
@@ -276,3 +259,9 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+

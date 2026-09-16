@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue3">
+
+    <!-- ScrollView ocupa todo o espaço acima da barraInferior -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/barraInferior">
+
+        <!-- O ConstraintLayout envolve todo o conteúdo rolável -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
+
+            <ImageView
+                android:id="@+id/imgPerfil"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="18dp"
+                android:contentDescription="Perfil"
+                android:scaleType="centerInside"
+                android:src="@drawable/profile2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtSemana"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/rounded_corner4"
+                android:backgroundTint="@color/blue4"
+                android:fontFamily="@font/inter24_medium"
+                android:gravity="center"
+                android:text="Essa Semana"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgPerfil" />
+
+            <LinearLayout
+                android:id="@+id/menuMacros"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtSemana">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:gravity="center"
+                    android:text="CALORIAS"
+                    android:textColor="@color/grey2"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:gravity="center"
+                    android:text="MACROS"
+                    android:textColor="@color/green1"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:gravity="center"
+                    android:text="NUTRIENTES"
+                    android:textColor="@color/grey2"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtTituloMacros"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/inter24_semibold"
+                android:text="Macros"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/menuMacros" />
+
+            <TextView
+                android:id="@+id/txtMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="12dp"
+                android:fontFamily="@font/inter24_medium"
+                android:text="Média Diária"
+                android:textColor="#8195AA"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/menuMacros" />
+
+            <LinearLayout
+                android:id="@+id/cardMacros"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/rounded_corner4"
+                android:backgroundTint="@color/blue4"
+                android:orientation="vertical"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtTituloMacros">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/inter24_medium"
+                    android:text="Carboidratos (50%)                         200 / 250g"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:max="100"
+                    android:progress="80"
+                    android:progressTint="#4CCB63" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter24_medium"
+                    android:text="Proteínas (25%)                              100 / 100g"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressTint="#27B7C8" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/inter24_medium"
+                    android:text="Gorduras (25%)                               65 / 80g"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:max="100"
+                    android:progress="81"
+                    android:progressTint="#FFA800" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cardDistribuicao"
+                android:layout_width="0dp"
+                android:layout_height="270dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/rounded_corner4"
+                android:backgroundTint="@color/blue4"
+                android:orientation="vertical"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardMacros">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:fontFamily="@font/inter24_medium"
+                    android:text="Distribuição Semanal"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="115dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="#27B7C8" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="#286D32" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="72dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:background="#FFA800" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="92dp"
+                        android:layout_weight="1"
+                        android:background="#E52D08" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="■ Carb"
+                        android:textColor="#27B7C8"
+                        android:textSize="7sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="■ Prot"
+                        android:textColor="#4CCB63"
+                        android:textSize="7sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="■ Gord"
+                        android:textColor="#FFA800"
+                        android:textSize="7sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <!-- Barra Inferior fixada no rodapé do RelativeLayout -->
+    <LinearLayout
+        android:id="@+id/barraInferior"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/blue2"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btnUsuario"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:contentDescription="Perfil"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icuser" />
+
+        <ImageView
+            android:id="@+id/btnLivro"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:contentDescription="Diário"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/iclivro" />
+
+        <ImageView
+            android:id="@+id/btnEscala"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:contentDescription="Calorias"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icescala" />
+
+    </LinearLayout>
+
+</RelativeLayout>
