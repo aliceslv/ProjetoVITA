@@ -259,7 +259,7 @@
             android:contentDescription="Perfil"
             android:padding="7dp"
             android:scaleType="centerInside"
-            android:src="@drawable/icuser" />
+            android:src="@drawable/icusergr" />
 
         <ImageView
             android:id="@+id/btnLivro"
@@ -279,7 +279,7 @@
             android:contentDescription="Calorias"
             android:padding="7dp"
             android:scaleType="centerInside"
-            android:src="@drawable/icescala" />
+            android:src="@drawable/icescalawhite" />
 
     </LinearLayout>
 

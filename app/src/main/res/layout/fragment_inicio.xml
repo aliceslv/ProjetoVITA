@@ -428,7 +428,7 @@
         <ImageView
             android:id="@+id/btnUsuario"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_weight="1"
             android:contentDescription="Perfil"
             android:padding="7dp"
@@ -438,12 +438,12 @@
         <ImageView
             android:id="@+id/btnLivro"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="55dp"
             android:layout_weight="1"
             android:contentDescription="Diário"
             android:padding="7dp"
             android:scaleType="centerInside"
-            android:src="@drawable/iclivro" />
+            android:src="@drawable/iclivrogr" />
 
         <ImageView
             android:id="@+id/btnEscala"
@@ -453,7 +453,7 @@
             android:contentDescription="Calorias"
             android:padding="7dp"
             android:scaleType="centerInside"
-            android:src="@drawable/icescala" />
+            android:src="@drawable/icescalawhite" />
 
     </LinearLayout>
 
