@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -16,6 +18,21 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Lê o arquivo local.properties
+        val properties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            properties.load(localPropertiesFile.inputStream())
+        }
+
+        // Cria as variáveis acessíveis via código
+        buildConfigField("String", "FATSECRET_CLIENT_ID", "\"${properties.getProperty("FATSECRET_CLIENT_ID")}\"")
+        buildConfigField("String", "FATSECRET_CLIENT_SECRET", "\"${properties.getProperty("FATSECRET_CLIENT_SECRET")}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -56,4 +73,12 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // Retrofit & Gson Converter
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // OkHttp Logging Interceptor (útil para depuração)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }

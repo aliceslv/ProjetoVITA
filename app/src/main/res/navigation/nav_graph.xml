@@ -94,4 +94,33 @@
         android:label="IdrFragment"
         tools:layout="@layout/fragment_idr" />
 
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.vita.RegisterFragment"
+        android:label="RegisterFragment">
+
+        <!-- Ação para abrir a tela de Adicionar Alimento -->
+        <action
+            android:id="@+id/action_registerFragment_to_addFragment"
+            app:destination="@id/addFragment" />
+
+        <!-- Ação para abrir a tela de Recentes -->
+        <action
+            android:id="@+id/action_registerFragment_to_recentFragment"
+            app:destination="@id/recentFragment" />
+
+        <fragment
+            android:id="@+id/addFragment"
+            android:name="com.example.vita.AddFragment"
+            android:label="AddFragment"
+            tools:layout="@layout/fragment_add" />
+
+        <fragment
+            android:id="@+id/recentFragment"
+            android:name="com.example.vita.RecentFragment"
+            android:label="RecentFragment"
+            tools:layout="@layout/fragment_recent" />
+
+    </fragment>
+
 </navigation>

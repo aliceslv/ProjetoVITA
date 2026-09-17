@@ -13,6 +13,7 @@ import com.example.vita.databinding.FragmentIdrBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
+import com.example.vita.json.JsonBD
 
 class IdrFragment : Fragment() {
 
@@ -73,6 +74,11 @@ class IdrFragment : Fragment() {
     private fun cadastrarEGravarDados() {
         val email = userViewModel.email
         val senha = userViewModel.senha
+        val sharedPref = requireContext().getSharedPreferences("UserData", android.content.Context.MODE_PRIVATE)
+        sharedPref.edit().apply {
+            putFloat("USER_IDR", userViewModel.idrCalculado.toFloat())
+            apply()
+        }
 
         // 1. Autenticação no Firebase
         auth.createUserWithEmailAndPassword(email, senha)

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,261 +6,201 @@
     android:layout_height="match_parent"
     android:background="@color/blue3">
 
-
-    <ImageView
-        android:id="@+id/imgPerfil"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/profile2"
-        android:scaleType="centerInside"
-        android:contentDescription="Perfil"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/txtSemana"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:text="Essa Semana"
-        android:textColor="#FFFFFF"
-        android:fontFamily="@font/inter24_medium"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:background="@drawable/rounded_corner4"
-        android:backgroundTint="@color/blue4"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/imgPerfil"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <LinearLayout
-        android:id="@+id/menuCategorias"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/txtSemana"
+    <!-- ScrollView ocupa todo o espaço entre o topo e a barraInferior -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/barraInferior"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/calorias"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="CALORIAS"
-            android:fontFamily="@font/inter24_semibold"
-            android:textColor="@color/green1"
-            android:textSize="12sp"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="MACROS"
-            android:textColor="@color/grey2"
-            android:fontFamily="@font/inter24_semibold"
-            android:textSize="12sp"
-            android:gravity="center" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="NUTRIENTES"
-            android:textColor="@color/grey2"
-            android:fontFamily="@font/inter24_semibold"
-            android:textSize="12sp"
-            android:gravity="center" />
-
-    </LinearLayout>
-
-
-
-    <TextView
-        android:id="@+id/txtCalorias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calorias"
-        android:textColor="@color/white"
-        android:fontFamily="@font/inter24_semibold"
-        android:textSize="14sp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toBottomOf="@id/menuCategorias"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/txt1400"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1400"
-        android:textColor="#FFFFFF"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/inter24_bold"
-        android:layout_marginStart="12dp"
-        app:layout_constraintTop_toBottomOf="@id/txtCalorias"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/txtMedia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Meta: 1400 kcal"
-        android:textColor="@color/grey2"
-        android:textSize="16sp"
-        android:fontFamily="@font/inter24_regular"
-        android:layout_marginStart="12dp"
-        app:layout_constraintTop_toBottomOf="@id/txt1400"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <LinearLayout
-        android:id="@+id/cardGrafico"
-        android:layout_width="0dp"
-        android:layout_height="450dp"
-        android:orientation="vertical"
-        android:padding="15dp"
-        android:background="@drawable/rounded_corner4"
-        android:backgroundTint="@color/blue4"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/txtMedia"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <!-- ÁREA DO GRÁFICO -->
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="105dp"
-            android:orientation="horizontal"
-            android:gravity="bottom">
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
 
-            <!-- BARRA 1 -->
+            <ImageView
+                android:id="@+id/imgPerfil"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="18dp"
+                android:contentDescription="Perfil"
+                android:scaleType="centerInside"
+                android:src="@drawable/profile2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <View
+            <TextView
+                android:id="@+id/txtSemana"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="5dp"
-                android:background="#27B7C8" />
+                android:layout_height="50dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/rounded_corner4"
+                android:backgroundTint="@color/blue4"
+                android:fontFamily="@font/inter24_medium"
+                android:gravity="center"
+                android:text="Essa Semana"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgPerfil" />
 
-            <!-- BARRA 2 -->
-
-            <View
+            <LinearLayout
+                android:id="@+id/menuCategorias"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="#286D32" />
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtSemana">
 
-            <!-- BARRA 3 -->
+                <TextView
+                    android:id="@+id/calorias"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:gravity="center"
+                    android:text="CALORIAS"
+                    android:textColor="@color/green2"
+                    android:textSize="12sp" />
 
-            <View
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:gravity="center"
+                    android:text="MACROS"
+                    android:textColor="@color/grey2"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:gravity="center"
+                    android:text="NUTRIENTES"
+                    android:textColor="@color/grey2"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtCalorias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/inter24_semibold"
+                android:text="Calorias Consumidas Hoje"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/menuCategorias" />
+
+            <TextView
+                android:id="@+id/txt1400"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/inter24_bold"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtCalorias" />
+
+            <TextView
+                android:id="@+id/txtMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/inter24_regular"
+                android:text="Meta: 0 kcal"
+                android:textColor="@color/grey2"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt1400" />
+
+            <!-- Container com o BarChart real embutido -->
+            <LinearLayout
+                android:id="@+id/cardGrafico"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="#FFA800" />
+                android:layout_height="350dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/rounded_corner4"
+                android:backgroundTint="@color/blue4"
+                android:orientation="vertical"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtMedia">
 
-            <!-- BARRA 4 -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chartMetaConsumo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="75dp"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:background="#F04408" />
+            </LinearLayout>
 
-            <!-- BARRA 5 -->
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="88dp"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="15dp"
-                android:background="#E52D08" />
+    </ScrollView>
 
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:text="Cals (kcal)"
-            android:textColor="#8195AA"
-            android:textSize="8sp"
-            android:gravity="right|center_vertical" />
-
-    </LinearLayout>
-
-
-
+    <!-- Barra Inferior fixada na base do ConstraintLayout -->
     <LinearLayout
         android:id="@+id/barraInferior"
         android:layout_width="0dp"
         android:layout_height="58dp"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:background="@color/blue2"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/btnUsuario"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@drawable/icuser"
-            android:scaleType="centerInside"
+            android:contentDescription="Perfil"
             android:padding="7dp"
-            android:contentDescription="Perfil" />
-
-
+            android:scaleType="centerInside"
+            android:src="@drawable/icuser" />
 
         <ImageView
             android:id="@+id/btnLivro"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@drawable/iclivro"
-            android:scaleType="centerInside"
+            android:contentDescription="Diário"
             android:padding="7dp"
-            android:contentDescription="Diário" />
+            android:scaleType="centerInside"
+            android:src="@drawable/iclivro" />
 
         <ImageView
             android:id="@+id/btnEscala"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:src="@drawable/icescala"
-            android:scaleType="centerInside"
+            android:contentDescription="Calorias"
             android:padding="7dp"
-            android:contentDescription="Calorias" />
+            android:scaleType="centerInside"
+            android:src="@drawable/icescala" />
 
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-

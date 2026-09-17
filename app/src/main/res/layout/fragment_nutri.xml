@@ -76,7 +76,7 @@
                     android:fontFamily="@font/inter24_semibold"
                     android:gravity="center"
                     android:text="MACROS"
-                    android:textColor="@color/green1"
+                    android:textColor="@color/grey2"
                     android:textSize="12sp" />
 
                 <TextView
@@ -86,7 +86,7 @@
                     android:fontFamily="@font/inter24_semibold"
                     android:gravity="center"
                     android:text="NUTRIENTES"
-                    android:textColor="@color/grey2"
+                    android:textColor="@color/green2"
                     android:textSize="12sp" />
 
             </LinearLayout>

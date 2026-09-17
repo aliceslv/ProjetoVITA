@@ -1,59 +1,116 @@
 package com.example.vita
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.vita.databinding.FragmentCaloriasBinding
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CaloriasFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CaloriasFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentCaloriasBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentCaloriasBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 1. Busca a IDR armazenada no SharedPreferences
+        val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        val idrArmazenada = sharedPref.getFloat("USER_IDR", 2000f) // 2000f como fallback
+
+        // 2. Atualiza o texto da Meta na tela com a IDR armazenada
+        binding.txtMedia.text = "Meta: ${idrArmazenada.toInt()} kcal"
+
+        // 3. Exemplo do consumo diário registrado na semana (Segunda a Domingo)
+        val consumoSemanal = listOf(1500f, 1800f, 1600f, 2100f, 1950f, 1700f, 1400f)
+
+        // Atualiza o valor consumido do dia atual (exemplo: último dia da lista)
+        val consumoHoje = consumoSemanal.lastOrNull() ?: 0f
+        binding.txt1400.text = consumoHoje.toInt().toString()
+
+        // 4. Desenha o gráfico usando a IDR armazenada como a linha de meta
+        configurarGrafico(binding.chartMetaConsumo, idrArmazenada, consumoSemanal)
+    }
+
+    private fun configurarGrafico(
+        chart: BarChart,
+        idrMeta: Float,
+        consumoSemanal: List<Float>
+    ) {
+        val entradas = consumoSemanal.mapIndexed { index, consumo ->
+            BarEntry(index.toFloat(), consumo)
+        }
+
+        val dataSet = BarDataSet(entradas, "Consumo Diário (kcal)").apply {
+            color = Color.parseColor("#27B7C8")
+            valueTextColor = Color.WHITE
+            valueTextSize = 10f
+        }
+
+        val barData = BarData(dataSet).apply {
+            barWidth = 0.45f
+        }
+
+        chart.data = barData
+
+        // Define a linha da Meta no gráfico com a IDR armazenada
+        val eixoYEsquerda = chart.axisLeft
+        eixoYEsquerda.removeAllLimitLines()
+
+        val linhaMeta = LimitLine(idrMeta, "Meta (${idrMeta.toInt()} kcal)").apply {
+            lineWidth = 2f
+            lineColor = Color.parseColor("#FFA800")
+            textColor = Color.WHITE
+            textSize = 11f
+            enableDashedLine(10f, 10f, 0f)
+        }
+
+        eixoYEsquerda.addLimitLine(linhaMeta)
+        eixoYEsquerda.textColor = Color.WHITE
+        eixoYEsquerda.setDrawGridLines(false)
+
+        chart.axisRight.isEnabled = false
+
+        // Eixo X (Dias)
+        val dias = listOf("Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom")
+        chart.xAxis.apply {
+            valueFormatter = IndexAxisValueFormatter(dias)
+            position = XAxis.XAxisPosition.BOTTOM
+            textColor = Color.WHITE
+            setDrawGridLines(false)
+            granularity = 1f
+        }
+
+        chart.apply {
+            description.isEnabled = false
+            legend.textColor = Color.WHITE
+            setFitBars(true)
+            animateY(1000)
+            invalidate()
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calorias, container, false)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CaloriasFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CaloriasFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue3"
+    android:orientation="vertical">
+
+    <!-- CABEÇALHO FIXO -->
+    <LinearLayout
+        android:id="@+id/headerFixed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp">
+
+        <!-- Linha do Título + Cancelar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="Registro de refeição"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dataReal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/inter24_regular"
+                    android:text="quarta-feira, mai. 13"
+                    android:textStyle="bold"
+                    android:textColor="@color/grey2"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/btnCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="Cancelar"
+                android:fontFamily="@font/inter24_medium"
+                android:textStyle="bold"
+                android:textColor="@color/green2"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <!-- Navegação por Abas (Sem o botão 'Receitas') -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Aba Selecionada: ALIMENTO -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/alimentoAba"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="ALIMENTO"
+                    android:fontFamily="@font/inter24_bold"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Aba Secundária: CONSUMIDO -->
+            <TextView
+                android:id="@+id/consumoAba"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:text="CONSUMIDO RECENTEMENTE"
+                android:fontFamily="@font/inter24_bold"
+                android:textColor="@color/green2"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1E293B" />
+    </LinearLayout>
+
+    <!-- CONTEÚDO COM SCROLL (Pesquisa + Lista de Alimentos) -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="16dp">
+
+            <!-- Campo de Busca -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_search_input"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Ícone de busca"
+                    android:src="@android:drawable/ic_menu_search"
+                    app:tint="@color/grey2" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:background="@null"
+                    android:hint="Pesquisar um alimento"
+                    android:inputType="text"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/grey"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- Lista de Alimentos (Para lista dinâmica em produção, substitua por um RecyclerView) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <!-- Exemplo de Item da Lista -->
+                <include layout="@layout/item_alimento" tools:listitem="pescoço de frango" />
+                <include layout="@layout/item_alimento" />
+                <include layout="@layout/item_alimento" />
+                <include layout="@layout/item_alimento" />
+                <include layout="@layout/item_alimento" />
+                <include layout="@layout/item_alimento" />
+                <include layout="@layout/item_alimento" />
+                <include layout="@layout/item_alimento" />
+                <include layout="@layout/item_alimento" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

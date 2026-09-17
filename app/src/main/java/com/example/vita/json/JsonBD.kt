@@ -1,4 +1,4 @@
-package com.example.vita
+package com.example.vita.json
 
 import android.content.Context
 import org.json.JSONArray

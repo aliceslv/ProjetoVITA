@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.vita.databinding.FragmentForgotBinding
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
+import com.example.vita.json.JsonBD
 
 class ForgotFragment : Fragment() {
 
