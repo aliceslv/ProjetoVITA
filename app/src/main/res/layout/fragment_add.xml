@@ -48,6 +48,7 @@
             android:textColor="@color/green2"
             android:textSize="16sp"
             android:textStyle="bold" />
+
     </RelativeLayout>
 
     <View

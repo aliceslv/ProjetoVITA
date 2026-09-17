@@ -60,14 +60,26 @@ class RecentFragment : Fragment() {
     }
 
     private fun configurarNavegacao() {
-        // Clicar na aba "ALIMENTO" navega de volta para a tela de registro/pesquisa principal
+        // Clicar na aba "ALIMENTO" volta para a RegisterFragment
         binding.alimentoAba.setOnClickListener {
-            findNavController().navigateUp()
+            if (findNavController().currentDestination?.id == R.id.recentFragment) {
+                try {
+                    findNavController().navigate(R.id.action_recentFragment_to_registerFragment)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
 
-        // Botão "Cancelar" no canto superior direito
+        // Botão "Cancelar" navega direto para a InicioFragment
         binding.btnCancelar.setOnClickListener {
-            findNavController().navigateUp()
+            if (findNavController().currentDestination?.id == R.id.recentFragment) {
+                try {
+                    findNavController().navigate(R.id.action_recentFragment_to_inicioFragment)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 

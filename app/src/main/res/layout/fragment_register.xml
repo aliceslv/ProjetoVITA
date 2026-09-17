@@ -29,11 +29,11 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/inter24_semibold"
                     android:text="Registro de refeição"
                     android:textColor="#FFFFFF"
-                    android:fontFamily="@font/inter24_semibold"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -44,9 +44,9 @@
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/inter24_regular"
                     android:text="quarta-feira, mai. 13"
-                    android:textStyle="bold"
                     android:textColor="@color/grey2"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -55,14 +55,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="Cancelar"
                 android:fontFamily="@font/inter24_medium"
-                android:textStyle="bold"
+                android:text="Cancelar"
                 android:textColor="@color/green2"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
-        <!-- Navegação por Abas (Sem o botão 'Receitas') -->
+        <!-- Navegação por Abas -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -70,7 +70,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <!-- Aba Selecionada: ALIMENTO -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -83,24 +82,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter24_bold"
                     android:gravity="center"
                     android:text="ALIMENTO"
-                    android:fontFamily="@font/inter24_bold"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
-            <!-- Aba Secundária: CONSUMIDO -->
             <TextView
                 android:id="@+id/consumoAba"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:fontFamily="@font/inter24_bold"
                 android:gravity="center"
                 android:paddingHorizontal="16dp"
                 android:text="CONSUMIDO RECENTEMENTE"
-                android:fontFamily="@font/inter24_bold"
                 android:textColor="@color/green2"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -110,9 +107,44 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#1E293B" />
+
+        <!-- BANNER DO CARRINHO (AGORA FIXO NO CABEÇALHO) -->
+        <LinearLayout
+            android:id="@+id/layoutCarrinhoInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search_input"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tvItensCarrinho"
+                android:layout_width="0dp"
+                android:layout_height="14dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/inter24_semibold"
+                android:text="1 alimento(s) no carrinho"
+                android:textColor="@color/green2"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/btnLimparCarrinho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter24_medium"
+                android:padding="4dp"
+                android:text="Limpar"
+                android:textColor="#FF5252"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- CONTEÚDO COM SCROLL (Pesquisa + Lista de Alimentos) -->
+    <!-- CONTEÚDO COM SCROLL (Apenas Busca + Lista) -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"

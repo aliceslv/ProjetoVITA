@@ -8,23 +8,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.vita.data.model.AlimentoConsumido
 import com.example.vita.databinding.FragmentAddBinding
+import com.example.vita.json.JsonBD
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AddFragment : Fragment() {
 
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
 
-    // Métricas base calculadas para 1g
+    // ViewModel compartilhada na Activity para manter o carrinho entre Fragments
+    private val viewModel: RefeicaoViewModel by activityViewModels()
+
     private var caloriasPorGrama = 0f
     private var carbosPorGrama = 0f
     private var proteinasPorGrama = 0f
     private var gordurasPorGrama = 0f
-
-    // Peso da porção padrão em gramas (ex: 50g)
     private var gramasPorPorcao = 100f
-
     private var isUpdatingText = false
 
     override fun onCreateView(
@@ -51,56 +56,49 @@ class AddFragment : Fragment() {
         binding.tvTituloAlimento.text = nome
         binding.tvDescricaoCurta.text = if (descricao.isNotEmpty()) descricao else "Sem descrição disponível."
 
-        // Extrai métricas base por 100g
-        val cal100g = extrairValorFloat(descricao, "Calories:", "kcal")
-        val carb100g = extrairValorFloat(descricao, "Carbs:", "g")
-        val prot100g = extrairValorFloat(descricao, "Protein:", "g")
-        val gord100g = extrairValorFloat(descricao, "Fat:", "g")
+        val cal100g = extrairValorFloat(descricao, listOf("Calories:", "Calorias:"))
+        val carb100g = extrairValorFloat(descricao, listOf("Carbs:", "Carboidratos:", "Carb:"))
+        val prot100g = extrairValorFloat(descricao, listOf("Protein:", "Proteínas:", "Proteina:"))
+        val gord100g = extrairValorFloat(descricao, listOf("Fat:", "Gorduras:", "Gordura:"))
 
-        // Converte para base de 1 grama
         caloriasPorGrama = cal100g / 100f
         carbosPorGrama = carb100g / 100f
         proteinasPorGrama = prot100g / 100f
         gordurasPorGrama = gord100g / 100f
 
-        // Inicializa com valor padrão de 100g
         binding.etGramas.setText("100")
         atualizarValoresNutricionais(100f)
     }
 
     private fun configurarInputsQuantidade() {
-        // Listener para o campo de GRAMAS
         binding.etGramas.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 if (isUpdatingText) return
-                val gramas = s?.toString()?.toFloatOrNull() ?: 0f
+                val gramas = s?.toString()?.replace(",", ".")?.toFloatOrNull() ?: 0f
 
                 isUpdatingText = true
-                // Atualiza o campo de unidades de forma proporcional
                 val porcoes = if (gramasPorPorcao > 0) gramas / gramasPorPorcao else 0f
-                binding.etUnidades.setText(if (porcoes > 0) String.format("%.1f", porcoes) else "")
+                binding.etUnidades.setText(if (porcoes > 0) String.format(Locale.US, "%.1f", porcoes) else "")
                 isUpdatingText = false
 
                 atualizarValoresNutricionais(gramas)
             }
         })
 
-        // Listener para o campo de UNIDADES / PORÇÕES
         binding.etUnidades.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 if (isUpdatingText) return
-                val porcoes = s?.toString()?.toFloatOrNull() ?: 0f
+                val porcoes = s?.toString()?.replace(",", ".")?.toFloatOrNull() ?: 0f
                 val gramasCorrespondentes = porcoes * gramasPorPorcao
 
                 isUpdatingText = true
-                // Atualiza o campo de gramas de forma proporcional
-                binding.etGramas.setText(if (gramasCorrespondentes > 0) String.format("%.0f", gramasCorrespondentes) else "")
+                binding.etGramas.setText(if (gramasCorrespondentes > 0) String.format(Locale.US, "%.0f", gramasCorrespondentes) else "")
                 isUpdatingText = false
 
                 atualizarValoresNutricionais(gramasCorrespondentes)
@@ -114,25 +112,43 @@ class AddFragment : Fragment() {
         val gordurasTotais = gordurasPorGrama * gramasTotais
         val caloriasTotais = caloriasPorGrama * gramasTotais
 
-        binding.tvCarboidratos.text = String.format("%.1fg", carbosTotais)
-        binding.tvProteinas.text = String.format("%.1fg", proteinasTotais)
-        binding.tvGorduras.text = String.format("%.1fg", gordurasTotais)
-        binding.tvCaloriasPorGrama.text = String.format("%.0f kcal", caloriasTotais)
+        binding.tvCarboidratos.text = String.format(Locale.US, "%.1fg", carbosTotais)
+        binding.tvProteinas.text = String.format(Locale.US, "%.1fg", proteinasTotais)
+        binding.tvGorduras.text = String.format(Locale.US, "%.1fg", gordurasTotais)
+        binding.tvCaloriasPorGrama.text = String.format(Locale.US, "%.0f kcal", caloriasTotais)
     }
 
-    private fun extrairValorFloat(texto: String, chaveInicio: String, chaveFim: String): Float {
-        return try {
-            if (texto.contains(chaveInicio)) {
-                val inicio = texto.indexOf(chaveInicio) + chaveInicio.length
-                val fim = texto.indexOf(chaveFim, inicio)
-                if (fim != -1) {
-                    val valorStr = texto.substring(inicio, fim).trim().replace(",", ".")
-                    valorStr.toFloatOrNull() ?: 0f
-                } else 0f
-            } else 0f
-        } catch (e: Exception) {
-            0f
+    private fun extrairValorFloat(texto: String, chaves: List<String>): Float {
+        for (chave in chaves) {
+            if (texto.contains(chave, ignoreCase = true)) {
+                try {
+                    val sub = texto.substring(texto.indexOf(chave, ignoreCase = true) + chave.length)
+                    val regex = Regex("""\d+([.,]\d+)?""")
+                    val match = regex.find(sub)
+                    if (match != null) {
+                        return match.value.replace(",", ".").toFloatOrNull() ?: 0f
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
+        return 0f
+    }
+
+    private fun criarAlimentoAtual(): AlimentoConsumido {
+        val gramas = binding.etGramas.text.toString().replace(",", ".").toFloatOrNull() ?: 0f
+        val porcoes = binding.etUnidades.text.toString().replace(",", ".").toFloatOrNull() ?: 0f
+
+        return AlimentoConsumido(
+            nome = binding.tvTituloAlimento.text.toString(),
+            gramas = gramas,
+            porcoes = porcoes,
+            calorias = caloriasPorGrama * gramas,
+            carboidratos = carbosPorGrama * gramas,
+            proteinas = proteinasPorGrama * gramas,
+            gorduras = gordurasPorGrama * gramas
+        )
     }
 
     private fun configurarNavegacao() {
@@ -141,17 +157,47 @@ class AddFragment : Fragment() {
         }
 
         binding.btnCancelar.setOnClickListener {
-            findNavController().navigateUp()
+            viewModel.limparCarrinho()
+            if (findNavController().currentDestination?.id == R.id.addFragment) {
+                findNavController().navigate(R.id.action_addFragment_to_inicioFragment)
+            }
         }
 
+        // ADICIONAR MAIS: Salva o alimento no carrinho e volta para o RegisterFragment
         binding.btnAdicionarMais.setOnClickListener {
-            Toast.makeText(requireContext(), "Alimento adicionado!", Toast.LENGTH_SHORT).show()
-            findNavController().navigateUp()
+            val alimento = criarAlimentoAtual()
+            viewModel.adicionarAlimento(alimento)
+
+            Toast.makeText(requireContext(), "${alimento.nome} adicionado ao carrinho!", Toast.LENGTH_SHORT).show()
+
+            if (findNavController().currentDestination?.id == R.id.addFragment) {
+                findNavController().navigate(R.id.action_addFragment_to_registerFragment)
+            }
         }
 
+        // FINALIZAR REGISTRO: Adiciona o item atual, salva toda a lista no JSON e limpa o carrinho
         binding.btnFinalizarRegistro.setOnClickListener {
-            Toast.makeText(requireContext(), "Refeição registrada com sucesso!", Toast.LENGTH_SHORT).show()
-            findNavController().navigateUp()
+            val alimento = criarAlimentoAtual()
+            viewModel.adicionarAlimento(alimento)
+
+            val todosAlimentos = viewModel.listaAlimentos.value ?: emptyList()
+            val dataHoje = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+
+            val jsonBD = JsonBD(requireContext())
+            val sucesso = jsonBD.salvarRefeicao(
+                emailUsuario = "usuario@email.com", // Substituir pelo email logado
+                tipoRefeicao = "Almoço",
+                data = dataHoje,
+                alimentos = todosAlimentos
+            )
+
+            if (sucesso) {
+                Toast.makeText(requireContext(), "Refeição registrada com sucesso com ${todosAlimentos.size} alimento(s)!", Toast.LENGTH_LONG).show()
+                viewModel.limparCarrinho()
+                findNavController().navigate(R.id.action_addFragment_to_inicioFragment)
+            } else {
+                Toast.makeText(requireContext(), "Erro ao salvar refeição.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

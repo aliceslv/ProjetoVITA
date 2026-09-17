@@ -94,33 +94,63 @@
         android:label="IdrFragment"
         tools:layout="@layout/fragment_idr" />
 
+    <!-- INICIO FRAGMENT -->
+    <fragment
+        android:id="@+id/inicioFragment"
+        android:name="com.example.vita.InicioFragment"
+        android:label="InicioFragment"
+        tools:layout="@layout/fragment_inicio" />
+
+    <!-- REGISTER FRAGMENT -->
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.vita.RegisterFragment"
-        android:label="RegisterFragment">
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
 
-        <!-- Ação para abrir a tela de Adicionar Alimento -->
         <action
             android:id="@+id/action_registerFragment_to_addFragment"
             app:destination="@id/addFragment" />
 
-        <!-- Ação para abrir a tela de Recentes -->
         <action
             android:id="@+id/action_registerFragment_to_recentFragment"
             app:destination="@id/recentFragment" />
 
-        <fragment
-            android:id="@+id/addFragment"
-            android:name="com.example.vita.AddFragment"
-            android:label="AddFragment"
-            tools:layout="@layout/fragment_add" />
+        <action
+            android:id="@+id/action_registerFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+    </fragment>
 
-        <fragment
-            android:id="@+id/recentFragment"
-            android:name="com.example.vita.RecentFragment"
-            android:label="RecentFragment"
-            tools:layout="@layout/fragment_recent" />
+    <!-- ADD FRAGMENT -->
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.vita.AddFragment"
+        android:label="AddFragment"
+        tools:layout="@layout/fragment_add">
 
+        <action
+            android:id="@+id/action_addFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+
+        <action
+            android:id="@+id/action_addFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <!-- RECENT FRAGMENT -->
+    <fragment
+        android:id="@+id/recentFragment"
+        android:name="com.example.vita.RecentFragment"
+        android:label="RecentFragment"
+        tools:layout="@layout/fragment_recent">
+
+        <action
+            android:id="@+id/action_recentFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+
+        <action
+            android:id="@+id/action_recentFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
 
 </navigation>

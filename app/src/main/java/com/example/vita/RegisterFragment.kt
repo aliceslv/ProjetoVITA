@@ -7,9 +7,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +28,8 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: RefeicaoViewModel by activityViewModels()
+
     private lateinit var alimentoAdapter: AlimentoAdapter
     private var tokenAcesso: String? = null
     private var searchJob: Job? = null
@@ -44,34 +46,40 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Atualiza a data com o dia atual
         atualizarDataAtual()
-
-        // 2. Destaca a aba ativa (ALIMENTO = Verde, CONSUMIDO = Branco)
         configurarEstiloCabecalho()
-
-        // 3. Inicializa lista, botões e eventos de busca
         configurarRecyclerView()
         configurarBotoes()
         autenticarEBuscarExemplos()
         configurarCampoBusca()
+        observarCarrinho()
+    }
+
+    private fun observarCarrinho() {
+        viewModel.listaAlimentos.observe(viewLifecycleOwner) { lista ->
+            if (lista.isNotEmpty()) {
+                binding.layoutCarrinhoInfo.visibility = View.VISIBLE
+                val totalCalorias = viewModel.obterTotalCalorias()
+                binding.tvItensCarrinho.text = "${lista.size} alimento(s) no carrinho (%.0f kcal)".format(totalCalorias)
+            } else {
+                binding.layoutCarrinhoInfo.visibility = View.GONE
+            }
+        }
+
+        binding.btnLimparCarrinho.setOnClickListener {
+            viewModel.limparCarrinho()
+        }
     }
 
     private fun atualizarDataAtual() {
         val formatoData = SimpleDateFormat("EEEE, MMM. dd", Locale("pt", "BR"))
-        val dataFormatada = formatoData.format(Date())
-        binding.dataReal.text = dataFormatada
+        binding.dataReal.text = formatoData.format(Date())
     }
 
     private fun configurarEstiloCabecalho() {
         val corVerde = ContextCompat.getColor(requireContext(), R.color.green2)
-        val corBranca = Color.WHITE
-
-        // Como esta é a tela principal de Registro/Alimentos:
-        // ALIMENTO -> VERDE
-        // CONSUMIDO RECENTEMENTE -> BRANCO
         binding.alimentoAba.setTextColor(corVerde)
-        binding.consumoAba.setTextColor(corBranca)
+        binding.consumoAba.setTextColor(Color.WHITE)
     }
 
     private fun configurarRecyclerView() {
@@ -81,7 +89,6 @@ class RegisterFragment : Fragment() {
                 putString("FOOD_DESCRIPTION", alimentoSelecionado.foodDescription)
             }
 
-            // Verifica se o fragment atual ainda é o destino visível antes de navegar
             if (findNavController().currentDestination?.id == R.id.registerFragment) {
                 try {
                     findNavController().navigate(
@@ -102,11 +109,17 @@ class RegisterFragment : Fragment() {
 
     private fun configurarBotoes() {
         binding.btnCancelar.setOnClickListener {
-            findNavController().navigateUp()
+            viewModel.limparCarrinho()
+            if (findNavController().currentDestination?.id == R.id.registerFragment) {
+                try {
+                    findNavController().navigate(R.id.action_registerFragment_to_inicioFragment)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
 
         binding.consumoAba.setOnClickListener {
-            // Validação de segurança para troca de aba
             if (findNavController().currentDestination?.id == R.id.registerFragment) {
                 try {
                     findNavController().navigate(R.id.action_registerFragment_to_recentFragment)
