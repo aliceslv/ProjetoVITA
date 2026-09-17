@@ -72,7 +72,6 @@ O projeto utiliza a seguinte stack tecnológica e conjunto de ferramentas:
 Este projeto está sendo desenvolvido no âmbito da disciplina de **Projeto Integrador** por estudantes do Curso Técnico em Informática para Internet Integrado ao Ensino Médio no **IFES - Campus Serra**[cite: 1]:
 
 | Integrantes | 
-| :--- | :--- |
 | **Alice Reis** | 
 | **Clara Lacerda** |
 | **Júlia Simor** |
