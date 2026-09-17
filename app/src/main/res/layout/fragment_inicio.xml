@@ -9,7 +9,7 @@
     android:background="@color/blue3"
     tools:context=".InicioFragment">
 
-    <!-- Conteúdo rolável -->
+    <!-- Conteúdo rolável (agora preso ao topo da barraInferior) -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContent"
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/barraInferior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -412,5 +412,49 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Barra Inferior Fixa no rodapé -->
+    <LinearLayout
+        android:id="@+id/barraInferior"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/blue2"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btnUsuario"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:contentDescription="Perfil"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icuser" />
+
+        <ImageView
+            android:id="@+id/btnLivro"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:contentDescription="Diário"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/iclivro" />
+
+        <ImageView
+            android:id="@+id/btnEscala"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:contentDescription="Calorias"
+            android:padding="7dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/icescala" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
