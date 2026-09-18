@@ -6,13 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/blue3">
 
-    <!-- ScrollView limita sua área acima da barraInferior -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/barraInferior">
 
-        <!-- ConstraintLayout gerencia o conteúdo interno -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +58,7 @@
                 app:layout_constraintTop_toBottomOf="@id/txtSemana">
 
                 <TextView
+                    android:id="@+id/btnCalorias"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -70,6 +69,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/btnMacros"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -80,6 +80,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/btnNutrientes"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -119,7 +120,6 @@
 
             </LinearLayout>
 
-            <!-- Alterado layout_height de 400dp para wrap_content -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -147,22 +147,24 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txtValFibras"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="22 / 25g"
+                        android:text="0 / 25g"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />
 
                 </LinearLayout>
 
                 <ProgressBar
+                    android:id="@+id/progressFibras"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:max="25"
-                    android:progress="22"
+                    android:progress="0"
                     android:progressBackgroundTint="#08243A"
                     android:progressTint="#20D36B" />
 
@@ -183,22 +185,24 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txtValAcucar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="45 / 50g"
+                        android:text="0 / 50g"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />
 
                 </LinearLayout>
 
                 <ProgressBar
+                    android:id="@+id/progressAcucar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:max="50"
-                    android:progress="45"
+                    android:progress="0"
                     android:progressBackgroundTint="#08243A"
                     android:progressTint="#20D36B" />
 
@@ -219,22 +223,24 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txtValSodio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="1800 / 2300mg"
+                        android:text="0 / 2300mg"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />
 
                 </LinearLayout>
 
                 <ProgressBar
+                    android:id="@+id/progressSodio"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:max="2300"
-                    android:progress="1800"
+                    android:progress="0"
                     android:progressBackgroundTint="#08243A"
                     android:progressTint="#20D36B" />
 
@@ -255,22 +261,24 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txtValColesterol"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="210 / 300mg"
+                        android:text="0 / 300mg"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />
 
                 </LinearLayout>
 
                 <ProgressBar
+                    android:id="@+id/progressColesterol"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:max="300"
-                    android:progress="210"
+                    android:progress="0"
                     android:progressBackgroundTint="#08243A"
                     android:progressTint="#20D36B" />
 
@@ -291,22 +299,24 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txtValGordSaturada"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="18 / 20g"
+                        android:text="0 / 20g"
                         android:textColor="@android:color/white"
                         android:textSize="10sp" />
 
                 </LinearLayout>
 
                 <ProgressBar
+                    android:id="@+id/progressGordSaturada"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:max="20"
-                    android:progress="18"
+                    android:progress="0"
                     android:progressBackgroundTint="#08243A"
                     android:progressTint="#20D36B" />
 
@@ -316,7 +326,6 @@
 
     </ScrollView>
 
-    <!-- Barra Inferior fixada permanentemente no rodapé -->
     <LinearLayout
         android:id="@+id/barraInferior"
         android:layout_width="match_parent"

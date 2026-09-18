@@ -104,7 +104,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
-                android:background="@drawable/bg_icone">
+                android:background="@drawable/bg_search_input">
 
                 <TextView
                     android:layout_width="35dp"
@@ -154,7 +154,7 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_icone">
+                android:background="@drawable/bg_search_input">
 
                 <TextView
                     android:layout_width="35dp"
@@ -206,7 +206,7 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_icone">
+                android:background="@drawable/bg_search_input">
 
                 <TextView
                     android:layout_width="35dp"
@@ -260,7 +260,7 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_icone">
+                android:background="@drawable/bg_search_input">
 
                 <TextView
                     android:layout_width="35dp"
@@ -322,7 +322,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
-                android:background="@drawable/bg_icone">
+                android:background="@drawable/bg_search_input">
 
                 <TextView
                     android:layout_width="35dp"
@@ -385,7 +385,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
-                android:background="@drawable/bg_icone">
+                android:background="@drawable/bg_search_input">
 
                 <TextView
                     android:layout_width="35dp"

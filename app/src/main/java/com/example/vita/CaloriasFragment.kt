@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.vita.databinding.FragmentCaloriasBinding
 import com.example.vita.json.JsonBD
 import com.github.mikephil.charting.charts.BarChart
@@ -39,26 +40,58 @@ class CaloriasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configurarNavegacao()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Garante a leitura e atualização dos dados sempre que a tela ganha foco
+        carregarEDesenharDados()
+    }
+
+    private fun configurarNavegacao() {
+        // Abas superiores
+        binding.btnMacros.setOnClickListener {
+            findNavController().navigate(R.id.action_caloriasFragment_to_macrosFragment)
+        }
+
+        binding.btnNutrientes.setOnClickListener {
+            findNavController().navigate(R.id.action_caloriasFragment_to_nutriFragment)
+        }
+
+        // --- BARRA INFERIOR DE NAVEGAÇÃO ---
+
+        // Ícone do Livro -> InicioFragment
+        binding.btnLivro.setOnClickListener {
+            findNavController().navigate(R.id.action_caloriasFragment_to_inicioFragment)
+        }
+
+        // Ícone do Usuário -> ProfileFragment
+        binding.btnUsuario.setOnClickListener {
+            findNavController().navigate(R.id.action_caloriasFragment_to_profileFragment)
+        }
+    }
+
+    private fun carregarEDesenharDados() {
         val emailUsuario = obterEmailUsuarioLogado()
 
-        // 1. Carrega a IDR armazenada no JSON dos usuários
+        // 1. Carrega a IDR armazenada
         val idrMeta = carregarIdrDoJson(emailUsuario)
 
-        // 2. Carrega as calorias consumidas em cada dia da semana atual (Segunda a Domingo)
+        // 2. Carrega as calorias consumidas na semana
         val consumoSemanal = carregarConsumoSemanalDoJson(emailUsuario)
 
-        // 3. Atualiza os textos de exibição
+        // 3. Atualiza os textos
         binding.txtMedia.text = "Meta: ${idrMeta.toInt()} kcal"
 
         val indiceHoje = obterIndiceDiaAtualSemana()
         val consumoHoje = consumoSemanal.getOrElse(indiceHoje) { 0f }
         binding.txt1400.text = consumoHoje.toInt().toString()
 
-        // 4. Desenha o gráfico
+        // 4. Desenha o gráfico com os dados atualizados
         configurarGrafico(binding.chartMetaConsumo, idrMeta, consumoSemanal)
     }
 
-    // Busca a IDR do usuário cadastrado via JsonBD
     private fun carregarIdrDoJson(email: String): Float {
         val jsonBD = JsonBD(requireContext())
         val users = jsonBD.getUsers()
@@ -69,12 +102,11 @@ class CaloriasFragment : Fragment() {
                 return user.optDouble("idr", 2000.0).toFloat()
             }
         }
-        return 2000f // Valor de fallback caso não encontre
+        return 2000f
     }
 
-    // Processa o arquivo refeicoes.json e soma as calorias dos últimos 7 dias da semana
     private fun carregarConsumoSemanalDoJson(email: String): List<Float> {
-        val consumoDias = MutableList(7) { 0f } // 0: Seg, 1: Ter, 2: Qua, 3: Qui, 4: Sex, 5: Sáb, 6: Dom
+        val consumoDias = MutableList(7) { 0f }
         val file = File(requireContext().filesDir, "refeicoes.json")
 
         if (!file.exists()) return consumoDias
@@ -84,7 +116,6 @@ class CaloriasFragment : Fragment() {
             val calendar = Calendar.getInstance()
             val formatoDataIso = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
-            // Mapeia as datas da semana atual (Segunda até Domingo)
             calendar.firstDayOfWeek = Calendar.MONDAY
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
 
@@ -94,7 +125,6 @@ class CaloriasFragment : Fragment() {
                 calendar.add(Calendar.DAY_OF_MONTH, 1)
             }
 
-            // Percorre todas as refeições registradas
             for (i in 0 until jsonArray.length()) {
                 val refeicao = jsonArray.getJSONObject(i)
                 val usuarioRefeicao = refeicao.optString("usuarioEmail")
@@ -129,9 +159,7 @@ class CaloriasFragment : Fragment() {
 
     private fun obterIndiceDiaAtualSemana(): Int {
         val calendar = Calendar.getInstance()
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-        // Converte o Calendar (DOM=1, SEG=2... SAB=7) para a lista (SEG=0 ... DOM=6)
-        return when (dayOfWeek) {
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.MONDAY -> 0
             Calendar.TUESDAY -> 1
             Calendar.WEDNESDAY -> 2

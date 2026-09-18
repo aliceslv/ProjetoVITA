@@ -76,6 +76,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/arrownext"
+        android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="@id/frameProgressoCalorias"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/frameProgressoCalorias"

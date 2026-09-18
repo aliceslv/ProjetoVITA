@@ -6,13 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/blue3">
 
-    <!-- ScrollView ocupa todo o espaço acima da barraInferior -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/barraInferior">
 
-        <!-- O ConstraintLayout envolve todo o conteúdo rolável -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +58,7 @@
                 app:layout_constraintTop_toBottomOf="@id/txtSemana">
 
                 <TextView
+                    android:id="@+id/btnCalorias"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -70,6 +69,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/btnMacros"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -80,6 +80,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/btnNutrientes"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -108,7 +109,7 @@
                 android:id="@+id/txtMedia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/inter24_medium"
                 android:text="Média Diária"
@@ -117,78 +118,85 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/menuMacros" />
 
+            <!-- Card de Média Diária (ProgressBars de Macros) -->
             <LinearLayout
                 android:id="@+id/cardMacros"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/rounded_corner4"
                 android:backgroundTint="@color/blue4"
                 android:orientation="vertical"
-                android:padding="10dp"
+                android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtTituloMacros">
 
                 <TextView
+                    android:id="@+id/txtLabelCarb"
                     android:layout_width="match_parent"
-                    android:layout_height="18dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="Carboidratos (50%)                         200 / 250g"
+                    android:text="Carboidratos (0%) 0g"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
                 <ProgressBar
+                    android:id="@+id/progressCarb"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="8dp"
                     android:max="100"
-                    android:progress="80"
+                    android:progress="0"
                     android:progressTint="#20D36B" />
 
                 <TextView
+                    android:id="@+id/txtLabelProt"
                     android:layout_width="match_parent"
-                    android:layout_height="18dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="Proteínas (25%)                              100 / 100g"
+                    android:text="Proteínas (0%) 0g"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
                 <ProgressBar
+                    android:id="@+id/progressProt"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="8dp"
                     android:max="100"
-                    android:progress="100"
+                    android:progress="0"
                     android:progressTint="#27B7C8" />
 
                 <TextView
+                    android:id="@+id/txtLabelGord"
                     android:layout_width="match_parent"
-                    android:layout_height="18dp"
-                    android:layout_marginTop="7dp"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="Gorduras (25%)                               65 / 80g"
+                    android:text="Gorduras (0%) 0g"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
                 <ProgressBar
+                    android:id="@+id/progressGord"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="24dp"
                     android:max="100"
-                    android:progress="81"
+                    android:progress="0"
                     android:progressTint="#FFA800" />
 
             </LinearLayout>
 
+            <!-- Card do Gráfico de Distribuição Semanal -->
             <LinearLayout
                 android:id="@+id/cardDistribuicao"
                 android:layout_width="0dp"
-                android:layout_height="270dp"
+                android:layout_height="320dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="12dp"
@@ -202,79 +210,17 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_medium"
                     android:text="Distribuição Semanal"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
-                <LinearLayout
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chartMacrosSemanal"
                     android:layout_width="match_parent"
-                    android:layout_height="115dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="32dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="#27B7C8" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="#286D32" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="72dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_weight="1"
-                        android:background="#FFA800" />
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="92dp"
-                        android:layout_weight="1"
-                        android:background="#E52D08" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="■ Carb"
-                        android:textColor="#27B7C8"
-                        android:textSize="7sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="■ Prot"
-                        android:textColor="#4CCB63"
-                        android:textSize="7sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="■ Gord"
-                        android:textColor="#FFA800"
-                        android:textSize="7sp" />
-
-                </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp" />
 
             </LinearLayout>
 
@@ -282,7 +228,6 @@
 
     </ScrollView>
 
-    <!-- Barra Inferior fixada no rodapé do RelativeLayout -->
     <LinearLayout
         android:id="@+id/barraInferior"
         android:layout_width="match_parent"

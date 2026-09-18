@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/blue3">
 
-    <!-- ScrollView ocupa todo o espaço entre o topo e a barraInferior -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -62,7 +61,7 @@
                 app:layout_constraintTop_toBottomOf="@id/txtSemana">
 
                 <TextView
-                    android:id="@+id/calorias"
+                    android:id="@+id/btnCalorias"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -73,6 +72,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/btnMacros"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -83,6 +83,7 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/btnNutrientes"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -132,7 +133,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt1400" />
 
-            <!-- Container com o BarChart real embutido -->
             <LinearLayout
                 android:id="@+id/cardGrafico"
                 android:layout_width="0dp"
@@ -159,7 +159,6 @@
 
     </ScrollView>
 
-    <!-- Barra Inferior fixada na base do ConstraintLayout -->
     <LinearLayout
         android:id="@+id/barraInferior"
         android:layout_width="0dp"

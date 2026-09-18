@@ -4,7 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 // Objeto da resposta completa da API
 data class FoodSearchResponse(
-    @SerializedName("foods") val foods: FoodsContainer?
+    @SerializedName("foods") val foods: FoodsContainer?,
+    @SerializedName("error") val error: FatSecretError?
+)
+
+data class FatSecretError(
+    @SerializedName("code") val code: Int,
+    @SerializedName("message") val message: String
 )
 
 // Container intermediário da API FatSecret

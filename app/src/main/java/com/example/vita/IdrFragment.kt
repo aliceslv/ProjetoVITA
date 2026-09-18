@@ -1,6 +1,6 @@
 package com.example.vita
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.vita.databinding.FragmentIdrBinding
+import com.example.vita.json.JsonBD
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Calendar
-import com.example.vita.json.JsonBD
 
 class IdrFragment : Fragment() {
 
@@ -74,19 +74,22 @@ class IdrFragment : Fragment() {
     private fun cadastrarEGravarDados() {
         val email = userViewModel.email
         val senha = userViewModel.senha
-        val sharedPref = requireContext().getSharedPreferences("UserData", android.content.Context.MODE_PRIVATE)
+
+        // 1. Salva a sessão localmente (e-mail e IDR)
+        val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
         sharedPref.edit().apply {
             putFloat("USER_IDR", userViewModel.idrCalculado.toFloat())
+            putString("USER_EMAIL", email) // Salva o e-mail para acesso nas demais telas
             apply()
         }
 
-        // 1. Autenticação no Firebase
+        // 2. Autenticação no Firebase
         auth.createUserWithEmailAndPassword(email, senha)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     val userId = auth.currentUser?.uid ?: System.currentTimeMillis().toString()
 
-                    // 2. Gravação no Firebase Firestore (apenas dados essenciais para auth/recuperação)
+                    // 3. Gravação no Firebase Firestore
                     val usuarioMap = hashMapOf(
                         "nome" to userViewModel.nome,
                         "email" to email,
@@ -104,7 +107,7 @@ class IdrFragment : Fragment() {
                         .document(userId)
                         .set(usuarioMap)
 
-                    // 3. Salva os dados locais acumulados no arquivo JSON (JsonBD)
+                    // 4. Salva no arquivo JSON local (JsonBD)
                     dbManager.salvarPerfilUsuario(
                         nome = userViewModel.nome,
                         email = email,
@@ -121,12 +124,9 @@ class IdrFragment : Fragment() {
 
                     Toast.makeText(requireContext(), "Perfil cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
 
-                    // 4. Redireciona para a StartActivity/MainActivity limpando a pilha de navegação
-                    val intent = Intent(requireActivity(), StartFragment::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    }
-                    startActivity(intent)
-                    requireActivity().finish()
+                    // 5. Navega para o InicioFragment usando o NavController
+                    findNavController().navigate(R.id.action_idrFragment_to_inicioFragment)
+
                 } else {
                     val erro = task.exception?.message ?: "Erro ao cadastrar usuário no Firebase."
                     Toast.makeText(requireContext(), erro, Toast.LENGTH_LONG).show()

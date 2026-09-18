@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_loginFragment_to_forgotFragment"
             app:destination="@id/forgotFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
     </fragment>
 
     <!-- FORGOT / RECUPERAR SENHA FRAGMENT -->
@@ -92,14 +95,28 @@
         android:id="@+id/idrFragment"
         android:name="com.example.vita.IdrFragment"
         android:label="IdrFragment"
-        tools:layout="@layout/fragment_idr" />
+        tools:layout="@layout/fragment_idr">
+        <action
+            android:id="@+id/action_idrFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+    </fragment>
 
     <!-- INICIO FRAGMENT -->
     <fragment
         android:id="@+id/inicioFragment"
         android:name="com.example.vita.InicioFragment"
         android:label="InicioFragment"
-        tools:layout="@layout/fragment_inicio" />
+        tools:layout="@layout/fragment_inicio">
+        <action
+            android:id="@+id/action_inicioFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_inicioFragment_to_caloriasFragment"
+            app:destination="@id/caloriasFragment" />
+        <action
+            android:id="@+id/action_inicioFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
 
     <!-- REGISTER FRAGMENT -->
     <fragment
@@ -107,15 +124,12 @@
         android:name="com.example.vita.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
-
         <action
             android:id="@+id/action_registerFragment_to_addFragment"
             app:destination="@id/addFragment" />
-
         <action
             android:id="@+id/action_registerFragment_to_recentFragment"
             app:destination="@id/recentFragment" />
-
         <action
             android:id="@+id/action_registerFragment_to_inicioFragment"
             app:destination="@id/inicioFragment" />
@@ -127,11 +141,9 @@
         android:name="com.example.vita.AddFragment"
         android:label="AddFragment"
         tools:layout="@layout/fragment_add">
-
         <action
             android:id="@+id/action_addFragment_to_inicioFragment"
             app:destination="@id/inicioFragment" />
-
         <action
             android:id="@+id/action_addFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -143,14 +155,101 @@
         android:name="com.example.vita.RecentFragment"
         android:label="RecentFragment"
         tools:layout="@layout/fragment_recent">
-
         <action
             android:id="@+id/action_recentFragment_to_inicioFragment"
             app:destination="@id/inicioFragment" />
-
         <action
             android:id="@+id/action_recentFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+    </fragment>
+
+    <!-- CALORIAS FRAGMENT -->
+    <fragment
+        android:id="@+id/caloriasFragment"
+        android:name="com.example.vita.CaloriasFragment"
+        android:label="CaloriasFragment"
+        tools:layout="@layout/fragment_calorias">
+        <action
+            android:id="@+id/action_caloriasFragment_to_macrosFragment"
+            app:destination="@id/macrosFragment" />
+        <action
+            android:id="@+id/action_caloriasFragment_to_nutriFragment"
+            app:destination="@id/nutriFragment" />
+        <action
+            android:id="@+id/action_caloriasFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+        <action
+            android:id="@+id/action_caloriasFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <!-- MACROS FRAGMENT -->
+    <fragment
+        android:id="@+id/macrosFragment"
+        android:name="com.example.vita.MacrosFragment"
+        android:label="MacrosFragment"
+        tools:layout="@layout/fragment_macros">
+        <action
+            android:id="@+id/action_macrosFragment_to_caloriasFragment"
+            app:destination="@id/caloriasFragment" />
+        <action
+            android:id="@+id/action_macrosFragment_to_nutriFragment"
+            app:destination="@id/nutriFragment" />
+        <action
+            android:id="@+id/action_macrosFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+        <action
+            android:id="@+id/action_macrosFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <!-- NUTRI FRAGMENT -->
+    <fragment
+        android:id="@+id/nutriFragment"
+        android:name="com.example.vita.NutriFragment"
+        android:label="NutriFragment"
+        tools:layout="@layout/fragment_nutri">
+        <action
+            android:id="@+id/action_nutriFragment_to_caloriasFragment"
+            app:destination="@id/caloriasFragment" />
+        <action
+            android:id="@+id/action_nutriFragment_to_macrosFragment"
+            app:destination="@id/macrosFragment" />
+        <action
+            android:id="@+id/action_nutriFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+        <action
+            android:id="@+id/action_nutriFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <!-- PROFILE FRAGMENT -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.vita.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/action_profileFragment_to_inicioFragment"
+            app:destination="@id/inicioFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_caloriasFragment"
+            app:destination="@id/caloriasFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.example.vita.ProfileEditFragment"
+        android:label="ProfileEditFragment"
+        tools:layout="@layout/fragment_profile_edit">
+
+        <action
+            android:id="@+id/action_profileEditFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 
 </navigation>

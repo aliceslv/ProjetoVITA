@@ -1,10 +1,11 @@
 package com.example.vita.data.network
 
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Field
 
 interface FatSecretApi {
 
@@ -17,8 +18,8 @@ interface FatSecretApi {
         @Field("scope") scope: String = "basic"
     ): TokenResponse
 
-    // 2. Buscar alimentos por nome (Substituído Any por FoodSearchResponse)
-    @POST("rest/server.api")
+    // 2. Buscar alimentos por nome
+    @GET("rest/server.api")
     suspend fun buscarAlimentos(
         @Header("Authorization") bearerToken: String,
         @Query("method") method: String = "foods.search",

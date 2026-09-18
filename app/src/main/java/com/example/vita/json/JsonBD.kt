@@ -129,7 +129,41 @@ class JsonBD(private val context: Context) {
         }
     }
 
-    // NOVA FUNÇÃO: Salva uma refeição completa contendo a lista de alimentos consumidos
+    // Atualiza apenas as medidas do usuário (Peso, Altura e Peso Meta)
+    fun atualizarMedidasUsuario(
+        email: String,
+        novoPeso: String,
+        novaAltura: String,
+        novoPesoMeta: String
+    ): Boolean {
+        return try {
+            val users = getUsers()
+            var usuarioEncontrado = false
+
+            for (i in 0 until users.length()) {
+                val user = users.getJSONObject(i)
+                if (user.optString("email").equals(email, ignoreCase = true)) {
+                    user.put("peso", novoPeso)
+                    user.put("altura", novaAltura)
+                    user.put("pesoMeta", novoPesoMeta)
+                    usuarioEncontrado = true
+                    break
+                }
+            }
+
+            if (usuarioEncontrado) {
+                getFile().writeText(users.toString(2))
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    // Salva uma refeição completa contendo a lista de alimentos consumidos
     fun salvarRefeicao(
         emailUsuario: String,
         tipoRefeicao: String,
