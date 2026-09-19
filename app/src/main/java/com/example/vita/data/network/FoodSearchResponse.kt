@@ -18,10 +18,17 @@ data class FoodsContainer(
     @SerializedName("food") val foodList: List<FoodItem>?
 )
 
-// Item individual do alimento
+// Item individual do alimento atualizado com micronutrientes
 data class FoodItem(
     @SerializedName("food_id") val foodId: String,
     @SerializedName("food_name") val foodName: String,
     @SerializedName("food_description") val foodDescription: String?,
-    @SerializedName("food_type") val foodType: String?
+    @SerializedName("food_type") val foodType: String?,
+
+    // Micronutrientes adicionados (valores padrão 0.0 caso o FatSecret não retorne)
+    @SerializedName("fiber") val fiber: Float? = 0f,
+    @SerializedName("sugar") val sugar: Float? = 0f,
+    @SerializedName("sodium") val sodium: Float? = 0f,
+    @SerializedName("cholesterol") val cholesterol: Float? = 0f,
+    @SerializedName("saturated_fat") val saturatedFat: Float? = 0f
 )

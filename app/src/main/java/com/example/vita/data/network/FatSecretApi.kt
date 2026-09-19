@@ -1,29 +1,14 @@
 package com.example.vita.data.network
 
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
 import retrofit2.http.Query
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Field
 
 interface FatSecretApi {
 
-    // 1. Obter Token OAuth 2.0
-    @FormUrlEncoded
-    @POST("connect/token")
-    suspend fun getAccessToken(
-        @Header("Authorization") basicAuth: String,
-        @Field("grant_type") grantType: String = "client_credentials",
-        @Field("scope") scope: String = "basic"
-    ): TokenResponse
-
-    // 2. Buscar alimentos por nome
-    @GET("rest/server.api")
+    @GET("api/alimentos/buscar")
     suspend fun buscarAlimentos(
-        @Header("Authorization") bearerToken: String,
-        @Query("method") method: String = "foods.search",
-        @Query("search_expression") query: String,
-        @Query("format") format: String = "json"
+        @Query("q") query: String,
+        @Query("region") region: String = "BR",
+        @Query("language") language: String = "pt"
     ): FoodSearchResponse
 }

@@ -79,17 +79,6 @@
                     android:textColor="@color/green2"
                     android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/btnNutrientes"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter24_semibold"
-                    android:gravity="center"
-                    android:text="NUTRIENTES"
-                    android:textColor="@color/grey2"
-                    android:textSize="12sp" />
-
             </LinearLayout>
 
             <TextView

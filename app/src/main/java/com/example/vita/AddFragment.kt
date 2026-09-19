@@ -1,5 +1,6 @@
 package com.example.vita
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.vita.data.model.AlimentoConsumido
 import com.example.vita.databinding.FragmentAddBinding
 import com.example.vita.json.JsonBD
+import com.example.vita.util.UnidadeConverter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -25,10 +27,19 @@ class AddFragment : Fragment() {
     // ViewModel compartilhada na Activity para manter o carrinho entre Fragments
     private val viewModel: RefeicaoViewModel by activityViewModels()
 
+    // Macronutrientes por grama
     private var caloriasPorGrama = 0f
     private var carbosPorGrama = 0f
     private var proteinasPorGrama = 0f
     private var gordurasPorGrama = 0f
+
+    // Micronutrientes por grama
+    private var fibrasPorGrama = 0f
+    private var acucarPorGrama = 0f
+    private var sodioPorGrama = 0f
+    private var colesterolPorGrama = 0f
+    private var gorduraSaturadaPorGrama = 0f
+
     private var gramasPorPorcao = 100f
     private var isUpdatingText = false
 
@@ -56,18 +67,51 @@ class AddFragment : Fragment() {
         binding.tvTituloAlimento.text = nome
         binding.tvDescricaoCurta.text = if (descricao.isNotEmpty()) descricao else "Sem descrição disponível."
 
-        val cal100g = extrairValorFloat(descricao, listOf("Calories:", "Calorias:"))
-        val carb100g = extrairValorFloat(descricao, listOf("Carbs:", "Carboidratos:", "Carb:"))
-        val prot100g = extrairValorFloat(descricao, listOf("Protein:", "Proteínas:", "Proteina:"))
-        val gord100g = extrairValorFloat(descricao, listOf("Fat:", "Gorduras:", "Gordura:"))
+        // 1. Descobre a porção em gramas/ml usando a classe utilitária UnidadeConverter
+        val quantidadeEmGramas = UnidadeConverter.extrairGramasDaDescricao(descricao, 100f)
+        gramasPorPorcao = if (quantidadeEmGramas > 0f) quantidadeEmGramas else 100f
 
-        caloriasPorGrama = cal100g / 100f
-        carbosPorGrama = carb100g / 100f
-        proteinasPorGrama = prot100g / 100f
-        gordurasPorGrama = gord100g / 100f
+        // 2. Extrai os valores totais contidos nessa porção (suporta PT e EN)
+        val calTotais = extrairValorRegex(descricao, listOf("Calories", "Calorias"), "k?cal")
+        val carbTotais = extrairValorRegex(descricao, listOf("Carbs", "Carboidratos"), "g")
+        val protTotais = extrairValorRegex(descricao, listOf("Protein", "Proteína", "Proteina", "Prot."), "g")
+        val gordTotais = extrairValorRegex(descricao, listOf("Fat", "Gordura", "Gord."), "g")
 
-        binding.etGramas.setText("100")
-        atualizarValoresNutricionais(100f)
+        // 3. Extrai micronutrientes
+        val fibrasTotais = extrairValorRegex(descricao, listOf("Fiber", "Fibras", "Fibra"), "g")
+        val acucarTotais = extrairValorRegex(descricao, listOf("Sugar", "Açúcar", "Acucar"), "g")
+        val sodioTotais = extrairValorRegex(descricao, listOf("Sodium", "Sódio", "Sodio"), "mg")
+        val colesterolTotais = extrairValorRegex(descricao, listOf("Cholesterol", "Colesterol"), "mg")
+        val gordSaturadaTotais = extrairValorRegex(descricao, listOf("Saturated Fat", "Gordura Saturada"), "g")
+
+        // 4. Calcula o valor exato por 1 g/ml
+        caloriasPorGrama = calTotais / gramasPorPorcao
+        carbosPorGrama = carbTotais / gramasPorPorcao
+        proteinasPorGrama = protTotais / gramasPorPorcao
+        gordurasPorGrama = gordTotais / gramasPorPorcao
+
+        fibrasPorGrama = fibrasTotais / gramasPorPorcao
+        acucarPorGrama = acucarTotais / gramasPorPorcao
+        sodioPorGrama = sodioTotais / gramasPorPorcao
+        colesterolPorGrama = colesterolTotais / gramasPorPorcao
+        gorduraSaturadaPorGrama = gordSaturadaTotais / gramasPorPorcao
+
+        // Inicializa o campo com a quantidade da porção padrão
+        val gramasIniciais = String.format(Locale.US, "%.0f", gramasPorPorcao)
+        binding.etGramas.setText(gramasIniciais)
+        atualizarValoresNutricionais(gramasPorPorcao)
+    }
+
+    private fun extrairValorRegex(texto: String, chaves: List<String>, sufixo: String): Float {
+        for (chave in chaves) {
+            val padrao = """$chave:\s*(\d+(?:[.,]\d+)?)\s*$sufixo"""
+            val regex = Regex(padrao, RegexOption.IGNORE_CASE)
+            val match = regex.find(texto)
+            if (match != null) {
+                return match.groupValues[1].replace(",", ".").toFloatOrNull() ?: 0f
+            }
+        }
+        return 0f
     }
 
     private fun configurarInputsQuantidade() {
@@ -81,7 +125,9 @@ class AddFragment : Fragment() {
 
                 isUpdatingText = true
                 val porcoes = if (gramasPorPorcao > 0) gramas / gramasPorPorcao else 0f
-                binding.etUnidades.setText(if (porcoes > 0) String.format(Locale.US, "%.1f", porcoes) else "")
+                binding.etUnidades.setText(
+                    if (porcoes > 0) String.format(Locale.US, "%.1f", porcoes) else ""
+                )
                 isUpdatingText = false
 
                 atualizarValoresNutricionais(gramas)
@@ -98,7 +144,9 @@ class AddFragment : Fragment() {
                 val gramasCorrespondentes = porcoes * gramasPorPorcao
 
                 isUpdatingText = true
-                binding.etGramas.setText(if (gramasCorrespondentes > 0) String.format(Locale.US, "%.0f", gramasCorrespondentes) else "")
+                binding.etGramas.setText(
+                    if (gramasCorrespondentes > 0) String.format(Locale.US, "%.0f", gramasCorrespondentes) else ""
+                )
                 isUpdatingText = false
 
                 atualizarValoresNutricionais(gramasCorrespondentes)
@@ -107,33 +155,17 @@ class AddFragment : Fragment() {
     }
 
     private fun atualizarValoresNutricionais(gramasTotais: Float) {
-        val carbosTotais = carbosPorGrama * gramasTotais
-        val proteinasTotais = proteinasPorGrama * gramasTotais
-        val gordurasTotais = gordurasPorGrama * gramasTotais
-        val caloriasTotais = caloriasPorGrama * gramasTotais
+        val gramasValidas = gramasTotais.coerceIn(0f, 5000f)
+
+        val carbosTotais = carbosPorGrama * gramasValidas
+        val proteinasTotais = proteinasPorGrama * gramasValidas
+        val gordurasTotais = gordurasPorGrama * gramasValidas
+        val caloriasTotais = caloriasPorGrama * gramasValidas
 
         binding.tvCarboidratos.text = String.format(Locale.US, "%.1fg", carbosTotais)
         binding.tvProteinas.text = String.format(Locale.US, "%.1fg", proteinasTotais)
         binding.tvGorduras.text = String.format(Locale.US, "%.1fg", gordurasTotais)
         binding.tvCaloriasPorGrama.text = String.format(Locale.US, "%.0f kcal", caloriasTotais)
-    }
-
-    private fun extrairValorFloat(texto: String, chaves: List<String>): Float {
-        for (chave in chaves) {
-            if (texto.contains(chave, ignoreCase = true)) {
-                try {
-                    val sub = texto.substring(texto.indexOf(chave, ignoreCase = true) + chave.length)
-                    val regex = Regex("""\d+([.,]\d+)?""")
-                    val match = regex.find(sub)
-                    if (match != null) {
-                        return match.value.replace(",", ".").toFloatOrNull() ?: 0f
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-        return 0f
     }
 
     private fun criarAlimentoAtual(): AlimentoConsumido {
@@ -147,8 +179,13 @@ class AddFragment : Fragment() {
             calorias = caloriasPorGrama * gramas,
             carboidratos = carbosPorGrama * gramas,
             proteinas = proteinasPorGrama * gramas,
-            gorduras = gordurasPorGrama * gramas
+            gorduras = gordurasPorGrama * gramas,
         )
+    }
+
+    private fun obterEmailUsuarioLogado(): String {
+        val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        return sharedPref.getString("USER_EMAIL", "") ?: ""
     }
 
     private fun configurarNavegacao() {
@@ -163,7 +200,6 @@ class AddFragment : Fragment() {
             }
         }
 
-        // ADICIONAR MAIS: Salva o alimento no carrinho e volta para o RegisterFragment
         binding.btnAdicionarMais.setOnClickListener {
             val alimento = criarAlimentoAtual()
             viewModel.adicionarAlimento(alimento)
@@ -175,17 +211,22 @@ class AddFragment : Fragment() {
             }
         }
 
-        // FINALIZAR REGISTRO: Adiciona o item atual, salva toda a lista no JSON e limpa o carrinho
         binding.btnFinalizarRegistro.setOnClickListener {
             val alimento = criarAlimentoAtual()
             viewModel.adicionarAlimento(alimento)
 
             val todosAlimentos = viewModel.listaAlimentos.value ?: emptyList()
             val dataHoje = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+            val emailLogado = obterEmailUsuarioLogado()
+
+            if (emailLogado.isEmpty()) {
+                Toast.makeText(requireContext(), "Erro: Usuário não autenticado.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val jsonBD = JsonBD(requireContext())
             val sucesso = jsonBD.salvarRefeicao(
-                emailUsuario = "usuario@email.com", // Substituir pelo email logado
+                emailUsuario = emailLogado,
                 tipoRefeicao = "Almoço",
                 data = dataHoje,
                 alimentos = todosAlimentos

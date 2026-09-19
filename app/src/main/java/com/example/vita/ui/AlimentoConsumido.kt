@@ -7,5 +7,5 @@ data class AlimentoConsumido(
     val calorias: Float,
     val carboidratos: Float,
     val proteinas: Float,
-    val gorduras: Float
+    val gorduras: Float,
 )

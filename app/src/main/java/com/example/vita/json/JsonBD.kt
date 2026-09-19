@@ -6,14 +6,25 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class JsonBD(private val context: Context) {
 
     private val fileName = "users.json"
+    private val fileRefeicoesName = "refeicoes.json"
 
     private fun getFile(): File {
         val file = File(context.filesDir, fileName)
+        if (!file.exists()) {
+            file.createNewFile()
+            file.writeText("[]")
+        }
+        return file
+    }
+
+    private fun getFileRefeicoes(): File {
+        val file = File(context.filesDir, fileRefeicoesName)
         if (!file.exists()) {
             file.createNewFile()
             file.writeText("[]")
@@ -49,8 +60,8 @@ class JsonBD(private val context: Context) {
         return true
     }
 
-    // Converte datas em formato PT-BR (13/05/1998) para ISO (1998-05-13)
-    private fun formatarParaIso(dataStr: String): String {
+    // Converte datas para o formato ISO Padrão (YYYY-MM-DD)
+    fun formatarDataParaIso(dataStr: String): String {
         return try {
             if (dataStr.contains("/")) {
                 val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -58,7 +69,7 @@ class JsonBD(private val context: Context) {
                 val date = parser.parse(dataStr)
                 if (date != null) formatter.format(date) else dataStr
             } else {
-                dataStr // Já está em ISO ou em outro formato
+                dataStr
             }
         } catch (e: Exception) {
             dataStr
@@ -82,8 +93,7 @@ class JsonBD(private val context: Context) {
             val users = getUsers()
             var usuarioEncontrado = false
 
-            // Padroniza a data para ISO YYYY-MM-DD antes de salvar
-            val nascimentoIso = formatarParaIso(nascimento)
+            val nascimentoIso = formatarDataParaIso(nascimento)
 
             for (i in 0 until users.length()) {
                 val user = users.getJSONObject(i)
@@ -129,7 +139,6 @@ class JsonBD(private val context: Context) {
         }
     }
 
-    // Atualiza apenas as medidas do usuário (Peso, Altura e Peso Meta)
     fun atualizarMedidasUsuario(
         email: String,
         novoPeso: String,
@@ -163,7 +172,7 @@ class JsonBD(private val context: Context) {
         }
     }
 
-    // Salva uma refeição completa contendo a lista de alimentos consumidos
+    // Salva uma refeição garantindo que a data seja gravada no padrão YYYY-MM-DD
     fun salvarRefeicao(
         emailUsuario: String,
         tipoRefeicao: String,
@@ -171,17 +180,15 @@ class JsonBD(private val context: Context) {
         alimentos: List<AlimentoConsumido>
     ): Boolean {
         return try {
-            val file = File(context.filesDir, "refeicoes.json")
-            if (!file.exists()) {
-                file.createNewFile()
-                file.writeText("[]")
-            }
-
+            val file = getFileRefeicoes()
             val jsonArray = JSONArray(file.readText())
+
+            val dataIso = formatarDataParaIso(data)
+
             val novaRefeicao = JSONObject().apply {
                 put("id", System.currentTimeMillis().toString())
                 put("usuarioEmail", emailUsuario)
-                put("data", data)
+                put("data", dataIso)
                 put("tipo", tipoRefeicao)
 
                 val arrayAlimentos = JSONArray()
@@ -207,6 +214,13 @@ class JsonBD(private val context: Context) {
             e.printStackTrace()
             false
         }
+    }
+
+    // Método auxiliar para buscar todas as refeições salvas
+    fun getRefeicoes(): JSONArray {
+        val file = getFileRefeicoes()
+        val jsonString = file.readText()
+        return if (jsonString.isEmpty()) JSONArray("[]") else JSONArray(jsonString)
     }
 
     fun validateLogin(email: String, senha: String): Boolean {

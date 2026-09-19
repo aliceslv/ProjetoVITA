@@ -4,17 +4,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.util.Log
-import android.widget.Toast
 import com.example.vita.data.network.FatSecretClient
 import com.example.vita.databinding.FragmentRegisterBinding
 import com.example.vita.ui.AlimentoAdapter
@@ -33,7 +33,6 @@ class RegisterFragment : Fragment() {
     private val viewModel: RefeicaoViewModel by activityViewModels()
 
     private lateinit var alimentoAdapter: AlimentoAdapter
-    private var tokenAcesso: String? = null
     private var searchJob: Job? = null
 
     override fun onCreateView(
@@ -53,9 +52,11 @@ class RegisterFragment : Fragment() {
         configurarEstiloCabecalho()
         configurarRecyclerView()
         configurarBotoes()
-        autenticarEBuscarExemplos()
         configurarCampoBusca()
         observarCarrinho()
+
+        // Busca alimentos padrão diretamente pelo Proxy
+        realizarBuscaApi("Frango")
     }
 
     private fun observarCarrinho() {
@@ -133,23 +134,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun autenticarEBuscarExemplos() {
-        lifecycleScope.launch {
-            try {
-                Log.d("FatSecret", "Solicitando token...")
-                val headerAuth = FatSecretClient.getBasicAuthHeader()
-                val tokenResponse = FatSecretClient.apiTokenService.getAccessToken(headerAuth)
-                tokenAcesso = tokenResponse.accessToken
-                Log.d("FatSecret", "Token obtido com sucesso: ${tokenAcesso?.take(10)}...")
-
-                realizarBuscaApi("Frango")
-            } catch (e: Exception) {
-                Log.e("FatSecret", "Erro ao obter token", e)
-                Toast.makeText(context, "Erro ao autenticar com FatSecret", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun configurarCampoBusca() {
         binding.etPesquisa.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -172,25 +156,16 @@ class RegisterFragment : Fragment() {
     }
 
     private fun realizarBuscaApi(termo: String) {
-        val token = tokenAcesso ?: run {
-            Log.w("FatSecret", "Busca cancelada: token nulo")
-            return
-        }
-
         lifecycleScope.launch {
             try {
-                Log.d("FatSecret", "Buscando alimento: $termo")
-                val bearerHeader = "Bearer $token"
+                Log.d("FatSecret", "Buscando alimento no Proxy: $termo")
                 val searchResult = FatSecretClient.apiService.buscarAlimentos(
-                    bearerToken = bearerHeader,
-                    method = "foods.search",
-                    query = termo,
-                    format = "json"
+                    query = termo
                 )
 
                 if (searchResult.error != null) {
-                    Log.e("FatSecret", "Erro da API: ${searchResult.error.code} - ${searchResult.error.message}")
-                    Toast.makeText(context, "Erro FatSecret: ${searchResult.error.message}", Toast.LENGTH_LONG).show()
+                    Log.e("FatSecret", "Erro do Proxy: ${searchResult.error.code} - ${searchResult.error.message}")
+                    Toast.makeText(context, "Erro: ${searchResult.error.message}", Toast.LENGTH_LONG).show()
                     alimentoAdapter.atualizarLista(emptyList())
                     return@launch
                 }
@@ -200,7 +175,7 @@ class RegisterFragment : Fragment() {
                 alimentoAdapter.atualizarLista(listaResultado)
 
             } catch (e: Exception) {
-                Log.e("FatSecret", "Erro ao buscar alimento", e)
+                Log.e("FatSecret", "Erro ao buscar alimento no Proxy", e)
                 alimentoAdapter.atualizarLista(emptyList())
             }
         }

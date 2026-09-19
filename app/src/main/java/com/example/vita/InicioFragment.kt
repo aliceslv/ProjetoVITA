@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.vita.databinding.FragmentInicioBinding
 import com.example.vita.json.JsonBD
 import org.json.JSONArray
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -93,8 +92,9 @@ class InicioFragment : Fragment() {
 
     private fun carregarResumoDiario() {
         val email = obterEmailUsuarioLogado()
+        val jsonBD = JsonBD(requireContext())
 
-        // Data atual no formato ISO YYYY-MM-DD
+        // Data atual no formato ISO (YYYY-MM-DD)
         val formatoIso = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val hojeIso = formatoIso.format(Date())
 
@@ -103,38 +103,35 @@ class InicioFragment : Fragment() {
         var totalProteina = 0.0
         var totalCalorias = 0.0
 
-        val file = File(requireContext().filesDir, "refeicoes.json")
-        if (file.exists()) {
-            try {
-                val jsonArray = JSONArray(file.readText())
+        try {
+            val jsonArray = jsonBD.getRefeicoes()
 
-                for (i in 0 until jsonArray.length()) {
-                    val refeicao = jsonArray.getJSONObject(i)
-                    val usuarioRefeicao = refeicao.optString("usuarioEmail")
-                    val dataRefeicao = refeicao.optString("data")
+            for (i in 0 until jsonArray.length()) {
+                val refeicao = jsonArray.getJSONObject(i)
+                val usuarioRefeicao = refeicao.optString("usuarioEmail")
+                val dataRefeicao = jsonBD.formatarDataParaIso(refeicao.optString("data"))
 
-                    // Filtra apenas registros do usuário logado e que coincidem com a data de HOJE
-                    if (usuarioRefeicao.equals(email, ignoreCase = true) && dataRefeicao == hojeIso) {
-                        val alimentos = refeicao.optJSONArray("alimentos") ?: JSONArray()
-                        for (j in 0 until alimentos.length()) {
-                            val alimento = alimentos.getJSONObject(j)
-                            totalGordura += alimento.optDouble("gorduras", 0.0)
-                            totalCarbo += alimento.optDouble("carboidratos", 0.0)
-                            totalProteina += alimento.optDouble("proteinas", 0.0)
-                            totalCalorias += alimento.optDouble("calorias", 0.0)
-                        }
+                // Filtra apenas registros do usuário logado e que coincidem com a data de HOJE
+                if (usuarioRefeicao.equals(email, ignoreCase = true) && dataRefeicao == hojeIso) {
+                    val alimentos = refeicao.optJSONArray("alimentos") ?: JSONArray()
+                    for (j in 0 until alimentos.length()) {
+                        val alimento = alimentos.getJSONObject(j)
+                        totalGordura += alimento.optDouble("gorduras", 0.0)
+                        totalCarbo += alimento.optDouble("carboidratos", 0.0)
+                        totalProteina += alimento.optDouble("proteinas", 0.0)
+                        totalCalorias += alimento.optDouble("calorias", 0.0)
                     }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
         // Atualiza a interface do card de macronutrientes e calorias diárias
         binding.txtGordura.text = "${totalGordura.toInt()}g"
         binding.txtCarbo.text = "${totalCarbo.toInt()}g"
         binding.txtProteina.text = "${totalProteina.toInt()}g"
-        binding.txtCaloriasRefeicoes.text = "${totalCalorias.toInt()} cal"
+        binding.txtCaloriasRefeicoes.text = "${totalCalorias.toInt()} kcal"
     }
 
     private fun obterEmailUsuarioLogado(): String {

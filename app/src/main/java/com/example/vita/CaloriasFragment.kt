@@ -18,7 +18,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import org.json.JSONArray
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -55,10 +54,6 @@ class CaloriasFragment : Fragment() {
             findNavController().navigate(R.id.action_caloriasFragment_to_macrosFragment)
         }
 
-        binding.btnNutrientes.setOnClickListener {
-            findNavController().navigate(R.id.action_caloriasFragment_to_nutriFragment)
-        }
-
         // --- BARRA INFERIOR DE NAVEGAÇÃO ---
 
         // Ícone do Livro -> InicioFragment
@@ -75,20 +70,21 @@ class CaloriasFragment : Fragment() {
     private fun carregarEDesenharDados() {
         val emailUsuario = obterEmailUsuarioLogado()
 
-        // 1. Carrega a IDR armazenada
+        // 1. Carrega a IDR armazenada no cadastro do usuário
         val idrMeta = carregarIdrDoJson(emailUsuario)
 
         // 2. Carrega as calorias consumidas na semana
         val consumoSemanal = carregarConsumoSemanalDoJson(emailUsuario)
 
-        // 3. Atualiza os textos
-        binding.txtMedia.text = "Meta: ${idrMeta.toInt()} kcal"
+        // 3. Atualiza os textos exibidos na tela
+        val mediaSemanal = if (consumoSemanal.isNotEmpty()) consumoSemanal.average().toFloat() else 0f
+        binding.txtMedia.text = "Média: ${mediaSemanal.toInt()} kcal"
 
         val indiceHoje = obterIndiceDiaAtualSemana()
         val consumoHoje = consumoSemanal.getOrElse(indiceHoje) { 0f }
-        binding.txt1400.text = consumoHoje.toInt().toString()
+        binding.txt1400.text = "${consumoHoje.toInt()} kcal"
 
-        // 4. Desenha o gráfico com os dados atualizados
+        // 4. Desenha o gráfico de barras com a linha de limite da meta
         configurarGrafico(binding.chartMetaConsumo, idrMeta, consumoSemanal)
     }
 
@@ -107,18 +103,17 @@ class CaloriasFragment : Fragment() {
 
     private fun carregarConsumoSemanalDoJson(email: String): List<Float> {
         val consumoDias = MutableList(7) { 0f }
-        val file = File(requireContext().filesDir, "refeicoes.json")
-
-        if (!file.exists()) return consumoDias
+        val jsonBD = JsonBD(requireContext())
 
         try {
-            val jsonArray = JSONArray(file.readText())
+            val jsonArray = jsonBD.getRefeicoes()
             val calendar = Calendar.getInstance()
             val formatoDataIso = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
             calendar.firstDayOfWeek = Calendar.MONDAY
             calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
 
+            // Mapeia os 7 dias da semana atual (Segunda a Domingo) em formato ISO
             val datasSemana = mutableListOf<String>()
             for (i in 0..6) {
                 datasSemana.add(formatoDataIso.format(calendar.time))
@@ -128,7 +123,8 @@ class CaloriasFragment : Fragment() {
             for (i in 0 until jsonArray.length()) {
                 val refeicao = jsonArray.getJSONObject(i)
                 val usuarioRefeicao = refeicao.optString("usuarioEmail")
-                val dataRefeicao = refeicao.optString("data")
+                val dataRefeicaoRaw = refeicao.optString("data")
+                val dataRefeicao = jsonBD.formatarDataParaIso(dataRefeicaoRaw)
 
                 if (usuarioRefeicao.equals(email, ignoreCase = true)) {
                     val indiceDia = datasSemana.indexOf(dataRefeicao)

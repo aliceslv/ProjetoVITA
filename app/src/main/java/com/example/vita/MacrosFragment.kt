@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.vita.databinding.FragmentMacrosBinding
+import com.example.vita.json.JsonBD
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -17,7 +18,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import org.json.JSONArray
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -41,10 +41,10 @@ class MacrosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configuração de Navegação entre os botões da barra superior
+        // Configuração de Navegação
         configurarNavegacao()
 
-        // Recarrega os dados do JSON local sempre que a tela é apresentada
+        // Recarrega os dados do JSON local
         atualizarDadosMacros()
     }
 
@@ -55,25 +55,16 @@ class MacrosFragment : Fragment() {
     }
 
     private fun configurarNavegacao() {
+        // --- NAVEGAÇÃO DA BARRA SUPERIOR (ABAS) ---
         binding.btnCalorias.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.macrosFragment, CaloriasFragment())
-                .commit()
+            findNavController().navigate(R.id.action_macrosFragment_to_caloriasFragment)
         }
 
-        binding.btnNutrientes.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.macrosFragment, NutriFragment())
-                .commit()
-        }
         // --- BARRA INFERIOR DE NAVEGAÇÃO ---
-
-        // Ícone do Livro -> InicioFragment
         binding.btnLivro.setOnClickListener {
             findNavController().navigate(R.id.action_macrosFragment_to_inicioFragment)
         }
 
-        // Ícone do Usuário -> ProfileFragment
         binding.btnUsuario.setOnClickListener {
             findNavController().navigate(R.id.action_macrosFragment_to_profileFragment)
         }
@@ -92,12 +83,10 @@ class MacrosFragment : Fragment() {
 
     private fun carregarMacrosSemanalDoJson(email: String): List<MacroDia> {
         val listaSemanal = List(7) { MacroDia() }
-        val file = File(requireContext().filesDir, "refeicoes.json")
-
-        if (!file.exists()) return listaSemanal
+        val jsonBD = JsonBD(requireContext())
 
         try {
-            val jsonArray = JSONArray(file.readText())
+            val jsonArray = jsonBD.getRefeicoes()
             val calendar = Calendar.getInstance()
             val formatoData = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
@@ -114,7 +103,8 @@ class MacrosFragment : Fragment() {
             for (i in 0 until jsonArray.length()) {
                 val refeicao = jsonArray.getJSONObject(i)
                 val usuarioEmail = refeicao.optString("usuarioEmail")
-                val dataRefeicao = refeicao.optString("data")
+                val dataRefeicaoRaw = refeicao.optString("data")
+                val dataRefeicao = jsonBD.formatarDataParaIso(dataRefeicaoRaw)
 
                 if (usuarioEmail.equals(email, ignoreCase = true)) {
                     val indexDia = datasSemana.indexOf(dataRefeicao)
@@ -141,16 +131,16 @@ class MacrosFragment : Fragment() {
         val totalProt = macrosSemanal.sumOf { it.proteinas.toDouble() }.toFloat()
         val totalGord = macrosSemanal.sumOf { it.gorduras.toDouble() }.toFloat()
 
-        // Média em gramas considerando 7 dias da semana
+        // Média em gramas considerando os 7 dias da semana
         val mediaCarb = totalCarb / 7f
         val mediaProt = totalProt / 7f
         val mediaGord = totalGord / 7f
 
-        val totalGemas = mediaCarb + mediaProt + mediaGord
+        val totalGramas = mediaCarb + mediaProt + mediaGord
 
-        val pctCarb = if (totalGemas > 0) (mediaCarb / totalGemas) * 100 else 0f
-        val pctProt = if (totalGemas > 0) (mediaProt / totalGemas) * 100 else 0f
-        val pctGord = if (totalGemas > 0) (mediaGord / totalGemas) * 100 else 0f
+        val pctCarb = if (totalGramas > 0) (mediaCarb / totalGramas) * 100 else 0f
+        val pctProt = if (totalGramas > 0) (mediaProt / totalGramas) * 100 else 0f
+        val pctGord = if (totalGramas > 0) (mediaGord / totalGramas) * 100 else 0f
 
         binding.txtLabelCarb.text = String.format(Locale.getDefault(), "Carboidratos (%.0f%%) %.0fg", pctCarb, mediaCarb)
         binding.progressCarb.progress = pctCarb.toInt()
@@ -189,7 +179,6 @@ class MacrosFragment : Fragment() {
         val groupSpace = 0.25f
         val barSpace = 0.05f
         val barWidth = 0.20f
-        // Cálculo do formato: (barWidth + barSpace) * 3 + groupSpace = (0.20 + 0.05)*3 + 0.25 = 1.00
 
         val barData = BarData(setCarb, setProt, setGord)
         barData.barWidth = barWidth
@@ -218,7 +207,7 @@ class MacrosFragment : Fragment() {
         }
         chart.axisRight.isEnabled = false
 
-        // Configuração da Legenda
+        // Legenda
         chart.legend.apply {
             isEnabled = true
             textColor = Color.WHITE
