@@ -2,6 +2,7 @@ package com.example.vita.json
 
 import android.content.Context
 import com.example.vita.data.model.AlimentoConsumido
+import com.example.vita.data.network.FoodItem
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -224,6 +225,51 @@ class JsonBD(private val context: Context) {
         val file = getFileRefeicoes()
         val jsonString = file.readText()
         return if (jsonString.isEmpty()) JSONArray("[]") else JSONArray(jsonString)
+    }
+
+    fun getAlimentosRecentesDoUsuario(emailUsuario: String): List<FoodItem> {
+        val listaResultado = mutableListOf<FoodItem>()
+        val nomesJaAdicionados = mutableSetOf<String>()
+
+        try {
+            val refeicoes = getRefeicoes()
+            for (i in (refeicoes.length() - 1) downTo 0) {
+                val refeicao = refeicoes.getJSONObject(i)
+                val email = refeicao.optString("usuarioEmail", "")
+
+                if (email.equals(emailUsuario, ignoreCase = true)) {
+                    val arrayAlimentos = refeicao.optJSONArray("alimentos") ?: continue
+                    for (j in 0 until arrayAlimentos.length()) {
+                        val item = arrayAlimentos.getJSONObject(j)
+                        val nome = item.optString("nome", "")
+                        val calorias = item.optDouble("calorias", 0.0)
+                        val carbos = item.optDouble("carboidratos", 0.0)
+                        val prot = item.optDouble("proteinas", 0.0)
+                        val gord = item.optDouble("gorduras", 0.0)
+
+                        if (nome.isNotEmpty() && !nomesJaAdicionados.contains(nome.lowercase())) {
+                            nomesJaAdicionados.add(nome.lowercase())
+
+                            val descricao = "Per 100g - Calories: %.0fkcal | Fat: %.1fg | Carbs: %.1fg | Protein: %.1fg"
+                                .format(Locale.US, calorias, gord, carbos, prot)
+
+                            listaResultado.add(
+                                FoodItem(
+                                    foodId = System.currentTimeMillis().toString(),
+                                    foodName = nome,
+                                    foodDescription = descricao,
+                                    foodType = "Generic"
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return listaResultado
     }
 
     fun validateLogin(email: String, senha: String): Boolean {
