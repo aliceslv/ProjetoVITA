@@ -78,6 +78,6 @@ Este projeto está sendo desenvolvido no âmbito da disciplina de **Projeto Inte
 | **Fillipy Costa** | 
 | **Náthaly** |
 
-**Orientação:** Prof. Moisés
+**Orientação:** Prof. Moisés Omena
 
 ---
