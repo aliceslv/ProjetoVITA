@@ -173,9 +173,6 @@
             android:id="@+id/action_caloriasFragment_to_macrosFragment"
             app:destination="@id/macrosFragment" />
         <action
-            android:id="@+id/action_caloriasFragment_to_nutriFragment"
-            app:destination="@id/nutriFragment" />
-        <action
             android:id="@+id/action_caloriasFragment_to_inicioFragment"
             app:destination="@id/inicioFragment" />
         <action
@@ -193,33 +190,10 @@
             android:id="@+id/action_macrosFragment_to_caloriasFragment"
             app:destination="@id/caloriasFragment" />
         <action
-            android:id="@+id/action_macrosFragment_to_nutriFragment"
-            app:destination="@id/nutriFragment" />
-        <action
             android:id="@+id/action_macrosFragment_to_inicioFragment"
             app:destination="@id/inicioFragment" />
         <action
             android:id="@+id/action_macrosFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
-
-    <!-- NUTRI FRAGMENT -->
-    <fragment
-        android:id="@+id/nutriFragment"
-        android:name="com.example.vita.NutriFragment"
-        android:label="NutriFragment"
-        tools:layout="@layout/fragment_nutri">
-        <action
-            android:id="@+id/action_nutriFragment_to_caloriasFragment"
-            app:destination="@id/caloriasFragment" />
-        <action
-            android:id="@+id/action_nutriFragment_to_macrosFragment"
-            app:destination="@id/macrosFragment" />
-        <action
-            android:id="@+id/action_nutriFragment_to_inicioFragment"
-            app:destination="@id/inicioFragment" />
-        <action
-            android:id="@+id/action_nutriFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
 
@@ -239,6 +213,10 @@
         <action
             android:id="@+id/action_profileFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_lembretesFragment"
+            app:destination="@id/lembretesFragment" />
     </fragment>
 
     <fragment
@@ -250,6 +228,18 @@
         <action
             android:id="@+id/action_profileEditFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/lembretesFragment"
+        android:name="com.example.vita.LembretesFragment"
+        android:label="LembretesFragment"
+        tools:layout="@layout/fragment_lembretes">
+
+        <action
+            android:id="@+id/action_lembretesFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+
     </fragment>
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.vita.util
+package com.example.vita.ui
 
 import java.util.Locale
 

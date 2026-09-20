@@ -68,14 +68,15 @@
                     android:id="@+id/pagerBanner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/banner2" />
+                    tools:listitem="@layout/banner1" />
 
                 <ImageView
                     android:id="@+id/arrowPrev"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="start|center_vertical"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="2dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="4dp"
@@ -88,7 +89,8 @@
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="2dp"
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="4dp"

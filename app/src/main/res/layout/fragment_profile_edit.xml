@@ -146,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:fontFamily="@font/inter24_bold"
-                android:text="Suas medidas"
+                android:text="Suas medidas e objetivos"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:fontFamily="@font/inter24_medium"
-                android:text="Mantenha suas medidas atualizadas para acompanhar seu progresso com precisão."
+                android:text="Mantenha suas informações atualizadas para acompanhar seu progresso com precisão."
                 android:textColor="@color/grey"
                 android:textSize="13sp" />
 
@@ -216,6 +216,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_bold"
                     android:gravity="end"
+                    android:inputType="numberDecimal"
                     android:text="72"
                     android:textColor="@color/white"
                     android:textSize="15sp"
@@ -288,6 +289,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_bold"
                     android:gravity="end"
+                    android:inputType="number"
                     android:text="165"
                     android:textColor="@color/white"
                     android:textSize="15sp"
@@ -304,13 +306,12 @@
 
             </LinearLayout>
 
-            <!-- Peso meta -->
+            <!-- Peso Meta -->
             <LinearLayout
                 android:id="@+id/rowPesoMeta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_search_input"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -361,6 +362,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_bold"
                     android:gravity="end"
+                    android:inputType="numberDecimal"
                     android:text="65"
                     android:textColor="@color/white"
                     android:textSize="15sp"
@@ -374,6 +376,127 @@
                     android:text="kg"
                     android:textColor="@color/grey"
                     android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <!-- Objetivo -->
+            <LinearLayout
+                android:id="@+id/rowMeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_search_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/purple">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/target"
+                        app:tint="@color/purple" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter24_bold"
+                        android:text="Objetivo"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/inter24_medium"
+                        android:text="Foco principal"
+                        android:textColor="@color/grey"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinnerMeta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:dropDownWidth="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:spinnerMode="dropdown" />
+
+            </LinearLayout>
+
+            <!-- Spinner: Nível de Exercício -->
+            <LinearLayout
+                android:id="@+id/rowNivelExercicioSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_search_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/blue1">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/scale"
+                        app:tint="@color/green1" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter24_bold"
+                        android:text="Nível de \nExercício"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/inter24_medium"
+                        android:text="Frequência semanal"
+                        android:textColor="@color/grey"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinnerNivelExercicio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:spinnerMode="dropdown" />
 
             </LinearLayout>
 

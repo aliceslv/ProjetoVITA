@@ -87,6 +87,11 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profileFragment_to_profileEditFragment)
         }
 
+        // Botão Lembretes -> LembretesrFragment
+        binding.btnLembretes.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_lembretesFragment)
+        }
+
         // --- BARRA INFERIOR DE NAVEGAÇÃO ---
 
         // Ícone do Livro -> InicioFragment

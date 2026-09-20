@@ -13,7 +13,9 @@ import com.example.vita.databinding.FragmentIdrBinding
 import com.example.vita.json.JsonBD
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 class IdrFragment : Fragment() {
 
@@ -79,7 +81,7 @@ class IdrFragment : Fragment() {
         val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
         sharedPref.edit().apply {
             putFloat("USER_IDR", userViewModel.idrCalculado.toFloat())
-            putString("USER_EMAIL", email) // Salva o e-mail para acesso nas demais telas
+            putString("USER_EMAIL", email)
             apply()
         }
 
@@ -124,7 +126,7 @@ class IdrFragment : Fragment() {
 
                     Toast.makeText(requireContext(), "Perfil cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
 
-                    // 5. Navega para o InicioFragment usando o NavController
+                    // 5. Navega para o InicioFragment
                     findNavController().navigate(R.id.action_idrFragment_to_inicioFragment)
 
                 } else {
@@ -142,16 +144,18 @@ class IdrFragment : Fragment() {
         nascStr: String,
         nivelExercicio: String
     ): Int {
-        val peso = pesoStr.toDoubleOrNull() ?: 70.0
-        val altura = alturaStr.toDoubleOrNull() ?: 170.0
+        val peso = pesoStr.replace(",", ".").toDoubleOrNull() ?: 70.0
+        val altura = alturaStr.replace(",", ".").toDoubleOrNull() ?: 170.0
         val idade = calcularIdade(nascStr)
 
+        // TMB - Mifflin-St Jeor
         val tmb = if (sexo.equals("Masculino", ignoreCase = true)) {
             (10 * peso) + (6.25 * altura) - (5 * idade) + 5
         } else {
             (10 * peso) + (6.25 * altura) - (5 * idade) - 161
         }
 
+        // Fator de Atividade
         val fatorAtividade = when (nivelExercicio) {
             "Baixo" -> 1.2
             "Médio" -> 1.375
@@ -162,33 +166,35 @@ class IdrFragment : Fragment() {
 
         val gastoCaloricoTotal = tmb * fatorAtividade
 
-        val idrFinal = when (meta) {
-            "Emagrecimento" -> gastoCaloricoTotal - 400
-            "Ganho de massa" -> gastoCaloricoTotal + 400
+        // Ajuste por meta (Padronizado com o ProfileEditFragment)
+        val idrFinal = when {
+            meta.contains("Emagrecimento", ignoreCase = true) || meta.contains("Emagrecer", ignoreCase = true) -> gastoCaloricoTotal - 500
+            meta.contains("Ganho", ignoreCase = true) || meta.contains("Massa", ignoreCase = true) -> gastoCaloricoTotal + 400
             else -> gastoCaloricoTotal
         }
 
-        return idrFinal.toInt()
+        return idrFinal.toInt().coerceAtLeast(1200)
     }
 
     private fun calcularIdade(dataNascimento: String): Int {
-        val partes = dataNascimento.split("/")
-        if (partes.size != 3) return 25
+        return try {
+            val sdf = if (dataNascimento.contains("-")) {
+                SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            } else {
+                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            }
+            val date = sdf.parse(dataNascimento) ?: return 25
+            val dob = Calendar.getInstance().apply { time = date }
+            val hoje = Calendar.getInstance()
 
-        val dia = partes[0].toIntOrNull() ?: 1
-        val mes = partes[1].toIntOrNull() ?: 1
-        val ano = partes[2].toIntOrNull() ?: 2000
-
-        val hoje = Calendar.getInstance()
-        var idade = hoje.get(Calendar.YEAR) - ano
-
-        if (hoje.get(Calendar.MONTH) + 1 < mes ||
-            (hoje.get(Calendar.MONTH) + 1 == mes && hoje.get(Calendar.DAY_OF_MONTH) < dia)
-        ) {
-            idade--
+            var idade = hoje.get(Calendar.YEAR) - dob.get(Calendar.YEAR)
+            if (hoje.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+                idade--
+            }
+            idade.coerceAtLeast(10)
+        } catch (e: Exception) {
+            25
         }
-
-        return if (idade < 0) 25 else idade
     }
 
     override fun onDestroyView() {

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue3"
-    >
+    android:background="@color/blue3">
 
     <TextView
         android:id="@+id/btnVoltar"
@@ -78,13 +76,11 @@
                 android:id="@+id/txtDescricao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Receba notificações nos horários certos para \nregistrar refeições, beber água e cuidar da sua rotina."
+                android:text="Receba notificações nos horários certos \npara registrar refeições, beber água e cuidar da sua rotina."
                 android:textColor="@color/grey"
                 android:fontFamily="@font/inter24_regular"
                 android:textSize="14sp"
                 android:layout_marginTop="6dp" />
-
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -96,15 +92,18 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="8dp" />
 
-
+            <!-- Café da Manhã -->
             <LinearLayout
+                android:id="@+id/cardCafe"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
-                android:background="@drawable/bg_search_input">
+                android:background="@drawable/bg_search_input"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:layout_width="35dp"
@@ -130,6 +129,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtHoraCafe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="08:00 • Todos os dias"
@@ -141,12 +141,18 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchCafe"
                     android:layout_width="48dp"
                     android:layout_height="40dp"
-                    android:checked="true" />
+                    android:checked="true"
+                    app:thumbTint="@color/green2"
+                    app:trackTint="@color/white"/>
 
             </LinearLayout>
+
+            <!-- Almoço -->
             <LinearLayout
+                android:id="@+id/cardAlmoco"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
@@ -154,7 +160,9 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_search_input">
+                android:background="@drawable/bg_search_input"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:layout_width="35dp"
@@ -180,6 +188,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtHoraAlmoco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="12:30 • Seg a Sex"
@@ -191,14 +200,18 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchAlmoco"
                     android:layout_width="48dp"
                     android:layout_height="40dp"
-                    android:checked="true" />
+                    android:checked="true"
+                    app:thumbTint="@color/green2"
+                    app:trackTint="@color/white"/>
 
             </LinearLayout>
 
-
+            <!-- Lanche da tarde -->
             <LinearLayout
+                android:id="@+id/cardLanche"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
@@ -206,7 +219,9 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_search_input">
+                android:background="@drawable/bg_search_input"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:layout_width="35dp"
@@ -233,6 +248,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtHoraLanche"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="16:00 • Todos os dias"
@@ -244,15 +260,18 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchLanche"
                     android:layout_width="48dp"
                     android:layout_height="40dp"
-                    android:checked="false" />
+                    android:checked="false"
+                    app:thumbTint="@color/green2"
+                    app:trackTint="@color/white"/>
 
             </LinearLayout>
 
-
-
+            <!-- Jantar -->
             <LinearLayout
+                android:id="@+id/cardJantar"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
@@ -260,7 +279,9 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_search_input">
+                android:background="@drawable/bg_search_input"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:layout_width="35dp"
@@ -286,6 +307,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtHoraJantar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="19:30 • Todos os dias"
@@ -297,13 +319,14 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchJantar"
                     android:layout_width="48dp"
                     android:layout_height="40dp"
-                    android:checked="true" />
+                    android:checked="true"
+                    app:thumbTint="@color/green2"
+                    app:trackTint="@color/white"/>
 
             </LinearLayout>
-
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -315,14 +338,18 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp" />
 
+            <!-- Água -->
             <LinearLayout
+                android:id="@+id/cardAgua"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
-                android:background="@drawable/bg_search_input">
+                android:background="@drawable/bg_search_input"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:layout_width="35dp"
@@ -348,9 +375,10 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtHoraAgua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="A cada 2h • 08:00 - 22:00"
+                        android:text="08:00 • A cada 2h (08:00 - 22:00)"
                         android:textColor="#8195AA"
                         android:textSize="12sp"
                         android:fontFamily="@font/inter24_regular"
@@ -359,12 +387,14 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchAgua"
                     android:layout_width="48dp"
                     android:layout_height="40dp"
-                    android:checked="true" />
+                    android:checked="true"
+                    app:thumbTint="@color/green2"
+                    app:trackTint="@color/white"/>
 
             </LinearLayout>
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -376,16 +406,18 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp" />
 
-
-
+            <!-- Hora de Dormir -->
             <LinearLayout
+                android:id="@+id/cardDormir"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
                 android:paddingEnd="8dp"
-                android:background="@drawable/bg_search_input">
+                android:background="@drawable/bg_search_input"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:layout_width="35dp"
@@ -412,6 +444,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/txtHoraDormir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="22:30 • Todos os dias"
@@ -423,9 +456,12 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchDormir"
                     android:layout_width="48dp"
                     android:layout_height="40dp"
-                    android:checked="true" />
+                    android:checked="true"
+                    app:thumbTint="@color/green2"
+                    app:trackTint="@color/white"/>
 
             </LinearLayout>
 

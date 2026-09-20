@@ -44,7 +44,7 @@ class JsonBD(private val context: Context) {
         for (i in 0 until users.length()) {
             val user = users.getJSONObject(i)
             if (user.getString("email").equals(email, ignoreCase = true)) {
-                return false // E-mail já existe
+                return false
             }
         }
 
@@ -60,7 +60,6 @@ class JsonBD(private val context: Context) {
         return true
     }
 
-    // Converte datas para o formato ISO Padrão (YYYY-MM-DD)
     fun formatarDataParaIso(dataStr: String): String {
         return try {
             if (dataStr.contains("/")) {
@@ -143,7 +142,10 @@ class JsonBD(private val context: Context) {
         email: String,
         novoPeso: String,
         novaAltura: String,
-        novoPesoMeta: String
+        novoPesoMeta: String,
+        novaMeta: String = "",
+        novoNivelExercicio: String = "",
+        novoIdr: Int = 0
     ): Boolean {
         return try {
             val users = getUsers()
@@ -155,6 +157,9 @@ class JsonBD(private val context: Context) {
                     user.put("peso", novoPeso)
                     user.put("altura", novaAltura)
                     user.put("pesoMeta", novoPesoMeta)
+                    if (novaMeta.isNotEmpty()) user.put("meta", novaMeta)
+                    if (novoNivelExercicio.isNotEmpty()) user.put("nivelExercicio", novoNivelExercicio)
+                    if (novoIdr > 0) user.put("idr", novoIdr)
                     usuarioEncontrado = true
                     break
                 }
@@ -172,7 +177,6 @@ class JsonBD(private val context: Context) {
         }
     }
 
-    // Salva uma refeição garantindo que a data seja gravada no padrão YYYY-MM-DD
     fun salvarRefeicao(
         emailUsuario: String,
         tipoRefeicao: String,
@@ -216,7 +220,6 @@ class JsonBD(private val context: Context) {
         }
     }
 
-    // Método auxiliar para buscar todas as refeições salvas
     fun getRefeicoes(): JSONArray {
         val file = getFileRefeicoes()
         val jsonString = file.readText()

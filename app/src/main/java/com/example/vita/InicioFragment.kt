@@ -5,10 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
+import com.example.vita.ui.BannerAdapter
 import com.example.vita.databinding.FragmentInicioBinding
 import com.example.vita.json.JsonBD
+import com.example.vita.ui.BannerData
 import org.json.JSONArray
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -18,6 +24,8 @@ class InicioFragment : Fragment() {
 
     private var _binding: FragmentInicioBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var bannerAdapter: BannerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,24 +39,60 @@ class InicioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        configurarViewPagerBanners()
         configurarNavegacao()
     }
 
     override fun onResume() {
         super.onResume()
-        // Recarrega todos os dados sempre que a Fragment ganha foco
         atualizarDataAtual()
         carregarDadosUsuario()
         carregarResumoDiario()
     }
 
+    private fun configurarViewPagerBanners() {
+        bannerAdapter = BannerAdapter(emptyList()) {
+            findNavController().navigate(R.id.action_inicioFragment_to_caloriasFragment)
+        }
+
+        binding.pagerBanner.adapter = bannerAdapter
+
+        // Setas para navegar entre os banners
+        binding.arrowPrev.setOnClickListener {
+            val current = binding.pagerBanner.currentItem
+            if (current > 0) {
+                binding.pagerBanner.currentItem = current - 1
+            }
+        }
+
+        binding.arrowNext.setOnClickListener {
+            val current = binding.pagerBanner.currentItem
+            val total = binding.pagerBanner.adapter?.itemCount ?: 0
+            if (current < total - 1) {
+                binding.pagerBanner.currentItem = current + 1
+            }
+        }
+
+        // Atualização dos indicadores e da cor de fundo ao deslizar o banner
+        binding.pagerBanner.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                atualizarIndicadores(position)
+
+                if (position == 1) {
+                    binding.frameBanner.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.blue8)
+                } else {
+                    binding.frameBanner.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.blue4)
+                }
+            }
+        })
+    }
+
     private fun configurarNavegacao() {
-        // Redireciona para RegisterFragment ao clicar no card de refeições
         binding.cardRegistrarRefeicoes.setOnClickListener {
             findNavController().navigate(R.id.action_inicioFragment_to_registerFragment)
         }
 
-        // Navegação da Barra Inferior
         binding.btnScale.setOnClickListener {
             findNavController().navigate(R.id.action_inicioFragment_to_caloriasFragment)
         }
@@ -59,11 +103,9 @@ class InicioFragment : Fragment() {
     }
 
     private fun atualizarDataAtual() {
-        // Formata e exibe a data atual do sistema (Ex: "Quinta-feira, 17 de Setembro")
         val formatoData = SimpleDateFormat("EEEE, d 'de' MMMM", Locale("pt", "BR"))
         val dataFormatada = formatoData.format(Date())
 
-        // Coloca a primeira letra do dia da semana em maiúsculo
         binding.txtData.text = dataFormatada.replaceFirstChar {
             if (it.isLowerCase()) it.titlecase(Locale("pt", "BR")) else it.toString()
         }
@@ -94,7 +136,6 @@ class InicioFragment : Fragment() {
         val email = obterEmailUsuarioLogado()
         val jsonBD = JsonBD(requireContext())
 
-        // Data atual no formato ISO (YYYY-MM-DD)
         val formatoIso = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val hojeIso = formatoIso.format(Date())
 
@@ -102,6 +143,17 @@ class InicioFragment : Fragment() {
         var totalCarbo = 0.0
         var totalProteina = 0.0
         var totalCalorias = 0.0
+        var idrMeta = 2000
+
+        // Busca a meta IDR do usuário
+        val users = jsonBD.getUsers()
+        for (i in 0 until users.length()) {
+            val user = users.getJSONObject(i)
+            if (user.optString("email").equals(email, ignoreCase = true)) {
+                idrMeta = user.optInt("idr", 2000)
+                break
+            }
+        }
 
         try {
             val jsonArray = jsonBD.getRefeicoes()
@@ -111,7 +163,6 @@ class InicioFragment : Fragment() {
                 val usuarioRefeicao = refeicao.optString("usuarioEmail")
                 val dataRefeicao = jsonBD.formatarDataParaIso(refeicao.optString("data"))
 
-                // Filtra apenas registros do usuário logado e que coincidem com a data de HOJE
                 if (usuarioRefeicao.equals(email, ignoreCase = true) && dataRefeicao == hojeIso) {
                     val alimentos = refeicao.optJSONArray("alimentos") ?: JSONArray()
                     for (j in 0 until alimentos.length()) {
@@ -127,11 +178,58 @@ class InicioFragment : Fragment() {
             e.printStackTrace()
         }
 
-        // Atualiza a interface do card de macronutrientes e calorias diárias
+        // Atualização da UI dos cards de macros
         binding.txtGordura.text = "${totalGordura.toInt()}g"
         binding.txtCarbo.text = "${totalCarbo.toInt()}g"
         binding.txtProteina.text = "${totalProteina.toInt()}g"
         binding.txtCaloriasRefeicoes.text = "${totalCalorias.toInt()} kcal"
+
+        // Lista contendo os dois banners (Banner 1 e Banner 2)
+        val listaBanners = listOf(
+            BannerData(
+                tipo = 1,
+                metaCalorias = idrMeta,
+                consumidas = totalCalorias.toInt()
+            ),
+            BannerData(
+                tipo = 2,
+                metaCalorias = 0,
+                consumidas = 0
+            )
+        )
+
+        bannerAdapter.atualizarDados(listaBanners)
+        criarIndicadores(listaBanners.size)
+    }
+
+    private fun criarIndicadores(count: Int) {
+        val layout = binding.layoutIndicadores
+        layout.removeAllViews()
+
+        for (i in 0 until count) {
+            val dot = ImageView(requireContext()).apply {
+                setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        if (i == 0) R.drawable.circle else R.drawable.circle
+                    )
+                )
+                val params = LinearLayout.LayoutParams(16, 16).apply {
+                    setMargins(6, 0, 6, 0)
+                }
+                layoutParams = params
+                alpha = if (i == 0) 1.0f else 0.4f
+            }
+            layout.addView(dot)
+        }
+    }
+
+    private fun atualizarIndicadores(posicao: Int) {
+        val layout = binding.layoutIndicadores
+        for (i in 0 until layout.childCount) {
+            val child = layout.getChildAt(i)
+            child.alpha = if (i == posicao) 1.0f else 0.4f
+        }
     }
 
     private fun obterEmailUsuarioLogado(): String {

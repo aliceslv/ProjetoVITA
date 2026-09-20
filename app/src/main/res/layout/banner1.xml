@@ -98,7 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="start"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView
@@ -122,41 +122,12 @@
 
         </LinearLayout>
 
-        <!-- Exercício -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter24_medium"
-                android:text="Exercício"
-                android:textColor="@color/grey"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txtExercicio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/inter24_bold"
-                android:text="-200"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
         <!-- Meta -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="end"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <TextView

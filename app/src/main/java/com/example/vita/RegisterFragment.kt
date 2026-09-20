@@ -64,7 +64,7 @@ class RegisterFragment : Fragment() {
             if (lista.isNotEmpty()) {
                 binding.layoutCarrinhoInfo.visibility = View.VISIBLE
                 val totalCalorias = viewModel.obterTotalCalorias()
-                binding.tvItensCarrinho.text = "${lista.size} alimento(s) no carrinho (%.0f kcal)".format(totalCalorias)
+                binding.tvItensCarrinho.text = "${lista.size} alimento(s) adicionado (%.0f kcal)".format(totalCalorias)
             } else {
                 binding.layoutCarrinhoInfo.visibility = View.GONE
             }

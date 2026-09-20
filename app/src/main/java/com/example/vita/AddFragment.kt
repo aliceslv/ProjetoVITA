@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.vita.data.model.AlimentoConsumido
 import com.example.vita.databinding.FragmentAddBinding
 import com.example.vita.json.JsonBD
-import com.example.vita.util.UnidadeConverter
+import com.example.vita.ui.UnidadeConverter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
