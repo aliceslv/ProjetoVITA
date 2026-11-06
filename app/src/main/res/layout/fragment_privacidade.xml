@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue3"
+    tools:context=".PrivacidadeFragment">
+
+    <ImageView
+        android:id="@+id/btnVoltar"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/arrow"
+        android:layout_marginStart="15dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/txtTopo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/txtTopo" />
+
+    <TextView
+        android:id="@+id/txtTopo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp"
+        android:text="Privacidade"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/inter24_medium"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- LINHA SUPERIOR -->
+    <View
+        android:id="@+id/linhaTopo"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="17dp"
+        android:background="#172C44"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTopo" />
+
+    <LinearLayout
+        android:id="@+id/cardDados"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/bg_card_privacidade"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linhaTopo">
+
+        <TextView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_icone_privacidade"
+            android:gravity="center"
+            android:text="♢"
+            android:textColor="#00D46A"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seus dados"
+                android:fontFamily="@font/inter24_regular"
+                android:textColor="@color/grey2"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Protegidos"
+                android:textColor="@color/white"
+                android:fontFamily="@font/inter24_semibold"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Você controla o que é compartilhado"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/inter24_medium"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtPermissoes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="23dp"
+        android:text="Permissões"
+        android:textColor="@color/white"
+        android:fontFamily="@font/inter24_bold"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardDados" />
+
+    <TextView
+        android:id="@+id/txtDescricao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="15dp"
+        android:text="Escolha quais informações o app pode acessar e\ncomo elas são utilizadas."
+        android:textColor="@color/grey2"
+        android:textSize="15sp"
+        android:fontFamily="@font/inter24_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtPermissoes" />
+
+    <LinearLayout
+        android:id="@+id/cardNotificacoes"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/bg_card_privacidade"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtDescricao">
+
+        <TextView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_icone_amarelo"
+            android:gravity="center"
+            android:text="♧"
+            android:textColor="#FFB000"
+            android:textSize="23sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notificações push"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/inter24_semibold"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Receber alertas no celular"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/inter24_medium"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/switchNotificacoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="#FFFFFF"
+            android:checked="true" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtContaDados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="7dp"
+        android:text="Conta e dados"
+        android:textColor="@color/grey2"
+        android:textSize="14sp"
+        android:fontFamily="@font/inter24_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardNotificacoes" />
+
+    <LinearLayout
+        android:id="@+id/cardSenha"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="14dp"
+        android:background="@drawable/bg_card_privacidade"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtContaDados">
+
+        <TextView
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_icone_privacidade"
+            android:gravity="center"
+            android:text="⚿"
+            android:textColor="#00AEEF"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alterar senha"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:fontFamily="@font/inter24_semibold"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Atualize sua senha de acesso"
+                android:textColor="@color/grey"
+                android:fontFamily="@font/inter24_medium"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:src="@drawable/arrownext"
+            app:tint="@color/grey2"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

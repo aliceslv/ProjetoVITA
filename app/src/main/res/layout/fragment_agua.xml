@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue3"
+    android:fillViewport="true"
+    tools:context=".AguaFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- Barra Superior (Voltar + Título + Cancelar) -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Voltar"
+            android:src="@drawable/arrow"
+            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTitle"
+            app:tint="@color/green2" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Registro de Água"
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:fontFamily="@font/inter24_bold"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Descrição da Tela -->
+        <TextView
+            android:id="@+id/tvDescricao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Mantenha-se hidratado(a) registrando a quantidade de água ingerida ao longo do dia."
+            android:textColor="@color/grey2"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter24_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+        <!-- Card da Meta Calculada -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardMetaInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/blue9"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDescricao">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sua meta diária calculada"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/inter24_regular" />
+
+                <TextView
+                    android:id="@+id/tvMetaCalculada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="2450 ml (baseada no seu peso)"
+                    android:textColor="@color/green2"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/inter24_bold"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Seção de Entrada -->
+        <TextView
+            android:id="@+id/lblQuantidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Informe a quantidade ingerida"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/inter24_bold"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardMetaInfo" />
+
+        <TextView
+            android:id="@+id/lblMl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Quantidade em mililitros (ml)"
+            android:textColor="@color/grey2"
+            android:textSize="13sp"
+            android:fontFamily="@font/inter24_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblQuantidade" />
+
+        <EditText
+            android:id="@+id/etQuantidadeMl"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_card_dark"
+            android:hint="Ex: 250"
+            android:inputType="number"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter24_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblMl" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSalvarAgua"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="25dp"
+            android:text="Salvar registro de água"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:fontFamily="@font/inter24_bold"
+            app:backgroundTint="@color/green2"
+            app:cornerRadius="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etQuantidadeMl" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

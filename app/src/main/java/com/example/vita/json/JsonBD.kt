@@ -61,6 +61,61 @@ class JsonBD(private val context: Context) {
         return true
     }
 
+    fun atualizarDadosPessoais(emailAntigo: String, novoNome: String, novoEmail: String, novaDataNascimento: String): Boolean {
+        return try {
+            val users = getUsers()
+            var atualizado = false
+            val nascimentoIso = formatarDataParaIso(novaDataNascimento)
+
+            for (i in 0 until users.length()) {
+                val user = users.getJSONObject(i)
+                if (user.optString("email").equals(emailAntigo, ignoreCase = true)) {
+                    if (novoNome.isNotEmpty()) user.put("nome", novoNome)
+                    if (novoEmail.isNotEmpty()) user.put("email", novoEmail)
+                    if (novaDataNascimento.isNotEmpty()) user.put("nascimento", nascimentoIso)
+                    atualizado = true
+                    break
+                }
+            }
+
+            if (atualizado) {
+                getFile().writeText(users.toString(2))
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun atualizarSenhaUsuario(email: String, novaSenha: String): Boolean {
+        return try {
+            val users = getUsers()
+            var atualizado = false
+
+            for (i in 0 until users.length()) {
+                val user = users.getJSONObject(i)
+                if (user.optString("email").equals(email, ignoreCase = true)) {
+                    user.put("senha", novaSenha)
+                    atualizado = true
+                    break
+                }
+            }
+
+            if (atualizado) {
+                getFile().writeText(users.toString(2))
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
     fun formatarDataParaIso(dataStr: String): String {
         return try {
             if (dataStr.contains("/")) {
@@ -94,6 +149,8 @@ class JsonBD(private val context: Context) {
             var usuarioEncontrado = false
 
             val nascimentoIso = formatarDataParaIso(nascimento)
+            val pesoDouble = peso.replace(",", ".").toDoubleOrNull() ?: 70.0
+            val metaAguaCalculada = (pesoDouble * 35).toInt()
 
             for (i in 0 until users.length()) {
                 val user = users.getJSONObject(i)
@@ -108,6 +165,7 @@ class JsonBD(private val context: Context) {
                     user.put("nascimento", nascimentoIso)
                     user.put("nivelExercicio", nivelExercicio)
                     user.put("idr", idr)
+                    user.put("metaAgua", metaAguaCalculada)
                     usuarioEncontrado = true
                     break
                 }
@@ -127,6 +185,7 @@ class JsonBD(private val context: Context) {
                     put("nascimento", nascimentoIso)
                     put("nivelExercicio", nivelExercicio)
                     put("idr", idr)
+                    put("metaAgua", metaAguaCalculada)
                 }
                 users.put(newUser)
             }
@@ -152,12 +211,16 @@ class JsonBD(private val context: Context) {
             val users = getUsers()
             var usuarioEncontrado = false
 
+            val pesoDouble = novoPeso.replace(",", ".").toDoubleOrNull() ?: 70.0
+            val metaAguaCalculada = (pesoDouble * 35).toInt()
+
             for (i in 0 until users.length()) {
                 val user = users.getJSONObject(i)
                 if (user.optString("email").equals(email, ignoreCase = true)) {
                     user.put("peso", novoPeso)
                     user.put("altura", novaAltura)
                     user.put("pesoMeta", novoPesoMeta)
+                    user.put("metaAgua", metaAguaCalculada)
                     if (novaMeta.isNotEmpty()) user.put("meta", novaMeta)
                     if (novoNivelExercicio.isNotEmpty()) user.put("nivelExercicio", novoNivelExercicio)
                     if (novoIdr > 0) user.put("idr", novoIdr)
@@ -219,6 +282,49 @@ class JsonBD(private val context: Context) {
             e.printStackTrace()
             false
         }
+    }
+
+    fun salvarRegistroAgua(emailUsuario: String, quantidadeMl: Int, data: String): Boolean {
+        return try {
+            val file = getFileRefeicoes()
+            val jsonArray = JSONArray(file.readText())
+            val dataIso = formatarDataParaIso(data)
+
+            val novoRegistro = JSONObject().apply {
+                put("id", System.currentTimeMillis().toString())
+                put("usuarioEmail", emailUsuario)
+                put("data", dataIso)
+                put("tipo", "Agua")
+                put("quantidadeMl", quantidadeMl)
+            }
+
+            jsonArray.put(novoRegistro)
+            file.writeText(jsonArray.toString(2))
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun getAguaTotalDoDia(emailUsuario: String, dataIso: String): Int {
+        var totalMl = 0
+        try {
+            val jsonArray = getRefeicoes()
+            for (i in 0 until jsonArray.length()) {
+                val item = jsonArray.getJSONObject(i)
+                val email = item.optString("usuarioEmail", "")
+                val dataReg = formatarDataParaIso(item.optString("data", ""))
+                val tipo = item.optString("tipo", "")
+
+                if (email.equals(emailUsuario, ignoreCase = true) && dataReg == dataIso && tipo.equals("Agua", ignoreCase = true)) {
+                    totalMl += item.optInt("quantidadeMl", 0)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return totalMl
     }
 
     fun getRefeicoes(): JSONArray {

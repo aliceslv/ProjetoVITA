@@ -116,6 +116,18 @@
         <action
             android:id="@+id/action_inicioFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+
+        <action
+            android:id="@+id/action_inicioFragment_to_aguaFragment"
+            app:destination="@id/aguaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/aguaFragment"
+        android:name="com.example.vita.AguaFragment"
+        android:label="AguaFragment"
+        tools:layout="@layout/fragment_agua">
+
     </fragment>
 
     <!-- REGISTER FRAGMENT -->
@@ -223,6 +235,10 @@
         <action
             android:id="@+id/action_profileFragment_to_lembretesFragment"
             app:destination="@id/lembretesFragment" />
+
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -246,6 +262,63 @@
             android:id="@+id/action_lembretesFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.vita.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+
+        <action
+            android:id="@+id/action_settingsFragment_to_privacidadeFragment"
+            app:destination="@+id/privacidadeFragment"/>
+
+        <action
+            android:id="@+id/action_settingsFragment_to_atualizaFragment"
+            app:destination="@+id/atualizaFragment"/>
+
+        <action
+            android:id="@+id/action_settingsFragment_to_aboutFragment"
+            app:destination="@+id/aboutFragment"/>
+
+        <action
+            android:id="@+id/action_settingsFragment_to_startFragment"
+            app:destination="@+id/startFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/privacidadeFragment"
+        android:name="com.example.vita.PrivacidadeFragment"
+        android:label="PrivacidadeFragment"
+        tools:layout="@layout/fragment_privacidade">
+
+        <action
+            android:id="@+id/action_privacidadeFragment_to_passwordFragment"
+            app:destination="@+id/passwordFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/atualizaFragment"
+        android:name="com.example.vita.AtualizaFragment"
+        android:label="AtualizaFragment"
+        tools:layout="@layout/fragment_atualiza">
+    </fragment>
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.example.vita.AboutFragment"
+        android:label="AboutFragment"
+        tools:layout="@layout/fragment_about">
+    </fragment>
+
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.example.vita.PasswordFragment"
+        android:label="PasswordFragment"
+        tools:layout="@layout/fragment_password">
     </fragment>
 
 </navigation>

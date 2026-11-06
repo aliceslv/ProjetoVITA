@@ -44,7 +44,6 @@ class IdrFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Calcula a IDR a partir dos dados do UserViewModel
         val idrFinal = calcularIDR(
             meta = userViewModel.meta.ifEmpty { "Manter peso" },
             pesoStr = userViewModel.peso.ifEmpty { "70" },
@@ -57,17 +56,18 @@ class IdrFragment : Fragment() {
         userViewModel.idrCalculado = idrFinal
         binding.txtValorCalorias.text = idrFinal.toString()
 
-        // Seta de voltar
         binding.icarrow.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        // Concluir cadastro
         binding.idrbtn.setOnClickListener {
             if (userViewModel.email.isEmpty() || userViewModel.senha.isEmpty()) {
                 Toast.makeText(requireContext(), "Dados de cadastro inválidos.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
+            sharedPref.edit().putString("USER_EMAIL", userViewModel.email).apply()
 
             cadastrarEGravarDados()
         }
@@ -77,7 +77,9 @@ class IdrFragment : Fragment() {
         val email = userViewModel.email
         val senha = userViewModel.senha
 
-        // 1. Salva a sessão localmente (e-mail e IDR)
+        val pesoDouble = userViewModel.peso.replace(",", ".").toDoubleOrNull() ?: 70.0
+        val metaAguaCalculada = (pesoDouble * 35).toInt()
+
         val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
         sharedPref.edit().apply {
             putFloat("USER_IDR", userViewModel.idrCalculado.toFloat())
@@ -85,13 +87,11 @@ class IdrFragment : Fragment() {
             apply()
         }
 
-        // 2. Autenticação no Firebase
         auth.createUserWithEmailAndPassword(email, senha)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     val userId = auth.currentUser?.uid ?: System.currentTimeMillis().toString()
 
-                    // 3. Gravação no Firebase Firestore
                     val usuarioMap = hashMapOf(
                         "nome" to userViewModel.nome,
                         "email" to email,
@@ -102,14 +102,14 @@ class IdrFragment : Fragment() {
                         "sexo" to userViewModel.sexo,
                         "nascimento" to userViewModel.nascimento,
                         "nivelExercicio" to userViewModel.nivelAtividade,
-                        "idr" to userViewModel.idrCalculado
+                        "idr" to userViewModel.idrCalculado,
+                        "metaAgua" to metaAguaCalculada
                     )
 
                     db.collection("usuarios")
                         .document(userId)
                         .set(usuarioMap)
 
-                    // 4. Salva no arquivo JSON local (JsonBD)
                     dbManager.salvarPerfilUsuario(
                         nome = userViewModel.nome,
                         email = email,
@@ -125,8 +125,6 @@ class IdrFragment : Fragment() {
                     )
 
                     Toast.makeText(requireContext(), "Perfil cadastrado com sucesso!", Toast.LENGTH_SHORT).show()
-
-                    // 5. Navega para o InicioFragment
                     findNavController().navigate(R.id.action_idrFragment_to_inicioFragment)
 
                 } else {
@@ -148,14 +146,12 @@ class IdrFragment : Fragment() {
         val altura = alturaStr.replace(",", ".").toDoubleOrNull() ?: 170.0
         val idade = calcularIdade(nascStr)
 
-        // TMB - Mifflin-St Jeor
         val tmb = if (sexo.equals("Masculino", ignoreCase = true)) {
-            (10 * peso) + (6.25 * altura) - (5 * idade) + 5
+            (10.0 * peso) + (6.25 * altura) - (5.0 * idade) + 5.0
         } else {
-            (10 * peso) + (6.25 * altura) - (5 * idade) - 161
+            (10.0 * peso) + (6.25 * altura) - (5.0 * idade) - 161.0
         }
 
-        // Fator de Atividade
         val fatorAtividade = when (nivelExercicio) {
             "Baixo" -> 1.2
             "Médio" -> 1.375
@@ -166,10 +162,9 @@ class IdrFragment : Fragment() {
 
         val gastoCaloricoTotal = tmb * fatorAtividade
 
-        // Ajuste por meta (Padronizado com o ProfileEditFragment)
         val idrFinal = when {
-            meta.contains("Emagrecimento", ignoreCase = true) || meta.contains("Emagrecer", ignoreCase = true) -> gastoCaloricoTotal - 500
-            meta.contains("Ganho", ignoreCase = true) || meta.contains("Massa", ignoreCase = true) -> gastoCaloricoTotal + 400
+            meta.contains("Emagrecimento", ignoreCase = true) || meta.contains("Emagrecer", ignoreCase = true) -> gastoCaloricoTotal - 500.0
+            meta.contains("Ganho", ignoreCase = true) || meta.contains("Massa", ignoreCase = true) -> gastoCaloricoTotal + 400.0
             else -> gastoCaloricoTotal
         }
 

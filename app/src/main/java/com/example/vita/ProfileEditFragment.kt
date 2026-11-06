@@ -20,9 +20,7 @@ class ProfileEditFragment : Fragment() {
     private var _binding: FragmentProfileEditBinding? = null
     private val binding get() = _binding!!
 
-    // Alinhado com GoalsFragment
     private val opcoesMeta = listOf("Emagrecimento", "Manter peso", "Ganho de massa")
-    // Alinhado com WorkoutFragment
     private val opcoesNivelExercicio = listOf("Baixo", "Médio", "Alto", "Muito Alto")
 
     override fun onCreateView(
@@ -43,7 +41,6 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun configurarSpinners() {
-        // Adapter para o Spinner de Meta utilizando o layout customizado compacto
         val adapterMeta = ArrayAdapter(
             requireContext(),
             R.layout.item_spinner_objetivo,
@@ -52,7 +49,6 @@ class ProfileEditFragment : Fragment() {
         adapterMeta.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerMeta.adapter = adapterMeta
 
-        // Adapter para o Spinner de Nível de Exercício
         val adapterExercicio = ArrayAdapter(
             requireContext(),
             R.layout.item_spinner_objetivo,
@@ -77,26 +73,21 @@ class ProfileEditFragment : Fragment() {
                 val metaStr = user.optString("meta", "")
                 val nivelExercicioStr = user.optString("nivelExercicio", "")
 
-                // Preenche os campos de texto
                 binding.inputPesoAtual.setText(pesoStr)
                 binding.inputAltura.setText(alturaStr)
                 binding.inputPesoMeta.setText(pesoMetaStr)
 
-                // Seleciona a opção no Spinner de Meta
                 val idxMeta = opcoesMeta.indexOfFirst { it.equals(metaStr, ignoreCase = true) }
                 if (idxMeta >= 0) {
                     binding.spinnerMeta.setSelection(idxMeta)
                 }
 
-                // Seleciona a opção no Spinner de Nível de Exercício
                 val idxExercicio = opcoesNivelExercicio.indexOfFirst { it.equals(nivelExercicioStr, ignoreCase = true) }
                 if (idxExercicio >= 0) {
                     binding.spinnerNivelExercicio.setSelection(idxExercicio)
                 }
 
-                // Calcula e exibe o IMC
                 calcularEExibirImc(pesoStr, alturaStr)
-
                 break
             }
         }
@@ -107,16 +98,13 @@ class ProfileEditFragment : Fragment() {
         var altura = alturaStr.replace(",", ".").toDoubleOrNull() ?: 0.0
 
         if (peso > 0.0 && altura > 0.0) {
-            // Se a altura foi digitada em centímetros (ex: 170), converte para metros (1.7)
             if (altura > 3.0) {
                 altura /= 100.0
             }
 
             val imc = peso / (altura * altura)
-
             binding.txtValorImc.text = String.format(Locale.US, "%.1f", imc)
 
-            // Verificação usando comparações puras (<) para evitar buracos nas faixas
             val (status, corResId) = when {
                 imc < 18.5 -> Pair("Abaixo do peso", R.color.orange)
                 imc < 25.0 -> Pair("Peso normal", R.color.green1)
@@ -162,9 +150,10 @@ class ProfileEditFragment : Fragment() {
             }
         }
 
-        // Recalcular IDR com os novos dados
+        val pesoDouble = novoPeso.replace(",", ".").toDoubleOrNull() ?: 0.0
+
         val novoIdr = calcularIdr(
-            peso = novoPeso.toDoubleOrNull() ?: 0.0,
+            peso = pesoDouble,
             altura = novaAltura.toDoubleOrNull() ?: 0.0,
             nascimento = nascimento,
             sexo = sexo,
@@ -183,7 +172,7 @@ class ProfileEditFragment : Fragment() {
         )
 
         if (sucesso) {
-            Toast.makeText(requireContext(), "Dados e IDR atualizados com sucesso!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Dados, IDR e Meta de Água atualizados!", Toast.LENGTH_SHORT).show()
             carregarDadosEAtualizarImc()
         } else {
             Toast.makeText(requireContext(), "Erro ao atualizar dados", Toast.LENGTH_SHORT).show()
@@ -200,14 +189,12 @@ class ProfileEditFragment : Fragment() {
     ): Int {
         val idade = calcularIdade(nascimento)
 
-        // Equação de Mifflin-St Jeor para TMB
         val tmb = if (sexo.equals("Feminino", ignoreCase = true)) {
-            (10 * peso) + (6.25 * altura) - (5 * idade) - 161
+            (10.0 * peso) + (6.25 * altura) - (5.0 * idade) - 161.0
         } else {
-            (10 * peso) + (6.25 * altura) - (5 * idade) + 5
+            (10.0 * peso) + (6.25 * altura) - (5.0 * idade) + 5.0
         }
 
-        // Fator de atividade alinhado com WorkoutFragment
         val fatorAtividade = when (nivelAtividade) {
             "Baixo" -> 1.2
             "Médio" -> 1.375
@@ -218,10 +205,9 @@ class ProfileEditFragment : Fragment() {
 
         val getGastoTotal = tmb * fatorAtividade
 
-        // Ajuste pela meta alinhado com GoalsFragment
         val idrFinal = when (meta) {
-            "Emagrecimento" -> getGastoTotal - 500
-            "Ganho de massa" -> getGastoTotal + 400
+            "Emagrecimento" -> getGastoTotal - 500.0
+            "Ganho de massa" -> getGastoTotal + 400.0
             "Manter peso" -> getGastoTotal
             else -> getGastoTotal
         }

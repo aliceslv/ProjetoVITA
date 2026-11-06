@@ -57,7 +57,6 @@ class InicioFragment : Fragment() {
 
         binding.pagerBanner.adapter = bannerAdapter
 
-        // Setas para navegar entre os banners
         binding.arrowPrev.setOnClickListener {
             val current = binding.pagerBanner.currentItem
             if (current > 0) {
@@ -73,7 +72,6 @@ class InicioFragment : Fragment() {
             }
         }
 
-        // Atualização dos indicadores e da cor de fundo ao deslizar o banner
         binding.pagerBanner.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -91,6 +89,10 @@ class InicioFragment : Fragment() {
     private fun configurarNavegacao() {
         binding.cardRegistrarRefeicoes.setOnClickListener {
             findNavController().navigate(R.id.action_inicioFragment_to_registerFragment)
+        }
+
+        binding.cardAgua.setOnClickListener {
+            findNavController().navigate(R.id.action_inicioFragment_to_aguaFragment)
         }
 
         binding.btnScale.setOnClickListener {
@@ -144,16 +146,25 @@ class InicioFragment : Fragment() {
         var totalProteina = 0.0
         var totalCalorias = 0.0
         var idrMeta = 2000
+        var metaAguaMl = 2450
+        var pesoUsuario = 70.0
 
-        // Busca a meta IDR do usuário
         val users = jsonBD.getUsers()
         for (i in 0 until users.length()) {
             val user = users.getJSONObject(i)
             if (user.optString("email").equals(email, ignoreCase = true)) {
                 idrMeta = user.optInt("idr", 2000)
+                pesoUsuario = user.optString("peso", "70").replace(",", ".").toDoubleOrNull() ?: 70.0
+                metaAguaMl = if (user.has("metaAgua")) {
+                    user.optInt("metaAgua", (pesoUsuario * 35).toInt())
+                } else {
+                    (pesoUsuario * 35).toInt()
+                }
                 break
             }
         }
+
+        val totalAguaConsumida = jsonBD.getAguaTotalDoDia(email, hojeIso)
 
         try {
             val jsonArray = jsonBD.getRefeicoes()
@@ -162,8 +173,9 @@ class InicioFragment : Fragment() {
                 val refeicao = jsonArray.getJSONObject(i)
                 val usuarioRefeicao = refeicao.optString("usuarioEmail")
                 val dataRefeicao = jsonBD.formatarDataParaIso(refeicao.optString("data"))
+                val tipo = refeicao.optString("tipo", "")
 
-                if (usuarioRefeicao.equals(email, ignoreCase = true) && dataRefeicao == hojeIso) {
+                if (usuarioRefeicao.equals(email, ignoreCase = true) && dataRefeicao == hojeIso && !tipo.equals("Agua", ignoreCase = true)) {
                     val alimentos = refeicao.optJSONArray("alimentos") ?: JSONArray()
                     for (j in 0 until alimentos.length()) {
                         val alimento = alimentos.getJSONObject(j)
@@ -178,13 +190,12 @@ class InicioFragment : Fragment() {
             e.printStackTrace()
         }
 
-        // Atualização da UI dos cards de macros
         binding.txtGordura.text = "${totalGordura.toInt()}g"
         binding.txtCarbo.text = "${totalCarbo.toInt()}g"
         binding.txtProteina.text = "${totalProteina.toInt()}g"
         binding.txtCaloriasRefeicoes.text = "${totalCalorias.toInt()} kcal"
+        binding.txtAgua.text = "$totalAguaConsumida / $metaAguaMl"
 
-        // Lista contendo os dois banners (Banner 1 e Banner 2)
         val listaBanners = listOf(
             BannerData(
                 tipo = 1,
@@ -211,7 +222,7 @@ class InicioFragment : Fragment() {
                 setImageDrawable(
                     ContextCompat.getDrawable(
                         requireContext(),
-                        if (i == 0) R.drawable.circle else R.drawable.circle
+                        R.drawable.circle
                     )
                 )
                 val params = LinearLayout.LayoutParams(16, 16).apply {

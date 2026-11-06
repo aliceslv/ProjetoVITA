@@ -72,6 +72,20 @@
                 android:textSize="24sp"
                 android:fontFamily="@font/inter24_bold" />
 
+            <!-- Aviso de Notificações Desativadas -->
+            <TextView
+                android:id="@+id/txtAviso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="⚠️ As notificações estão desativadas nas configurações de privacidade. Os lembretes estão inativos."
+                android:textColor="#FFB000"
+                android:textSize="13sp"
+                android:fontFamily="@font/inter24_medium"
+                android:background="@drawable/bg_search_input"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/txtDescricao"
                 android:layout_width="match_parent"

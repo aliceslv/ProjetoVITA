@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue3"
+    tools:context=".SettingsFragment">
+
+    <!-- Barra superior -->
+    <ImageView
+        android:id="@+id/btnFechar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_close"
+        android:contentDescription="Fechar"
+        app:tint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="55dp"/>
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configurações"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnFechar"
+        android:fontFamily="@font/inter24_medium"
+        app:layout_constraintBottom_toBottomOf="@id/btnFechar"/>
+
+    <View
+        android:id="@+id/linhaTopo"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="#172C44"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtTitulo" />
+
+
+    <!-- Cartão da conta -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardConta"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="30dp"
+        app:cardBackgroundColor="@color/blue9"
+        app:cardCornerRadius="14dp"
+        app:strokeWidth="0dp"
+        app:layout_constraintTop_toBottomOf="@id/btnFechar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp">
+
+            <!-- Ícone -->
+            <FrameLayout
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="@drawable/bg_icon_conta">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_settings"
+                    app:tint="#00D68F"/>
+            </FrameLayout>
+
+            <!-- Textos -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Conta"
+                    android:textColor="@color/grey2"
+                    android:fontFamily="@font/inter24_regular"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:id="@+id/nomeUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Maria"
+                    android:fontFamily="@font/inter24_semibold"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/emailUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="maria@email.com"
+                    android:fontFamily="@font/inter24_regular"
+                    android:textColor="@color/grey"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/txtAjustes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="22dp"
+        android:text="Ajustes do app"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:fontFamily="@font/inter24_bold"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/cardConta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtDescricao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="8dp"
+        android:text="Gerencie suas preferências, dados pessoais e saiba \nmais sobre o aplicativo."
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        android:fontFamily="@font/inter24_regular"
+        android:lineSpacingExtra="2dp"
+        app:layout_constraintTop_toBottomOf="@id/txtAjustes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <!-- Opções -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardOpcoes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginTop="18dp"
+        app:cardBackgroundColor="@color/blue1"
+        app:cardCornerRadius="14dp"
+        app:strokeWidth="0dp"
+        app:layout_constraintTop_toBottomOf="@id/txtDescricao"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Privacidade -->
+            <LinearLayout
+                android:id="@+id/btnPrivacidade"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_vertical"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_privacidade">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_shield"
+                        app:tint="#00D68F"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Privacidade"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Controle seus dados e permissões"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/inter24_regular"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/next"
+                    app:tint="#7D8DA2"/>
+
+            </LinearLayout>
+
+
+            <!-- Divisor -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#203A55"/>
+
+
+            <!-- Dados pessoais -->
+            <LinearLayout
+                android:id="@+id/btnDadosPessoais"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_vertical"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_dados">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_person"
+                        app:tint="#00AEEF"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Alterar dados pessoais"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nome, e-mail, data de nascimento"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/inter24_regular"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/next"
+                    app:tint="#7D8DA2"/>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#203A55"/>
+
+
+            <!-- Sobre nós -->
+            <LinearLayout
+                android:id="@+id/btnSobre"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_vertical"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_sobre">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_info"
+                        app:tint="#9B5CFF"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sobre nós"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Versão do app, equipe e contato"
+                        android:textColor="#8492A5"
+                        android:textSize="11sp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/next"
+                    app:tint="#7D8DA2"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#203A55"/>
+
+            <LinearLayout
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_vertical"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:clickable="true"
+                android:focusable="true">
+
+                <FrameLayout
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/bg_icon_conta">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/red"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sair da conta"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/inter24_semibold"
+                        android:textSize="15sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Encerrar sessão atual"
+                        android:textColor="@color/grey"
+                        android:fontFamily="@font/inter24_regular"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/next"
+                    app:tint="#7D8DA2"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

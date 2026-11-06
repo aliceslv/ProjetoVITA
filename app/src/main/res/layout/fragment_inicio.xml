@@ -319,22 +319,23 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtCoposAgua"
+                    android:id="@+id/txtAgua"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/inter24_bold"
-                    android:text="0 / 8"
+                    android:text="0 / 0"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtML"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="copos"
+                    android:text="ml"
                     android:textColor="@color/grey"
                     android:textSize="12sp" />
 
