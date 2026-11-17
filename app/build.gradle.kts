@@ -69,10 +69,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    // Firebase BoM atualizado para versão válida
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // Retrofit & Gson Converter
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
