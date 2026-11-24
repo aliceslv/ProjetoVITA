@@ -3,6 +3,6 @@
 
     <corners android:radius="10dp"/>
 
-    <solid android:color="#302553"/>
+    <solid android:color="@color/overlayRoxo"/>
 
 </shape>

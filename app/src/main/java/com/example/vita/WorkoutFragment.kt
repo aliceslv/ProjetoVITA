@@ -12,7 +12,11 @@ import com.example.vita.databinding.FragmentWorkoutBinding
 class WorkoutFragment : Fragment() {
 
     private var _binding: FragmentWorkoutBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentWorkoutBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     // Resgata o ViewModel compartilhado
     private val userViewModel: UserViewModel by activityViewModels()

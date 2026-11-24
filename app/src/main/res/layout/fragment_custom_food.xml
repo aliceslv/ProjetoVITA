@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue3"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="15dp">
+
+        <ImageView
+            android:id="@+id/btnVoltar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:src="@drawable/arrow"
+            android:contentDescription="@string/voltar" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/inter24_bold"
+            android:text="@string/add_custom_food_str"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:text="@string/custom_food_desc"
+            android:textColor="@color/grey2"
+            android:fontFamily="@font/inter24_medium"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/food_name"
+            android:textColor="@color/white"
+            android:fontFamily="@font/inter24_medium"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/etNomeAlimento"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_search_input"
+            android:hint="@string/food_hint"
+            android:paddingHorizontal="16dp"
+            android:inputType="textCapSentences"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/nutri_value_str"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/inter24_medium"/>
+
+        <EditText
+            android:id="@+id/etCalorias"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search_input"
+            android:hint="@string/calories_hint"
+            android:inputType="numberDecimal"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey2" />
+
+        <EditText
+            android:id="@+id/etProteinas"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search_input"
+            android:hint="@string/prot_hint"
+            android:inputType="numberDecimal"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey2" />
+
+        <EditText
+            android:id="@+id/etCarboidratos"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search_input"
+            android:hint="@string/carb_hint"
+            android:inputType="numberDecimal"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey2" />
+
+        <EditText
+            android:id="@+id/etGorduras"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_search_input"
+            android:hint="@string/gord_hint"
+            android:inputType="numberDecimal"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/grey2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSalvarAlimento"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/bg_button_primary"
+            android:fontFamily="@font/inter24_bold"
+            android:text="@string/save_food"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>

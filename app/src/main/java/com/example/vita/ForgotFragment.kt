@@ -8,17 +8,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.vita.databinding.FragmentForgotBinding
-import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
-import com.example.vita.json.JsonBD
+import com.example.vita.ui.InputUtils
 
 class ForgotFragment : Fragment() {
 
     private var _binding: FragmentForgotBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentForgotBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var dbManager: JsonBD
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,62 +34,54 @@ class ForgotFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = FirebaseAuth.getInstance()
-        dbManager = JsonBD(requireContext())
+        InputUtils.configurarTeclado(view)
+        InputUtils.configurarVisibilidadeSenhas(view)
 
-        // Volta para a tela anterior
+        auth = FirebaseAuth.getInstance()
+
         binding.icarrow.setOnClickListener {
             findNavController().navigateUp()
         }
 
         binding.forgotbtn.setOnClickListener {
+
             val email = binding.loginInput.text.toString().trim()
 
             if (email.isEmpty()) {
-                binding.loginInput.error = "Por favor, preencha o campo de e-mail"
+                binding.loginInput.error =
+                    "Por favor, preencha o campo de e-mail"
+
                 binding.loginInput.requestFocus()
                 return@setOnClickListener
             }
 
-            // 1. Valida se o e-mail existe no banco de dados JSON local
-            if (!dbManager.emailExists(email)) {
-                binding.loginInput.error = "Este e-mail não está cadastrado"
-                binding.loginInput.requestFocus()
-                Toast.makeText(
-                    requireContext(),
-                    "E-mail não encontrado no banco de dados local.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
+            binding.forgotbtn.isEnabled = false
 
-            // 2. Dispara e-mail via Firebase
             auth.useAppLanguage()
 
-            val actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl("https://vita-sendemail.firebaseapp.com/__/auth/action")
-                .setHandleCodeInApp(true)
-                .setAndroidPackageName(
-                    requireContext().packageName,
-                    true,
-                    "21"
-                )
-                .build()
-
-            auth.sendPasswordResetEmail(email, actionCodeSettings)
+            auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
+
+                    if (!isAdded) return@addOnCompleteListener
+
+                    binding.forgotbtn.isEnabled = true
+
                     if (task.isSuccessful) {
+
                         Toast.makeText(
                             requireContext(),
-                            "Link enviado! Verifique sua caixa de entrada.",
+                            "Se o e-mail estiver cadastrado, você receberá as instruções para redefinir a senha.",
                             Toast.LENGTH_LONG
                         ).show()
+
                         findNavController().navigateUp()
+
                     } else {
-                        val erro = task.exception?.localizedMessage ?: "Erro desconhecido"
+
                         Toast.makeText(
                             requireContext(),
-                            "Falha ao enviar: $erro",
+                            task.exception?.localizedMessage
+                                ?: "Não foi possível enviar o e-mail.",
                             Toast.LENGTH_LONG
                         ).show()
                     }

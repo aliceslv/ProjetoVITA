@@ -1,15 +1,15 @@
 package com.example.vita
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.vita.data.FirestoreData
 import com.example.vita.databinding.FragmentMacrosBinding
-import com.example.vita.json.JsonBD
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -17,7 +17,8 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import org.json.JSONArray
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ListenerRegistration
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -25,9 +26,19 @@ import java.util.Locale
 class MacrosFragment : Fragment() {
 
     private var _binding: FragmentMacrosBinding? = null
-    private val binding get() = _binding!!
 
-    data class MacroDia(var carboidratos: Float = 0f, var proteinas: Float = 0f, var gorduras: Float = 0f)
+    private val binding: FragmentMacrosBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
+
+    private var refeicoesListener: ListenerRegistration? = null
+
+    data class MacroDia(
+        var carboidratos: Float = 0f,
+        var proteinas: Float = 0f,
+        var gorduras: Float = 0f
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,193 +52,345 @@ class MacrosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configuração de Navegação
         configurarNavegacao()
-
-        // Recarrega os dados do JSON local
-        atualizarDadosMacros()
     }
 
     override fun onResume() {
         super.onResume()
-        // Garante a atualização imediata caso o registro tenha mudado
         atualizarDadosMacros()
     }
 
+    override fun onPause() {
+        super.onPause()
+        refeicoesListener?.remove()
+        refeicoesListener = null
+    }
+
     private fun configurarNavegacao() {
-        // --- NAVEGAÇÃO DA BARRA SUPERIOR (ABAS) ---
+
         binding.btnCalorias.setOnClickListener {
-            findNavController().navigate(R.id.action_macrosFragment_to_caloriasFragment)
+            findNavController().navigate(
+                R.id.action_macrosFragment_to_caloriasFragment
+            )
         }
 
-        // --- BARRA INFERIOR DE NAVEGAÇÃO ---
         binding.btnLivro.setOnClickListener {
-            findNavController().navigate(R.id.action_macrosFragment_to_inicioFragment)
+            findNavController().navigate(
+                R.id.action_macrosFragment_to_inicioFragment
+            )
         }
 
         binding.btnUsuario.setOnClickListener {
-            findNavController().navigate(R.id.action_macrosFragment_to_profileFragment)
+            findNavController().navigate(
+                R.id.action_macrosFragment_to_profileFragment
+            )
         }
     }
 
     private fun atualizarDadosMacros() {
-        val email = obterEmailUsuarioLogado()
-        val macrosSemanal = carregarMacrosSemanalDoJson(email)
 
-        // 1. Atualizar barras de Média Diária
-        atualizarMediaDiaria(macrosSemanal)
+        refeicoesListener?.remove()
+        refeicoesListener = FirestoreData.observarRefeicoes(sucesso = { refeicoes ->
 
-        // 2. Desenhar Gráfico de Distribuição Semanal com 3 Barras agrupadas
-        configurarGraficoSemanal(binding.chartMacrosSemanal, macrosSemanal)
-    }
+            if (!isAdded) return@observarRefeicoes
 
-    private fun carregarMacrosSemanalDoJson(email: String): List<MacroDia> {
-        val listaSemanal = List(7) { MacroDia() }
-        val jsonBD = JsonBD(requireContext())
-
-        try {
-            val jsonArray = jsonBD.getRefeicoes()
-            val calendar = Calendar.getInstance()
-            val formatoData = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-
-            // Gera datas para a semana corrente (Segunda a Domingo)
-            calendar.firstDayOfWeek = Calendar.MONDAY
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-
-            val datasSemana = mutableListOf<String>()
-            for (i in 0..6) {
-                datasSemana.add(formatoData.format(calendar.time))
-                calendar.add(Calendar.DAY_OF_MONTH, 1)
+            val semana = List(7) {
+                MacroDia()
             }
 
-            for (i in 0 until jsonArray.length()) {
-                val refeicao = jsonArray.getJSONObject(i)
-                val usuarioEmail = refeicao.optString("usuarioEmail")
-                val dataRefeicaoRaw = refeicao.optString("data")
-                val dataRefeicao = jsonBD.formatarDataParaIso(dataRefeicaoRaw)
+            val calendario = Calendar.getInstance()
 
-                if (usuarioEmail.equals(email, ignoreCase = true)) {
-                    val indexDia = datasSemana.indexOf(dataRefeicao)
-                    if (indexDia != -1) {
-                        val alimentos = refeicao.optJSONArray("alimentos") ?: JSONArray()
-                        for (j in 0 until alimentos.length()) {
-                            val alimento = alimentos.getJSONObject(j)
-                            listaSemanal[indexDia].carboidratos += alimento.optDouble("carboidratos", 0.0).toFloat()
-                            listaSemanal[indexDia].proteinas += alimento.optDouble("proteinas", 0.0).toFloat()
-                            listaSemanal[indexDia].gorduras += alimento.optDouble("gorduras", 0.0).toFloat()
-                        }
+            calendario.firstDayOfWeek = Calendar.MONDAY
+
+            calendario.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+
+            val datas = mutableListOf<String>()
+
+            val formato = SimpleDateFormat(
+                "yyyy-MM-dd",
+                Locale.US
+            )
+
+            repeat(7) {
+
+                datas.add(formato.format(calendario.time))
+
+                calendario.add(Calendar.DAY_OF_MONTH, 1)
+            }
+
+            refeicoes.forEach { refeicao ->
+
+                val data =
+                    (refeicao["data"] as? Timestamp)?.toDate()
+                        ?: return@forEach
+
+                val indice = datas.indexOf(formato.format(data))
+
+                if (indice >= 0) {
+
+                    val alimentos =
+                        refeicao["alimentos"] as? List<*> ?: emptyList<Any>()
+
+                    alimentos.forEach { item ->
+
+                        val alimento = item as? Map<*, *>
+                            ?: return@forEach
+
+                        semana[indice].carboidratos +=
+                            (alimento["carboidratos"] as? Number)?.toFloat()
+                                ?: 0f
+
+                        semana[indice].proteinas +=
+                            (alimento["proteinas"] as? Number)?.toFloat()
+                                ?: 0f
+
+                        semana[indice].gorduras +=
+                            (alimento["gorduras"] as? Number)?.toFloat()
+                                ?: 0f
                     }
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
-        return listaSemanal
+            atualizarMediaDiaria(semana)
+
+            configurarGraficoSemanal(
+                binding.chartMacrosSemanal,
+                semana
+            )
+        })
     }
 
-    private fun atualizarMediaDiaria(macrosSemanal: List<MacroDia>) {
-        val totalCarb = macrosSemanal.sumOf { it.carboidratos.toDouble() }.toFloat()
-        val totalProt = macrosSemanal.sumOf { it.proteinas.toDouble() }.toFloat()
-        val totalGord = macrosSemanal.sumOf { it.gorduras.toDouble() }.toFloat()
+    private fun atualizarMediaDiaria(
+        macrosSemanal: List<MacroDia>
+    ) {
 
-        // Média em gramas considerando os 7 dias da semana
+        val totalCarb = macrosSemanal
+            .sumOf { it.carboidratos.toDouble() }
+            .toFloat()
+
+        val totalProt = macrosSemanal
+            .sumOf { it.proteinas.toDouble() }
+            .toFloat()
+
+        val totalGord = macrosSemanal
+            .sumOf { it.gorduras.toDouble() }
+            .toFloat()
+
         val mediaCarb = totalCarb / 7f
         val mediaProt = totalProt / 7f
         val mediaGord = totalGord / 7f
 
         val totalGramas = mediaCarb + mediaProt + mediaGord
 
-        val pctCarb = if (totalGramas > 0) (mediaCarb / totalGramas) * 100 else 0f
-        val pctProt = if (totalGramas > 0) (mediaProt / totalGramas) * 100 else 0f
-        val pctGord = if (totalGramas > 0) (mediaGord / totalGramas) * 100 else 0f
+        val pctCarb =
+            if (totalGramas > 0) {
+                (mediaCarb / totalGramas) * 100
+            } else {
+                0f
+            }
 
-        binding.txtLabelCarb.text = String.format(Locale.getDefault(), "Carboidratos (%.0f%%) %.0fg", pctCarb, mediaCarb)
+        val pctProt =
+            if (totalGramas > 0) {
+                (mediaProt / totalGramas) * 100
+            } else {
+                0f
+            }
+
+        val pctGord =
+            if (totalGramas > 0) {
+                (mediaGord / totalGramas) * 100
+            } else {
+                0f
+            }
+
+        binding.txtLabelCarb.text = String.format(
+            Locale.getDefault(),
+            "Carboidratos (%.0f%%) %.0fg",
+            pctCarb,
+            mediaCarb
+        )
+
         binding.progressCarb.progress = pctCarb.toInt()
 
-        binding.txtLabelProt.text = String.format(Locale.getDefault(), "Proteínas (%.0f%%) %.0fg", pctProt, mediaProt)
+        binding.txtLabelProt.text = String.format(
+            Locale.getDefault(),
+            "Proteínas (%.0f%%) %.0fg",
+            pctProt,
+            mediaProt
+        )
+
         binding.progressProt.progress = pctProt.toInt()
 
-        binding.txtLabelGord.text = String.format(Locale.getDefault(), "Gorduras (%.0f%%) %.0fg", pctGord, mediaGord)
+        binding.txtLabelGord.text = String.format(
+            Locale.getDefault(),
+            "Gorduras (%.0f%%) %.0fg",
+            pctGord,
+            mediaGord
+        )
+
         binding.progressGord.progress = pctGord.toInt()
     }
 
-    private fun configurarGraficoSemanal(chart: BarChart, macrosSemanal: List<MacroDia>) {
-        val entriesCarb = ArrayList<BarEntry>()
-        val entriesProt = ArrayList<BarEntry>()
-        val entriesGord = ArrayList<BarEntry>()
+    private fun configurarGraficoSemanal(
+        chart: BarChart,
+        macrosSemanal: List<MacroDia>
+    ) {
 
-        macrosSemanal.forEachIndexed { index, macro ->
-            entriesCarb.add(BarEntry(index.toFloat(), macro.carboidratos))
-            entriesProt.add(BarEntry(index.toFloat(), macro.proteinas))
-            entriesGord.add(BarEntry(index.toFloat(), macro.gorduras))
-        }
-
-        val setCarb = BarDataSet(entriesCarb, "Carboidratos").apply {
-            color = Color.parseColor("#20D36B")
-            setDrawValues(false)
-        }
-        val setProt = BarDataSet(entriesProt, "Proteínas").apply {
-            color = Color.parseColor("#27B7C8")
-            setDrawValues(false)
-        }
-        val setGord = BarDataSet(entriesGord, "Gorduras").apply {
-            color = Color.parseColor("#FFA800")
-            setDrawValues(false)
-        }
-
-        val groupSpace = 0.25f
-        val barSpace = 0.05f
-        val barWidth = 0.20f
-
-        val barData = BarData(setCarb, setProt, setGord)
-        barData.barWidth = barWidth
+        val barData = criarDadosMacros(macrosSemanal)
 
         chart.data = barData
 
-        // Eixo X
-        val dias = listOf("Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom")
-        chart.xAxis.apply {
-            valueFormatter = IndexAxisValueFormatter(dias)
-            position = XAxis.XAxisPosition.BOTTOM
-            textColor = Color.WHITE
-            setDrawGridLines(false)
-            granularity = 1f
-            isGranularityEnabled = true
-            axisMinimum = 0f
-            axisMaximum = 0f + chart.barData.getGroupWidth(groupSpace, barSpace) * 7
-            setCenterAxisLabels(true)
-        }
-
-        // Eixo Y
-        chart.axisLeft.apply {
-            textColor = Color.WHITE
-            setDrawGridLines(false)
-            axisMinimum = 0f
-        }
-        chart.axisRight.isEnabled = false
-
-        // Legenda
-        chart.legend.apply {
-            isEnabled = true
-            textColor = Color.WHITE
-            textSize = 10f
-            form = Legend.LegendForm.SQUARE
-            horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-            verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            orientation = Legend.LegendOrientation.HORIZONTAL
-        }
+        configurarEixoHorizontal(chart)
+        configurarEixoVertical(chart)
+        configurarLegenda(chart)
 
         chart.apply {
             description.isEnabled = false
-            groupBars(0f, groupSpace, barSpace)
+            groupBars(0f, 0.25f, 0.05f)
             invalidate()
         }
     }
 
-    private fun obterEmailUsuarioLogado(): String {
-        val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        return sharedPref.getString("USER_EMAIL", "") ?: ""
+    private fun criarDadosMacros(
+        macrosSemanal: List<MacroDia>
+    ): BarData {
+
+        val entradasCarb = ArrayList<BarEntry>()
+        val entradasProt = ArrayList<BarEntry>()
+        val entradasGord = ArrayList<BarEntry>()
+
+        macrosSemanal.forEachIndexed { index, macro ->
+
+            entradasCarb.add(
+                BarEntry(index.toFloat(), macro.carboidratos)
+            )
+
+            entradasProt.add(
+                BarEntry(index.toFloat(), macro.proteinas)
+            )
+
+            entradasGord.add(
+                BarEntry(index.toFloat(), macro.gorduras)
+            )
+        }
+
+        val conjuntoCarb = criarConjuntoMacros(
+            entradasCarb,
+            "Carboidratos",
+            R.color.green5
+        )
+
+        val conjuntoProt = criarConjuntoMacros(
+            entradasProt,
+            "Proteínas",
+            R.color.ciano
+        )
+
+        val conjuntoGord = criarConjuntoMacros(
+            entradasGord,
+            "Gorduras",
+            R.color.orange2
+        )
+
+        return BarData(
+            conjuntoCarb,
+            conjuntoProt,
+            conjuntoGord
+        ).apply {
+            barWidth = 0.20f
+        }
+    }
+
+    private fun criarConjuntoMacros(
+        entradas: ArrayList<BarEntry>,
+        nome: String,
+        cor: Int
+    ): BarDataSet {
+
+        return BarDataSet(entradas, nome).apply {
+            color = ContextCompat.getColor(
+                requireContext(),
+                cor
+            )
+        }
+    }
+
+    private fun configurarEixoHorizontal(chart: BarChart) {
+
+        val dias = listOf(
+            "Seg", "Ter", "Qua", "Qui",
+            "Sex", "Sáb", "Dom"
+        )
+
+        val groupSpace = 0.25f
+        val barSpace = 0.05f
+
+        chart.xAxis.apply {
+
+            valueFormatter = IndexAxisValueFormatter(dias)
+
+            position = XAxis.XAxisPosition.BOTTOM
+
+            textColor = ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+
+            setDrawGridLines(false)
+
+            granularity = 1f
+            isGranularityEnabled = true
+
+            axisMinimum = 0f
+
+            axisMaximum =
+                chart.barData.getGroupWidth(groupSpace, barSpace) * 7
+
+            setCenterAxisLabels(true)
+        }
+    }
+
+    private fun configurarEixoVertical(chart: BarChart) {
+
+        chart.axisLeft.apply {
+
+            textColor = ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+
+            setDrawGridLines(false)
+
+            axisMinimum = 0f
+        }
+
+        chart.axisRight.isEnabled = false
+    }
+
+    private fun configurarLegenda(chart: BarChart) {
+
+        chart.legend.apply {
+
+            isEnabled = true
+
+            textColor = ContextCompat.getColor(
+                requireContext(),
+                R.color.white
+            )
+
+            textSize = 10f
+
+            form = Legend.LegendForm.SQUARE
+
+            horizontalAlignment =
+                Legend.LegendHorizontalAlignment.CENTER
+
+            verticalAlignment =
+                Legend.LegendVerticalAlignment.TOP
+
+            orientation =
+                Legend.LegendOrientation.HORIZONTAL
+        }
     }
 
     override fun onDestroyView() {

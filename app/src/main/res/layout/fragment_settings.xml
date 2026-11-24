@@ -14,7 +14,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_close"
-        android:contentDescription="Fechar"
+        android:contentDescription="@string/voltar"
         app:tint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,7 +25,7 @@
         android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configurações"
+        android:text="@string/settings"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -40,7 +40,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
-        android:background="#172C44"
+        android:background="@color/blue11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtTitulo" />
@@ -79,8 +79,7 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_settings"
-                    app:tint="#00D68F"/>
+                    android:src="@drawable/ic_settings" />
             </FrameLayout>
 
             <!-- Textos -->
@@ -93,7 +92,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Conta"
+                    android:text="@string/acc"
                     android:textColor="@color/grey2"
                     android:fontFamily="@font/inter24_regular"
                     android:textSize="12sp"/>
@@ -102,7 +101,7 @@
                     android:id="@+id/nomeUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Maria"
+                    android:text="@string/fake_name"
                     android:fontFamily="@font/inter24_semibold"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -112,9 +111,9 @@
                     android:id="@+id/emailUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="maria@email.com"
+                    android:text="@string/fake_acc_email"
                     android:fontFamily="@font/inter24_regular"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/grey2"
                     android:textSize="12sp"/>
 
             </LinearLayout>
@@ -132,7 +131,7 @@
         android:layout_marginStart="18dp"
         android:layout_marginEnd="18dp"
         android:layout_marginTop="22dp"
-        android:text="Ajustes do app"
+        android:text="@string/app_sett"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:fontFamily="@font/inter24_bold"
@@ -148,8 +147,8 @@
         android:layout_marginStart="18dp"
         android:layout_marginEnd="18dp"
         android:layout_marginTop="8dp"
-        android:text="Gerencie suas preferências, dados pessoais e saiba \nmais sobre o aplicativo."
-        android:textColor="@color/grey"
+        android:text="@string/settings_desc"
+        android:textColor="@color/grey2"
         android:textSize="14sp"
         android:fontFamily="@font/inter24_regular"
         android:lineSpacingExtra="2dp"
@@ -198,8 +197,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_shield"
-                        app:tint="#00D68F"/>
+                        android:src="@drawable/ic_shield" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -212,7 +210,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Privacidade"
+                        android:text="@string/privacy"
                         android:textColor="@color/white"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
@@ -221,8 +219,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Controle seus dados e permissões"
-                        android:textColor="@color/grey"
+                        android:text="@string/privacy_info"
+                        android:textColor="@color/grey2"
                         android:fontFamily="@font/inter24_regular"
                         android:textSize="12sp"/>
 
@@ -232,16 +230,15 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/next"
-                    app:tint="#7D8DA2"/>
+                    app:tint="@color/grey2"/>
 
             </LinearLayout>
-
 
             <!-- Divisor -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#203A55"/>
+                android:background="@color/viewColor"/>
 
 
             <!-- Dados pessoais -->
@@ -265,7 +262,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_person"
-                        app:tint="#00AEEF"/>
+                        app:tint="@color/bluelight2"/>
                 </FrameLayout>
 
                 <LinearLayout
@@ -278,7 +275,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Alterar dados pessoais"
+                        android:text="@string/personal_change"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:fontFamily="@font/inter24_semibold"
@@ -287,8 +284,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nome, e-mail, data de nascimento"
-                        android:textColor="@color/grey"
+                        android:text="@string/personal_ex"
+                        android:textColor="@color/grey2"
                         android:fontFamily="@font/inter24_regular"
                         android:textSize="12sp"/>
 
@@ -298,7 +295,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/next"
-                    app:tint="#7D8DA2"/>
+                    app:tint="@color/grey2"/>
 
             </LinearLayout>
 
@@ -306,7 +303,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#203A55"/>
+                android:background="@color/viewColor"/>
 
 
             <!-- Sobre nós -->
@@ -329,8 +326,8 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_info"
-                        app:tint="#9B5CFF"/>
+                        android:src="@drawable/ic_info" />
+
                 </FrameLayout>
 
                 <LinearLayout
@@ -343,7 +340,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sobre nós"
+                        android:text="@string/about"
                         android:textColor="@color/white"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
@@ -352,8 +349,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Versão do app, equipe e contato"
-                        android:textColor="#8492A5"
+                        android:text="@string/about_ex"
+                        android:textColor="@color/grey2"
                         android:textSize="11sp"/>
 
                 </LinearLayout>
@@ -362,14 +359,14 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/next"
-                    app:tint="#7D8DA2"/>
+                    app:tint="@color/grey2"/>
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#203A55"/>
+                android:background="@color/viewColor"/>
 
             <LinearLayout
                 android:id="@+id/btnLogout"
@@ -404,7 +401,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sair da conta"
+                        android:text="@string/leave"
                         android:textColor="@color/red"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
@@ -413,8 +410,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Encerrar sessão atual"
-                        android:textColor="@color/grey"
+                        android:text="@string/leave_desc"
+                        android:textColor="@color/grey2"
                         android:fontFamily="@font/inter24_regular"
                         android:textSize="12sp"/>
 
@@ -424,7 +421,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:src="@drawable/next"
-                    app:tint="#7D8DA2"/>
+                    app:tint="@color/grey2"/>
 
             </LinearLayout>
 

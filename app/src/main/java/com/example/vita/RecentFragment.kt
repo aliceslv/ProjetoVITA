@@ -1,21 +1,22 @@
 package com.example.vita
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import com.example.vita.ui.InputUtils
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.vita.data.FirestoreData
 import com.example.vita.data.network.FoodItem
 import com.example.vita.databinding.FragmentRecentBinding
-import com.example.vita.json.JsonBD
 import com.example.vita.ui.AlimentoAdapter
+import com.google.firebase.firestore.ListenerRegistration
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,10 +24,16 @@ import java.util.Locale
 class RecentFragment : Fragment() {
 
     private var _binding: FragmentRecentBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentRecentBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     private lateinit var alimentoAdapter: AlimentoAdapter
+
     private var listaAlimentosRecentes: List<FoodItem> = emptyList()
+    private var refeicoesListener: ListenerRegistration? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,109 +47,243 @@ class RecentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        atualizarDataAtual()
-        configurarEstiloCabecalho()
+        InputUtils.configurarTeclado(view)
+
+        binding.dataReal.text = SimpleDateFormat(
+            "EEEE, MMM. dd",
+            Locale("pt", "BR")
+        ).format(Date())
+
+        binding.consumoAba.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.green2
+            )
+        )
+
+        binding.alimentoAba.setTextColor(Color.WHITE)
+
         configurarRecyclerView()
-        carregarAlimentosRecentes()
         configurarNavegacao()
         configurarBuscaLocal()
     }
 
-    private fun atualizarDataAtual() {
-        val formatoData = SimpleDateFormat("EEEE, MMM. dd", Locale("pt", "BR"))
-        binding.dataReal.text = formatoData.format(Date())
+    override fun onResume() {
+        super.onResume()
+        carregarAlimentosRecentes()
     }
 
-    private fun configurarEstiloCabecalho() {
-        val corVerde = ContextCompat.getColor(requireContext(), R.color.green2)
-        binding.consumoAba.setTextColor(corVerde)
-        binding.alimentoAba.setTextColor(Color.WHITE)
+    override fun onPause() {
+        super.onPause()
+        refeicoesListener?.remove()
+        refeicoesListener = null
     }
 
     private fun configurarRecyclerView() {
-        // Navegação configurada exatamente com a mesma lógica do RegisterFragment
-        alimentoAdapter = AlimentoAdapter(emptyList()) { alimentoSelecionado ->
+
+        alimentoAdapter = AlimentoAdapter(emptyList()) { alimento ->
+
             val bundle = Bundle().apply {
-                putString("FOOD_NAME", alimentoSelecionado.foodName)
-                putString("FOOD_DESCRIPTION", alimentoSelecionado.foodDescription)
-            }
 
-            if (findNavController().currentDestination?.id == R.id.recentFragment) {
-                try {
-                    findNavController().navigate(
-                        R.id.action_recentFragment_to_addFragment,
-                        bundle
-                    )
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                putString("FOOD_NAME", alimento.foodName)
+                putString("FOOD_DESCRIPTION", alimento.foodDescription)
+
+                val origem = when {
+                    alimento.foodId.startsWith("recent_personalizado_") ->
+                        "personalizado"
+
+                    alimento.foodId.startsWith("recent_fatsecret_") ->
+                        "fatsecret"
+
+                    else ->
+                        "desconhecida"
                 }
+
+                putString("FOOD_ORIGIN", origem)
+            }
+
+            if (
+                findNavController().currentDestination?.id ==
+                R.id.recentFragment
+            ) {
+                findNavController().navigate(
+                    R.id.action_recentFragment_to_addFragment,
+                    bundle
+                )
             }
         }
 
-        binding.rvRecentes.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = alimentoAdapter
-        }
+        binding.rvRecentes.layoutManager =
+            LinearLayoutManager(requireContext())
+
+        binding.rvRecentes.adapter = alimentoAdapter
     }
+
 
     private fun carregarAlimentosRecentes() {
-        val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val emailLogado = sharedPref.getString("USER_EMAIL", "") ?: ""
 
-        val jsonBD = JsonBD(requireContext())
-        listaAlimentosRecentes = jsonBD.getAlimentosRecentesDoUsuario(emailLogado)
+        refeicoesListener?.remove()
 
-        atualizarExibicaoLista(listaAlimentosRecentes)
-    }
+        refeicoesListener = FirestoreData.observarRefeicoes(
+            sucesso = { refeicoes ->
 
-    private fun configurarBuscaLocal() {
-        binding.etPesquisaRecentes.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                if (!isAdded) return@observarRefeicoes
 
-            override fun afterTextChanged(s: Editable?) {
-                val query = s?.toString()?.trim() ?: ""
-                val listaFiltrada = if (query.isEmpty()) {
-                    listaAlimentosRecentes
-                } else {
-                    listaAlimentosRecentes.filter {
-                        it.foodName.contains(query, ignoreCase = true)
+                val vistos = mutableSetOf<String>()
+                val recentes = mutableListOf<FoodItem>()
+
+                refeicoes.forEach { refeicao ->
+
+                    val alimentos =
+                        refeicao["alimentos"] as? List<*> ?: emptyList<Any>()
+
+                    alimentos.forEach alimentoLoop@{ item ->
+
+                        val alimento = item as? Map<*, *>
+                            ?: return@alimentoLoop
+
+                        val nome = alimento["nome"]?.toString().orEmpty()
+
+                        if (nome.isBlank()) return@alimentoLoop
+
+                        val origem =
+                            alimento["origem"]?.toString() ?: "desconhecida"
+
+                        // Permite alimentos de origens diferentes
+                        // mesmo quando possuem o mesmo nome.
+                        val identificador = "${origem}_${nome.lowercase(Locale.ROOT)}"
+
+                        if (!vistos.add(identificador)) {
+                            return@alimentoLoop
+                        }
+
+                        val gramas =
+                            (alimento["gramas"] as? Number)?.toDouble()
+                                ?: (alimento["quantidade"] as? Number)?.toDouble()
+                                ?: 100.0
+
+                        val calorias =
+                            (alimento["calorias"] as? Number)?.toDouble() ?: 0.0
+
+                        val carboidratos =
+                            (alimento["carboidratos"] as? Number)?.toDouble() ?: 0.0
+
+                        val proteinas =
+                            (alimento["proteinas"] as? Number)?.toDouble() ?: 0.0
+
+                        val gorduras =
+                            (alimento["gorduras"] as? Number)?.toDouble() ?: 0.0
+
+                        val descricao = """
+                        Serving Size: $gramas g
+                        Calories: $calorias kcal
+                        Carbs: $carboidratos g
+                        Protein: $proteinas g
+                        Fat: $gorduras g
+                    """.trimIndent()
+
+                        recentes.add(
+                            FoodItem(
+                                foodId = "recent_${origem}_${nome}",
+                                foodName = nome,
+                                foodDescription = descricao,
+                                foodType = "generic"
+                            )
+                        )
                     }
                 }
-                atualizarExibicaoLista(listaFiltrada)
+
+                listaAlimentosRecentes = recentes
+
+                atualizarExibicaoLista(recentes)
+
+            },
+            erro = {
+
+                if (isAdded) {
+                    atualizarExibicaoLista(emptyList())
+                }
             }
-        })
+        )
+    }
+
+
+    private fun configurarBuscaLocal() {
+
+        binding.etPesquisaRecentes.addTextChangedListener(
+            object : TextWatcher {
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {}
+
+                override fun onTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {}
+
+                override fun afterTextChanged(s: Editable?) {
+
+                    val query = s?.toString()?.trim() ?: ""
+
+                    val filtrada =
+                        if (query.isEmpty()) {
+                            listaAlimentosRecentes
+                        } else {
+                            listaAlimentosRecentes.filter { alimento ->
+                                alimento.foodName.indexOf(
+                                    query,
+                                    ignoreCase = true
+                                ) >= 0
+                            }
+                        }
+
+                    atualizarExibicaoLista(filtrada)
+                }
+            }
+        )
     }
 
     private fun atualizarExibicaoLista(lista: List<FoodItem>) {
-        if (lista.isEmpty()) {
-            binding.tvVazio.visibility = View.VISIBLE
-            binding.rvRecentes.visibility = View.GONE
-        } else {
-            binding.tvVazio.visibility = View.GONE
-            binding.rvRecentes.visibility = View.VISIBLE
+
+        binding.tvVazio.visibility =
+            if (lista.isEmpty()) View.VISIBLE else View.GONE
+
+        binding.rvRecentes.visibility =
+            if (lista.isEmpty()) View.GONE else View.VISIBLE
+
             alimentoAdapter.atualizarLista(lista)
-        }
+
     }
 
     private fun configurarNavegacao() {
+
         binding.alimentoAba.setOnClickListener {
-            if (findNavController().currentDestination?.id == R.id.recentFragment) {
-                try {
-                    findNavController().navigate(R.id.action_recentFragment_to_registerFragment)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+
+            if (
+                findNavController().currentDestination?.id ==
+                R.id.recentFragment
+            ) {
+                findNavController().navigate(
+                    R.id.action_recentFragment_to_registerFragment
+                )
             }
         }
 
         binding.btnCancelar.setOnClickListener {
-            if (findNavController().currentDestination?.id == R.id.recentFragment) {
-                try {
-                    findNavController().navigate(R.id.action_recentFragment_to_inicioFragment)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+
+            if (
+                findNavController().currentDestination?.id ==
+                R.id.recentFragment
+            ) {
+                findNavController().navigate(
+                    R.id.action_recentFragment_to_inicioFragment
+                )
             }
         }
     }

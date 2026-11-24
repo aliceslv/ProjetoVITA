@@ -1,4 +1,4 @@
-package com.example.vita.data.model
+package com.example.vita.ui
 
 data class AlimentoConsumido(
     val nome: String,
@@ -8,4 +8,5 @@ data class AlimentoConsumido(
     val carboidratos: Float,
     val proteinas: Float,
     val gorduras: Float,
+    val origem: String = "desconhecida"
 )

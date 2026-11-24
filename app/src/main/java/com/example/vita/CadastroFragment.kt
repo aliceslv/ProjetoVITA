@@ -9,11 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.vita.databinding.FragmentCadastroBinding
+import com.example.vita.ui.InputUtils
 
 class CadastroFragment : Fragment() {
 
     private var _binding: FragmentCadastroBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentCadastroBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     // Shared ViewModel escopado à Activity para reter os dados durante todo o onboarding
     private val userViewModel: UserViewModel by activityViewModels()
@@ -29,6 +34,9 @@ class CadastroFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        InputUtils.configurarTeclado(view)
+        InputUtils.configurarVisibilidadeSenhas(view)
 
         // Botão voltar
         binding.icarrow.setOnClickListener {

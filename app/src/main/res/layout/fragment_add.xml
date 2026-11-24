@@ -20,7 +20,7 @@
             android:layout_marginStart="10dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:contentDescription="Voltar"
+            android:contentDescription="@string/voltar"
             android:src="@drawable/arrowprev"
             app:tint="@color/green2" />
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/inter24_semibold"
-            android:text="Pão Francês"
+            android:text="@string/comida_add"
             android:textColor="@color/white"
             android:layout_marginTop="60dp"
             android:textSize="18sp"
@@ -44,7 +44,7 @@
             android:layout_centerVertical="true"
             android:fontFamily="@font/inter24_medium"
             android:layout_marginEnd="10dp"
-            android:text="Cancelar"
+            android:text="@string/cancel"
             android:textColor="@color/green2"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/headerFixed"
-        android:background="#1E293B" />
+        android:background="@color/blue11" />
 
     <!-- 2. CONTEÚDO COM SCROLL -->
     <androidx.core.widget.NestedScrollView
@@ -80,9 +80,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter24_regular"
-                android:text="Pão de farinha de trigo refinada, tradicional de padaria brasileira."
+                android:text="@string/food_desc"
                 android:textColor="@color/grey2"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
 
             <!-- Card de Calorias por Grama / Porção -->
             <LinearLayout
@@ -103,7 +103,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_regular"
-                        android:text="Densidade Calórica"
+                        android:text="@string/densidade"
                         android:textColor="@color/grey2"
                         android:textSize="12sp" />
 
@@ -113,8 +113,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="3,00 kcal / g"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/densidade_value"
+                        android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -129,7 +129,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_regular"
-                        android:text="Porção Padrão"
+                        android:text="@string/porcao"
                         android:textColor="@color/grey2"
                         android:textSize="12sp" />
 
@@ -139,8 +139,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="50g (1 unidade)"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/porcao_value"
+                        android:textColor="@color/white"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -152,8 +152,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/inter24_semibold"
-                android:text="Macronutrientes (por 100g)"
-                android:textColor="#FFFFFF"
+                android:text="@string/macro100"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_regular"
-                        android:text="Carbos"
+                        android:text="@string/carb"
                         android:textColor="@color/grey2"
                         android:textSize="12sp" />
 
@@ -189,8 +189,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="58g"
-                        android:textColor="#FFC107"
+                        android:text="@string/carb_value"
+                        android:textColor="@color/yellow"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -210,7 +210,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_regular"
-                        android:text="Proteínas"
+                        android:text="@string/prot"
                         android:textColor="@color/grey2"
                         android:textSize="12sp" />
 
@@ -220,8 +220,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="9g"
-                        android:textColor="#FF5252"
+                        android:text="@string/prot_value"
+                        android:textColor="@color/red"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -241,7 +241,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_regular"
-                        android:text="Gorduras"
+                        android:text="@string/gord"
                         android:textColor="@color/grey2"
                         android:textSize="12sp" />
 
@@ -251,8 +251,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="3g"
-                        android:textColor="#448AFF"
+                        android:text="@string/gord_value"
+                        android:textColor="@color/bluelight"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -264,8 +264,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:fontFamily="@font/inter24_semibold"
-                android:text="Informe a quantidade consumida"
-                android:textColor="#FFFFFF"
+                android:text="@string/insert_consume"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -280,7 +280,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_regular"
-                    android:text="Peso consumido (em gramas)"
+                    android:text="@string/weight_consumed"
                     android:textColor="@color/grey2"
                     android:textSize="13sp" />
 
@@ -298,10 +298,10 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:fontFamily="@font/inter24_regular"
-                        android:hint="Ex: 100"
+                        android:hint="@string/weight_hint"
                         android:inputType="numberDecimal"
-                        android:textColor="#FFFFFF"
-                        android:textColorHint="@color/grey"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/grey2"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -317,7 +317,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter24_regular"
-                    android:text="Ou informe em Unidades / Porções"
+                    android:text="@string/porcao_consume"
                     android:textColor="@color/grey2"
                     android:textSize="13sp" />
 
@@ -335,10 +335,10 @@
                         android:layout_height="match_parent"
                         android:background="@null"
                         android:fontFamily="@font/inter24_regular"
-                        android:hint="Ex: 2 (unidades)"
+                        android:hint="@string/porcao_hint"
                         android:inputType="numberDecimal"
-                        android:textColor="#FFFFFF"
-                        android:textColorHint="@color/grey"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/grey2"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -362,7 +362,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="12dp"
-            android:background="#1E293B" />
+            android:background="@color/blue11" />
 
         <!-- Botão 1: Adicionar mais alimentos -->
         <androidx.appcompat.widget.AppCompatButton
@@ -371,7 +371,7 @@
             android:layout_height="48dp"
             android:background="@drawable/bg_button_secondary"
             android:fontFamily="@font/inter24_bold"
-            android:text="Adicionar mais alimentos"
+            android:text="@string/add_more_food"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp"
@@ -385,7 +385,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_button_primary"
             android:fontFamily="@font/inter24_bold"
-            android:text="Finalizar registro de refeição"
+            android:text="@string/end_register"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp"

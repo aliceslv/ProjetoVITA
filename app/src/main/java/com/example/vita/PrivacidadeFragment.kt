@@ -12,7 +12,11 @@ import com.example.vita.databinding.FragmentPrivacidadeBinding
 class PrivacidadeFragment : Fragment() {
 
     private var _binding: FragmentPrivacidadeBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentPrivacidadeBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

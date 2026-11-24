@@ -24,13 +24,14 @@
 
         <ImageView
             android:id="@+id/icFechar"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/arrow"
             app:tint="@color/white"
+            android:padding="8dp"
+            android:contentDescription="@string/voltar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -40,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter24_bold"
-            android:text="Editar perfil"
+            android:text="@string/edit_prof"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:textStyle="bold"
@@ -107,8 +108,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="Seu IMC"
-                        android:textColor="@color/grey"
+                        android:text="@string/user_imc"
+                        android:textColor="@color/grey2"
                         android:textSize="13sp" />
 
                     <TextView
@@ -117,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="25.2"
+                        android:text="@string/imc_value"
                         android:textColor="@color/white"
                         android:textSize="22sp"
                         android:textStyle="bold" />
@@ -133,8 +134,8 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="14dp"
                     android:paddingBottom="6dp"
-                    android:text="Sobrepeso"
-                    android:textColor="@color/orange"
+                    android:text="@string/imc_status"
+                    android:textColor="@color/orange2"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -146,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:fontFamily="@font/inter24_bold"
-                android:text="Suas medidas e objetivos"
+                android:text="@string/measure_goals"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -156,8 +157,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:fontFamily="@font/inter24_medium"
-                android:text="Mantenha suas informações atualizadas para acompanhar seu progresso com precisão."
-                android:textColor="@color/grey"
+                android:text="@string/prof_edit_info"
+                android:textColor="@color/grey2"
                 android:textSize="13sp" />
 
             <!-- Peso atual -->
@@ -181,8 +182,8 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/scale"
-                        app:tint="@color/green1" />
+                        android:src="@drawable/ic_peso"
+                        app:tint="@color/green8" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -196,7 +197,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="Peso atual"
+                        android:text="@string/peso_atual"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
@@ -205,19 +206,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="30 – 250 kg"
-                        android:textColor="@color/grey"
+                        android:text="@string/peso_ex"
+                        android:textColor="@color/grey2"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <EditText
                     android:id="@+id/inputPesoAtual"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:fontFamily="@font/inter24_bold"
                     android:gravity="end"
                     android:inputType="numberDecimal"
                     android:text="72"
+                    android:layout_marginTop="1dp"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -228,7 +230,7 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/inter24_medium"
                     android:text="kg"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/grey2"
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -255,7 +257,7 @@
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ruler"
-                        app:tint="@color/blue7" />
+                        app:tint="@color/bluelight3" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -269,7 +271,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="Altura"
+                        android:text="@string/altura_atual"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
@@ -278,19 +280,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="100 – 230 cm"
-                        android:textColor="@color/grey"
+                        android:text="@string/altura_ex"
+                        android:textColor="@color/grey2"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <EditText
                     android:id="@+id/inputAltura"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:fontFamily="@font/inter24_bold"
                     android:gravity="end"
                     android:inputType="number"
                     android:text="165"
+                    android:layout_marginTop="1dp"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -301,7 +304,7 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/inter24_medium"
                     android:text="cm"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/grey2"
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -327,8 +330,8 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/target"
-                        app:tint="@color/purple" />
+                        android:src="@drawable/ic_peso"
+                        app:tint="@color/purple3"/>
                 </FrameLayout>
 
                 <LinearLayout
@@ -342,7 +345,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="Peso meta"
+                        android:text="@string/peso_meta"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
@@ -351,17 +354,18 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="30 – 250 kg"
-                        android:textColor="@color/grey"
+                        android:text="@string/peso_meta_ex"
+                        android:textColor="@color/grey2"
                         android:textSize="12sp" />
                 </LinearLayout>
 
                 <EditText
                     android:id="@+id/inputPesoMeta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:fontFamily="@font/inter24_bold"
                     android:gravity="end"
+                    android:layout_marginTop="1dp"
                     android:inputType="numberDecimal"
                     android:text="65"
                     android:textColor="@color/white"
@@ -374,7 +378,7 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/inter24_medium"
                     android:text="kg"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/grey2"
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -394,14 +398,14 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/circle"
-                    android:backgroundTint="@color/purple">
+                    android:backgroundTint="@color/pink2">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
                         android:src="@drawable/target"
-                        app:tint="@color/purple" />
+                        app:tint="@color/red2" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -415,7 +419,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="Objetivo"
+                        android:text="@string/goal_str"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
@@ -424,18 +428,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="Foco principal"
-                        android:textColor="@color/grey"
+                        android:text="@string/goal_desc"
+                        android:textColor="@color/grey2"
                         android:textSize="11sp" />
                 </LinearLayout>
 
                 <Spinner
                     android:id="@+id/spinnerMeta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="48dp"
                     android:dropDownWidth="wrap_content"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="0dp"
+                    android:padding="6dp"
                     android:spinnerMode="dropdown" />
 
             </LinearLayout>
@@ -456,14 +459,14 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/circle"
-                    android:backgroundTint="@color/blue1">
+                    android:backgroundTint="@color/blue2">
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/scale"
-                        app:tint="@color/green1" />
+                        android:src="@drawable/ic_fire"
+                        app:tint="@color/bluelight" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -477,7 +480,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="Nível de \nExercício"
+                        android:text="@string/workout_level_str"
                         android:textColor="@color/white"
                         android:textSize="13sp" />
 
@@ -486,16 +489,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="Frequência semanal"
-                        android:textColor="@color/grey"
+                        android:text="@string/workout_desc"
+                        android:textColor="@color/grey2"
                         android:textSize="11sp" />
                 </LinearLayout>
 
                 <Spinner
                     android:id="@+id/spinnerNivelExercicio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="48dp"
                     android:backgroundTint="@color/white"
+                    android:padding="6dp"
                     android:spinnerMode="dropdown" />
 
             </LinearLayout>
@@ -529,7 +533,7 @@
             android:focusable="true"
             android:fontFamily="@font/inter24_bold"
             android:gravity="center"
-            android:text="Salvar medidas"
+            android:text="@string/save"
             android:textColor="@color/blue1"
             android:textSize="15sp"
             android:textStyle="bold" />

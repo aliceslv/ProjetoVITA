@@ -1,6 +1,5 @@
 package com.example.vita
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,21 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.vita.ui.InputUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.vita.data.model.AlimentoConsumido
+import com.example.vita.ui.AlimentoConsumido
+import com.example.vita.ui.RefeicaoViewModel
+import com.example.vita.data.FirestoreData
+import com.example.vita.data.repository.RefeicaoRepository
 import com.example.vita.databinding.FragmentAddBinding
-import com.example.vita.json.JsonBD
 import com.example.vita.ui.UnidadeConverter
-import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class AddFragment : Fragment() {
 
     private var _binding: FragmentAddBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentAddBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     // ViewModel compartilhada na Activity para manter o carrinho entre Fragments
     private val viewModel: RefeicaoViewModel by activityViewModels()
@@ -41,6 +45,8 @@ class AddFragment : Fragment() {
     private var gorduraSaturadaPorGrama = 0f
 
     private var gramasPorPorcao = 100f
+
+    private var origemAlimento = "desconhecida"
     private var isUpdatingText = false
 
     override fun onCreateView(
@@ -55,8 +61,14 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        InputUtils.configurarTeclado(view)
+
         val foodName = arguments?.getString("FOOD_NAME") ?: "Alimento"
         val foodDescription = arguments?.getString("FOOD_DESCRIPTION") ?: ""
+        val foodOrigin = arguments?.getString("FOOD_ORIGIN")
+            ?: "desconhecida"
+
+        origemAlimento = foodOrigin
 
         exibirInformacoesAlimento(foodName, foodDescription)
         configurarInputsQuantidade()
@@ -180,66 +192,135 @@ class AddFragment : Fragment() {
             carboidratos = carbosPorGrama * gramas,
             proteinas = proteinasPorGrama * gramas,
             gorduras = gordurasPorGrama * gramas,
+            origem = origemAlimento
         )
     }
 
-    private fun obterEmailUsuarioLogado(): String {
-        val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        return sharedPref.getString("USER_EMAIL", "") ?: ""
-    }
-
     private fun configurarNavegacao() {
+
         binding.btnVoltar.setOnClickListener {
             findNavController().navigateUp()
         }
 
         binding.btnCancelar.setOnClickListener {
-            viewModel.limparCarrinho()
-            if (findNavController().currentDestination?.id == R.id.addFragment) {
-                findNavController().navigate(R.id.action_addFragment_to_inicioFragment)
-            }
+            cancelarRegistro()
         }
 
         binding.btnAdicionarMais.setOnClickListener {
-            val alimento = criarAlimentoAtual()
-            viewModel.adicionarAlimento(alimento)
-
-            Toast.makeText(requireContext(), "${alimento.nome} adicionado ao carrinho!", Toast.LENGTH_SHORT).show()
-
-            if (findNavController().currentDestination?.id == R.id.addFragment) {
-                findNavController().navigate(R.id.action_addFragment_to_registerFragment)
-            }
+            adicionarMaisAlimentos()
         }
 
         binding.btnFinalizarRegistro.setOnClickListener {
-            val alimento = criarAlimentoAtual()
-            viewModel.adicionarAlimento(alimento)
-
-            val todosAlimentos = viewModel.listaAlimentos.value ?: emptyList()
-            val dataHoje = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
-            val emailLogado = obterEmailUsuarioLogado()
-
-            if (emailLogado.isEmpty()) {
-                Toast.makeText(requireContext(), "Erro: Usuário não autenticado.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val jsonBD = JsonBD(requireContext())
-            val sucesso = jsonBD.salvarRefeicao(
-                emailUsuario = emailLogado,
-                tipoRefeicao = "Almoço",
-                data = dataHoje,
-                alimentos = todosAlimentos
-            )
-
-            if (sucesso) {
-                Toast.makeText(requireContext(), "Refeição registrada com sucesso com ${todosAlimentos.size} alimento(s)!", Toast.LENGTH_LONG).show()
-                viewModel.limparCarrinho()
-                findNavController().navigate(R.id.action_addFragment_to_inicioFragment)
-            } else {
-                Toast.makeText(requireContext(), "Erro ao salvar refeição.", Toast.LENGTH_SHORT).show()
-            }
+            finalizarRegistro()
         }
+    }
+
+    private fun cancelarRegistro() {
+
+        viewModel.limparCarrinho()
+
+        if (findNavController().currentDestination?.id == R.id.addFragment) {
+            findNavController().navigate(
+                R.id.action_addFragment_to_inicioFragment
+            )
+        }
+    }
+
+    private fun adicionarMaisAlimentos() {
+
+        val alimento = criarAlimentoAtual()
+
+        viewModel.adicionarAlimento(alimento)
+
+        Toast.makeText(
+            requireContext(),
+            "${alimento.nome} adicionado ao carrinho!",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        if (findNavController().currentDestination?.id == R.id.addFragment) {
+            findNavController().navigate(
+                R.id.action_addFragment_to_registerFragment
+            )
+        }
+    }
+
+    private fun finalizarRegistro() {
+
+        val alimento = criarAlimentoAtual()
+
+        viewModel.adicionarAlimento(alimento)
+
+        val todosAlimentos =
+            viewModel.listaAlimentos.value ?: emptyList()
+
+        val uid = FirestoreData.uid()
+
+        if (uid == null) {
+            Toast.makeText(
+                requireContext(),
+                "Erro: Usuário não autenticado.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        if (todosAlimentos.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                "Adicione pelo menos um alimento.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
+        salvarRefeicao(uid, todosAlimentos)
+    }
+
+    private fun salvarRefeicao(
+        uid: String,
+        alimentos: List<AlimentoConsumido>
+    ) {
+
+        binding.btnFinalizarRegistro.isEnabled = false
+
+        RefeicaoRepository().salvarRefeicao(
+            uid = uid,
+            tipo = "Almoço",
+            alimentos = alimentos,
+
+            sucesso = {
+
+                if (!isAdded) return@salvarRefeicao
+
+                binding.btnFinalizarRegistro.isEnabled = true
+
+                Toast.makeText(
+                    requireContext(),
+                    "Refeição registrada com sucesso com ${alimentos.size} alimento(s)!",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                viewModel.limparCarrinho()
+
+                findNavController().navigate(
+                    R.id.action_addFragment_to_inicioFragment
+                )
+            },
+
+            erro = { erro ->
+
+                if (!isAdded) return@salvarRefeicao
+
+                binding.btnFinalizarRegistro.isEnabled = true
+
+                Toast.makeText(
+                    requireContext(),
+                    "Erro ao salvar refeição: ${erro.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        )
     }
 
     override fun onDestroyView() {

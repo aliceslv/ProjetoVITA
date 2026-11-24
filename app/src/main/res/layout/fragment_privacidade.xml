@@ -10,13 +10,15 @@
 
     <ImageView
         android:id="@+id/btnVoltar"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/arrow"
         android:layout_marginStart="15dp"
         android:gravity="center"
+        android:padding="8dp"
+        android:contentDescription="@string/voltar"
         app:layout_constraintBottom_toBottomOf="@id/txtTopo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/txtTopo" />
@@ -26,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
-        android:text="Privacidade"
+        android:text="@string/privacy"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:fontFamily="@font/inter24_medium"
@@ -41,7 +43,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="17dp"
-        android:background="#172C44"
+        android:background="@color/blue11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtTopo" />
@@ -68,7 +70,7 @@
             android:background="@drawable/bg_icone_privacidade"
             android:gravity="center"
             android:text="♢"
-            android:textColor="#00D46A"
+            android:textColor="@color/green5"
             android:textSize="25sp" />
 
         <LinearLayout
@@ -81,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Seus dados"
+                android:text="@string/your_data"
                 android:fontFamily="@font/inter24_regular"
                 android:textColor="@color/grey2"
                 android:textSize="13sp" />
@@ -89,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Protegidos"
+                android:text="@string/protected_data"
                 android:textColor="@color/white"
                 android:fontFamily="@font/inter24_semibold"
                 android:textSize="18sp"
@@ -98,8 +100,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Você controla o que é compartilhado"
-                android:textColor="@color/grey"
+                android:text="@string/data_desc"
+                android:textColor="@color/grey2"
                 android:fontFamily="@font/inter24_medium"
                 android:textSize="13sp" />
 
@@ -113,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="23dp"
-        android:text="Permissões"
+        android:text="@string/permissions"
         android:textColor="@color/white"
         android:fontFamily="@font/inter24_bold"
         android:textSize="24sp"
@@ -128,7 +130,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="15dp"
-        android:text="Escolha quais informações o app pode acessar e\ncomo elas são utilizadas."
+        android:text="@string/permissions_desc"
         android:textColor="@color/grey2"
         android:textSize="15sp"
         android:fontFamily="@font/inter24_medium"
@@ -158,7 +160,7 @@
             android:background="@drawable/bg_icone_amarelo"
             android:gravity="center"
             android:text="♧"
-            android:textColor="#FFB000"
+            android:textColor="@color/yellow2"
             android:textSize="23sp" />
 
         <LinearLayout
@@ -171,7 +173,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Notificações push"
+                android:text="@string/input_reminders"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:fontFamily="@font/inter24_semibold"
@@ -180,18 +182,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Receber alertas no celular"
-                android:textColor="@color/grey"
+                android:text="@string/input_remin_desc"
+                android:textColor="@color/grey2"
                 android:fontFamily="@font/inter24_medium"
                 android:textSize="13sp" />
 
         </LinearLayout>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchNotificacoes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="#FFFFFF"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:buttonTint="@color/white"
             android:checked="true" />
 
     </LinearLayout>
@@ -202,7 +204,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
         android:layout_marginTop="7dp"
-        android:text="Conta e dados"
+        android:text="@string/data_acc"
         android:textColor="@color/grey2"
         android:textSize="14sp"
         android:fontFamily="@font/inter24_medium"
@@ -233,7 +235,7 @@
             android:background="@drawable/bg_icone_privacidade"
             android:gravity="center"
             android:text="⚿"
-            android:textColor="#00AEEF"
+            android:textColor="@color/bluelight2"
             android:textSize="25sp" />
 
         <LinearLayout
@@ -246,7 +248,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alterar senha"
+                android:text="@string/change_pass_page"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:fontFamily="@font/inter24_semibold"
@@ -255,8 +257,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Atualize sua senha de acesso"
-                android:textColor="@color/grey"
+                android:text="@string/atualiza_senha_str"
+                android:textColor="@color/grey2"
                 android:fontFamily="@font/inter24_medium"
                 android:textSize="13sp" />
 

@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter24_bold"
-                android:text="Perfil"
+                android:text="@string/profile"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -47,7 +47,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
                 android:fontFamily="@font/inter24_bold"
-                android:text="Maria"
+                android:text="@string/fake_name"
                 android:textColor="@android:color/white"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -87,7 +87,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="9dp"
                             android:fontFamily="@font/inter24_medium"
-                            android:text="Foco"
+                            android:text="@string/streak_str"
                             android:textColor="@android:color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="23"
+                        android:text="@string/streak_value"
                         android:textColor="@android:color/white"
                         android:textSize="24sp"
                         android:textStyle="bold" />
@@ -108,7 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_regular"
-                        android:text="Dias"
+                        android:text="@string/streak_measure"
                         android:textColor="@color/grey2"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -141,7 +141,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="9dp"
                             android:fontFamily="@font/inter24_medium"
-                            android:text="Peso"
+                            android:text="@string/weight_str"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -153,7 +153,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="68.5"
+                        android:text="@string/weight_value"
                         android:textColor="@android:color/white"
                         android:textSize="24dp"
                         android:textStyle="bold" />
@@ -161,7 +161,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="kg"
+                        android:text="@string/weight_measure"
                         android:textColor="@color/grey2"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -191,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="Lembretes"
+                    android:text="@string/reminders"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -220,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="Configurações"
+                    android:text="@string/settings"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -234,9 +234,9 @@
                 android:layout_marginTop="32dp"
                 android:background="@drawable/bg_button_white"
                 android:fontFamily="@font/inter24_medium"
-                android:text="Editar Perfil"
+                android:text="@string/edit_prof"
                 android:textAllCaps="false"
-                android:textColor="#081A29"
+                android:textColor="@color/darkblue"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -258,7 +258,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:contentDescription="Perfil"
+            android:contentDescription="@string/profile"
             android:padding="7dp"
             android:scaleType="centerInside"
             android:src="@drawable/icusergr" />
@@ -268,7 +268,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:contentDescription="Diário"
+            android:contentDescription="@string/diary"
             android:padding="7dp"
             android:scaleType="centerInside"
             android:src="@drawable/iclivro" />
@@ -278,7 +278,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:contentDescription="Calorias"
+            android:contentDescription="@string/calories"
             android:padding="7dp"
             android:scaleType="centerInside"
             android:src="@drawable/icescalawhite" />

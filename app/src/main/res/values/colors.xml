@@ -1,26 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <color name = "black">#FF000000</color>
+    <color name = "black2">#1C1C1E</color>
+
+    <color name = "white">#FFFFFFFF</color>
+
     <color name = "blue1">#0A2343</color>
     <color name = "blue2">#18406E</color>
     <color name = "blue3">#0B1A2E</color>
-    <color name = "green1">#178047</color>
-    <color name ="green2">#2BB673</color>
     <color name = "blue4">#112842</color>
-    <color name = "grey">#798797</color>
-    <color name="grey2">#9FB3C8</color>
-    <color name="grey3">#47495E</color>
-    <color name="blue5">#B30A2343</color>
-    <color name="blue6">#801E5EBE</color>
-    <color name="color_ic">#80FFFFFF</color>
-    <color name="blue7">#19688E</color>
-    <color name="blue9">#121726</color>
+    <color name = "blue5">#B30A2343</color>
+    <color name = "blue6">#801E5EBE</color>
+    <color name = "blue7">#19688E</color>
     <color name = "blue8">#28405B</color>
-    <color name ="blue10">#162447</color>
-    <color name="orange">#9E5832</color>
-    <color name="pink">#99297B</color>
-    <color name="purple">#673AB7</color>
-    <color name="red">#FF5252</color>
+    <color name = "blue9">#121726</color>
+    <color name = "blue10">#162447</color>
+    <color name = "blue11">#1E293B</color>
+    <color name = "blue12">#1C274C</color>
+
+    <color name = "bluelight">#448AFF</color>
+    <color name = "bluelight2">#00AEEF</color>
+    <color name = "bluelight3">#38BDF8</color>
+    <color name = "bluelight4">#0052B4</color>
+
+    <color name = "darkblue">#081A29</color>
+
+    <color name = "ciano">#27B7C8</color>
+    <color name = "ciano2">#0B203A</color>
+
+    <color name = "green1">#178047</color>
+    <color name = "green2">#2BB673</color>
+    <color name = "green3">#4CAF50</color>
+    <color name = "green4">#00D68F</color>
+    <color name = "green5">#20D36B</color>
+    <color name = "green6">#00D46A</color>
+    <color name = "green7">#22C55E</color>
+    <color name = "green8">#a4ea86</color>
+
+    <color name = "grey">#798797</color>
+    <color name = "grey2">#9FB3C8</color>
+    <color name = "grey3">#47495E</color>
+    <color name = "grey4">#7D8DA2</color>
+    <color name = "grey5">#ACB5BB</color>
+    <color name = "grey6">#C5C5C5</color>
+    <color name = "grey7">#8D8D8D</color>
+
+    <color name = "color_ic">#80FFFFFF</color>
+
+    <color name = "orange">#9E5832</color>
+    <color name = "orange2">#FFA800</color>
+
+    <color name = "pink">#99297B</color>
+    <color name = "pink2">#bc5678</color>
+
+    <color name = "purple">#673AB7</color>
+    <color name = "purple2">#A855F7</color>
+    <color name = "purple3">#b296fb</color>
+
+    <color name = "red">#FF5252</color>
+    <color name = "red2">#560000</color>
+
+    <color name = "overlay">#A60F2537</color>
+    <color name = "overlayG">#330F2805</color>
+    <color name = "overlayC">#102538</color>
+    <color name = "overlayY">#263C46</color>
+    <color name = "overlayP">#0D3F42</color>
+    <color name = "overlayB">#CC16274B</color>
+    <color name = "overlayB2">#102942</color>
+    <color name = "overlayRoxo">#302553</color>
+    <color name = "overlayCiano">#103B58</color>
+
+    <color name = "yellow">#FFC107</color>
+    <color name = "yellow2">#FFB000</color>
+
+    <color name = "redHemo">#BF2424</color>
+    <color name = "logoHemo">#E73030</color>
+    <color name = "redHemo2">#DC2626</color>
+
+    <color name = "transparent">#00000000</color>
+
+    <color name = "viewColor">#203A55</color>
 
 </resources>

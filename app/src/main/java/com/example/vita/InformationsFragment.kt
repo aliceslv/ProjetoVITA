@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.example.vita.ui.InputUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -14,7 +15,11 @@ import com.example.vita.databinding.FragmentInformationsBinding
 class InformationsFragment : Fragment() {
 
     private var _binding: FragmentInformationsBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentInformationsBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     // Injeção do ViewModel compartilhado
     private val userViewModel: UserViewModel by activityViewModels()
@@ -30,6 +35,8 @@ class InformationsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        InputUtils.configurarTeclado(view)
 
         // Configura o Spinner
         configurarSpinnerSexo()

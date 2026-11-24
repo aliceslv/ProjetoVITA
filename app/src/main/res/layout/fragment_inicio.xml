@@ -33,24 +33,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter24_bold"
-                android:text="Olá!"
+                android:text="@string/hello"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/txtData"
+            <LinearLayout
+                android:id="@+id/layoutNavegacaoData"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/inter24_medium"
-                android:text="Data atual"
-                android:textColor="@color/grey"
-                android:textSize="13sp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtSaudacao" />
+                app:layout_constraintTop_toBottomOf="@id/txtSaudacao">
+
+                <ImageView
+                    android:id="@+id/btnDiaAnterior"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:src="@drawable/arrowprev"
+                    android:textSize="30sp"
+                    android:contentDescription="@string/last_day"
+                    android:clickable="true"
+                    app:tint="@color/white"
+                    android:focusable="true" />
+
+                <TextView
+                    android:id="@+id/txtData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter24_medium"
+                    android:gravity="center"
+                    android:text="@string/current_date"
+                    android:textColor="@color/grey2"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:id="@+id/btnProximoDia"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:src="@drawable/arrownext"
+                    app:tint="@color/white"
+                    android:textSize="30sp"
+                    android:contentDescription="@string/next_day"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </LinearLayout>
 
             <!-- Carrossel de banners -->
             <FrameLayout
@@ -62,7 +98,7 @@
                 android:backgroundTint="@color/blue4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txtData">
+                app:layout_constraintTop_toBottomOf="@id/layoutNavegacaoData">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/pagerBanner"
@@ -72,28 +108,30 @@
 
                 <ImageView
                     android:id="@+id/arrowPrev"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="start|center_vertical"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="2dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:padding="4dp"
+                    android:padding="12dp"
+                    android:contentDescription="@string/voltar"
                     android:src="@drawable/arrowprev"
                     android:visibility="visible"
                     app:tint="@color/white" />
 
                 <ImageView
                     android:id="@+id/arrowNext"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="2dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:padding="4dp"
+                    android:padding="12dp"
+                    android:contentDescription="@string/go"
                     android:src="@drawable/arrownext"
                     android:visibility="visible"
                     app:tint="@color/white" />
@@ -132,8 +170,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="Gord."
-                        android:textColor="@color/grey"
+                        android:text="@string/gord"
+                        android:textColor="@color/grey2"
                         android:textSize="13sp" />
 
                     <TextView
@@ -142,7 +180,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="0g"
+                        android:text="@string/daily_gord"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -158,8 +196,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="Carb."
-                        android:textColor="@color/grey"
+                        android:text="@string/carb"
+                        android:textColor="@color/grey2"
                         android:textSize="13sp" />
 
                     <TextView
@@ -168,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="0g"
+                        android:text="@string/daily_carbo"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -184,8 +222,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="Prot."
-                        android:textColor="@color/grey"
+                        android:text="@string/prot"
+                        android:textColor="@color/grey2"
                         android:textSize="13sp" />
 
                     <TextView
@@ -194,7 +232,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="0g"
+                        android:text="@string/daily_prot"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -207,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/inter24_bold"
-                android:text="Refeições de hoje"
+                android:text="@string/today_meal"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -255,7 +293,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter24_bold"
-                        android:text="Registrar Refeições"
+                        android:text="@string/register_meal"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 
@@ -265,8 +303,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="0 cal"
-                        android:textColor="@color/grey"
+                        android:text="@string/register_value"
+                        android:textColor="@color/grey2"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -313,8 +351,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="Água"
-                        android:textColor="@color/grey"
+                        android:text="@string/water"
+                        android:textColor="@color/grey2"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -324,7 +362,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/inter24_bold"
-                    android:text="0 / 0"
+                    android:text="@string/water_ml"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -335,8 +373,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="ml"
-                    android:textColor="@color/grey"
+                    android:text="@string/water_measure"
+                    android:textColor="@color/grey2"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -375,8 +413,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:fontFamily="@font/inter24_medium"
-                        android:text="IDR"
-                        android:textColor="@color/grey"
+                        android:text="@string/idr"
+                        android:textColor="@color/grey2"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -386,7 +424,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/inter24_bold"
-                    android:text="2000"
+                    android:text="@string/idr_value"
                     android:textColor="@color/white"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -396,8 +434,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/inter24_medium"
-                    android:text="calorias"
-                    android:textColor="@color/grey"
+                    android:text="@string/calories"
+                    android:textColor="@color/grey2"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -423,7 +461,7 @@
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
-            android:contentDescription="Perfil"
+            android:contentDescription="@string/profile"
             android:padding="7dp"
             android:scaleType="centerInside"
             android:src="@drawable/icuser" />
@@ -433,7 +471,7 @@
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_weight="1"
-            android:contentDescription="Diário"
+            android:contentDescription="@string/diary"
             android:padding="7dp"
             android:scaleType="centerInside"
             android:src="@drawable/iclivrogr" />
@@ -443,7 +481,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:contentDescription="Calorias"
+            android:contentDescription="@string/calories"
             android:padding="7dp"
             android:scaleType="centerInside"
             android:src="@drawable/icescalawhite" />

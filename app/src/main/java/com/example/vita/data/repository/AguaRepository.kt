@@ -1,80 +1,61 @@
 package com.example.vita.data.repository
 
-import com.example.vita.data.model.RegistroAgua
+import com.example.vita.data.FirestorePaths
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import java.util.Date
 
 class AguaRepository {
 
     private val db = FirebaseFirestore.getInstance()
 
-    private fun aguaReferencia(uid: String) =
-        db.collection("usuarios")
-            .document(uid)
-            .collection("agua")
-
     fun salvarRegistro(
         uid: String,
-        data: String,
         quantidadeMl: Int,
         sucesso: () -> Unit,
         erro: (Exception) -> Unit
     ) {
-        val registro = hashMapOf(
-            "data" to data,
-            "quantidadeMl" to quantidadeMl
+
+        val dados = hashMapOf(
+            "quantidade_ml" to quantidadeMl,
+            "data" to Timestamp(Date())
         )
 
-        aguaReferencia(uid)
-            .add(registro)
+        db.collection(FirestorePaths.USERS)
+            .document(uid)
+            .collection(FirestorePaths.AGUA)
+            .add(dados)
             .addOnSuccessListener {
                 sucesso()
             }
-            .addOnFailureListener { exception ->
-                erro(exception)
+            .addOnFailureListener {
+                erro(it)
             }
     }
 
     fun buscarRegistros(
         uid: String,
-        data: String,
-        resultado: (List<RegistroAgua>) -> Unit,
+        resultado: (List<Map<String, Any>>) -> Unit,
         erro: (Exception) -> Unit
     ) {
-        aguaReferencia(uid)
-            .whereEqualTo("data", data)
+        db.collection(FirestorePaths.USERS)
+            .document(uid)
+            .collection(FirestorePaths.AGUA)
+            .orderBy("data", Query.Direction.DESCENDING)
             .get()
-            .addOnSuccessListener { documentos ->
+            .addOnSuccessListener { consulta ->
 
-                val lista = documentos.map { documento ->
-                    RegistroAgua(
-                        id = documento.id,
-                        data = documento.getString("data") ?: "",
-                        quantidadeMl =
-                            (documento.get("quantidadeMl") as? Number)?.toInt() ?: 0
-                    )
+                val lista = consulta.documents.mapNotNull { documento ->
+                    documento.data?.toMutableMap()?.apply {
+                        put("id", documento.id)
+                    }
                 }
 
                 resultado(lista)
             }
-            .addOnFailureListener { exception ->
-                erro(exception)
-            }
-    }
-
-    fun excluirRegistro(
-        uid: String,
-        idRegistro: String,
-        sucesso: () -> Unit,
-        erro: (Exception) -> Unit
-    ) {
-        aguaReferencia(uid)
-            .document(idRegistro)
-            .delete()
-            .addOnSuccessListener {
-                sucesso()
-            }
-            .addOnFailureListener { exception ->
-                erro(exception)
+            .addOnFailureListener {
+                erro(it)
             }
     }
 }

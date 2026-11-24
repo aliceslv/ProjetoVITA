@@ -31,8 +31,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/inter24_semibold"
-                    android:text="Registro de refeição"
-                    android:textColor="#FFFFFF"
+                    android:text="@string/register_str"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:fontFamily="@font/inter24_regular"
-                    android:text="quarta-feira, mai. 13"
+                    android:text="@string/data"
                     android:textColor="@color/grey2"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -55,7 +55,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/inter24_medium"
-                android:text="Cancelar"
+                android:text="@string/cancel"
                 android:textColor="@color/green2"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -83,7 +83,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/inter24_bold"
                     android:gravity="center"
-                    android:text="ALIMENTO"
+                    android:text="@string/alimento"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -96,7 +96,7 @@
                 android:fontFamily="@font/inter24_bold"
                 android:gravity="center"
                 android:paddingHorizontal="16dp"
-                android:text="CONSUMIDO RECENTEMENTE"
+                android:text="@string/consumido_recent"
                 android:textColor="@color/green2"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -105,7 +105,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#1E293B" />
+            android:background="@color/blue11" />
     </LinearLayout>
 
     <!-- CONTEÚDO COM SCROLL -->
@@ -133,7 +133,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:contentDescription="Ícone de busca"
+                    android:contentDescription="@string/search_icon"
                     android:src="@android:drawable/ic_menu_search"
                     app:tint="@color/grey2" />
 
@@ -143,10 +143,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="12dp"
                     android:background="@null"
-                    android:hint="Pesquisar nos recentes"
+                    android:hint="@string/search_hint"
                     android:inputType="text"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/grey"
+                    android:textColorHint="@color/grey2"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -157,8 +157,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:gravity="center"
-                android:text="Nenhum alimento registrado recentemente."
-                android:textColor="@color/grey"
+                android:text="@string/no_recent"
+                android:textColor="@color/grey2"
                 android:textSize="14sp"
                 android:visibility="gone" />
 

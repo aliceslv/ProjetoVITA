@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.CompoundButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -23,7 +24,11 @@ import java.util.Locale
 class LembretesFragment : Fragment() {
 
     private var _binding: FragmentLembretesBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentLembretesBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     private val ID_CAFE = 101
     private val ID_ALMOCO = 102
@@ -56,7 +61,8 @@ class LembretesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val prefsGlobal = requireContext().getSharedPreferences("ConfiguracoesGlobaisPrefs", Context.MODE_PRIVATE)
+        val prefsGlobal =
+            requireContext().getSharedPreferences("ConfiguracoesGlobaisPrefs", Context.MODE_PRIVATE)
         val notificacoesAtivadas = prefsGlobal.getBoolean("KEY_NOTIFICACOES_GLOBAIS", true)
 
         if (!notificacoesAtivadas) {
@@ -67,6 +73,12 @@ class LembretesFragment : Fragment() {
             verificarPermissaoNotificacao()
             carregarConfiguracoes()
             configurarListeners()
+
+            if (binding.switchAgua.isChecked) {
+                LembreteScheduler.agendarProximoLembreteAgua(
+                    requireContext()
+                )
+            }
         }
     }
 
@@ -119,12 +131,66 @@ class LembretesFragment : Fragment() {
         binding.switchAgua.isChecked = prefs.getBoolean("KEY_AGUA", true)
         binding.switchDormir.isChecked = prefs.getBoolean("KEY_DORMIR", true)
 
-        atualizarTextoCard(binding.txtHoraCafe, prefs.getInt("HORA_CAFE", 8), prefs.getInt("MIN_CAFE", 0), prefs.getString("DIAS_CAFE", "Todos os dias") ?: "Todos os dias")
-        atualizarTextoCard(binding.txtHoraAlmoco, prefs.getInt("HORA_ALMOCO", 12), prefs.getInt("MIN_ALMOCO", 30), prefs.getString("DIAS_ALMOCO", "Seg a Sex") ?: "Seg a Sex")
-        atualizarTextoCard(binding.txtHoraLanche, prefs.getInt("HORA_LANCHE", 16), prefs.getInt("MIN_LANCHE", 0), prefs.getString("DIAS_LANCHE", "Todos os dias") ?: "Todos os dias")
-        atualizarTextoCard(binding.txtHoraJantar, prefs.getInt("HORA_JANTAR", 19), prefs.getInt("MIN_JANTAR", 30), prefs.getString("DIAS_JANTAR", "Todos os dias") ?: "Todos os dias")
-        atualizarTextoCard(binding.txtHoraAgua, prefs.getInt("HORA_AGUA", 8), prefs.getInt("MIN_AGUA", 0), prefs.getString("DIAS_AGUA", "A cada 2h") ?: "A cada 2h")
-        atualizarTextoCard(binding.txtHoraDormir, prefs.getInt("HORA_DORMIR", 22), prefs.getInt("MIN_DORMIR", 30), prefs.getString("DIAS_DORMIR", "Todos os dias") ?: "Todos os dias")
+        atualizarTextoCard(
+            binding.txtHoraCafe,
+            prefs.getInt("HORA_CAFE", 8),
+            prefs.getInt("MIN_CAFE", 0),
+            prefs.getString("DIAS_CAFE", "Todos os dias") ?: "Todos os dias"
+        )
+        atualizarTextoCard(
+            binding.txtHoraAlmoco,
+            prefs.getInt("HORA_ALMOCO", 12),
+            prefs.getInt("MIN_ALMOCO", 30),
+            prefs.getString("DIAS_ALMOCO", "Seg a Sex") ?: "Seg a Sex"
+        )
+        atualizarTextoCard(
+            binding.txtHoraLanche,
+            prefs.getInt("HORA_LANCHE", 16),
+            prefs.getInt("MIN_LANCHE", 0),
+            prefs.getString("DIAS_LANCHE", "Todos os dias") ?: "Todos os dias"
+        )
+        atualizarTextoCard(
+            binding.txtHoraJantar,
+            prefs.getInt("HORA_JANTAR", 19),
+            prefs.getInt("MIN_JANTAR", 30),
+            prefs.getString("DIAS_JANTAR", "Todos os dias") ?: "Todos os dias"
+        )
+        atualizarTextoAgua(prefs)
+        atualizarTextoCard(
+            binding.txtHoraDormir,
+            prefs.getInt("HORA_DORMIR", 22),
+            prefs.getInt("MIN_DORMIR", 30),
+            prefs.getString("DIAS_DORMIR", "Todos os dias") ?: "Todos os dias"
+        )
+    }
+
+    private fun atualizarTextoAgua(
+        prefs: android.content.SharedPreferences
+    ) {
+
+        val inicio = String.format(
+            Locale.getDefault(),
+            "%02d:%02d",
+            prefs.getInt("HORA_AGUA_INICIO", 8),
+            prefs.getInt("MIN_AGUA_INICIO", 0)
+        )
+
+        val fim = String.format(
+            Locale.getDefault(),
+            "%02d:%02d",
+            prefs.getInt("HORA_AGUA_FIM", 22),
+            prefs.getInt("MIN_AGUA_FIM", 0)
+        )
+
+        val intervalo = prefs.getInt("INTERVALO_AGUA", 2)
+
+        val dias = prefs.getString(
+            "DIAS_AGUA",
+            "Todos os dias"
+        ) ?: "Todos os dias"
+
+        binding.txtHoraAgua.text =
+            "$inicio às $fim • A cada ${intervalo}h • $dias"
     }
 
     private fun atualizarTextoCard(textView: TextView, hora: Int, minuto: Int, frequencia: String) {
@@ -169,12 +235,21 @@ class LembretesFragment : Fragment() {
                             .putString(keyDias, diasSelecionados)
                             .apply()
 
-                        atualizarTextoCard(textView, horaSelecionada, minSelecionado, diasSelecionados)
+                        atualizarTextoCard(
+                            textView,
+                            horaSelecionada,
+                            minSelecionado,
+                            diasSelecionados
+                        )
 
                         if (isChecked) {
                             agendarSeguro(id, horaSelecionada, minSelecionado, titulo, mensagem)
                         }
-                        Toast.makeText(requireContext(), "Lembrete configurado!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Lembrete configurado!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     .setNegativeButton("Cancelar", null)
                     .show()
@@ -200,75 +275,340 @@ class LembretesFragment : Fragment() {
     }
 
     private fun configurarListeners() {
+
         binding.btnVoltar.setOnClickListener {
             findNavController().navigateUp()
         }
 
-        val prefs = requireContext().getSharedPreferences("LembretesPrefs", Context.MODE_PRIVATE)
+        val prefs = requireContext().getSharedPreferences(
+            "LembretesPrefs",
+            Context.MODE_PRIVATE
+        )
 
-        // Café
-        binding.cardCafe.setOnClickListener {
-            abrirDialogoEdicao(ID_CAFE, "HORA_CAFE", "MIN_CAFE", "DIAS_CAFE", 8, 0, "Todos os dias", "Café da Manhã ☕", "Hora de tomar o seu café da manhã!", binding.txtHoraCafe, binding.switchCafe.isChecked)
-        }
-        binding.switchCafe.setOnCheckedChangeListener { _, isChecked ->
-            salvarEstadoSwitch("KEY_CAFE", isChecked)
-            if (isChecked) agendarSeguro(ID_CAFE, prefs.getInt("HORA_CAFE", 8), prefs.getInt("MIN_CAFE", 0), "Café da Manhã ☕", "Hora de tomar o seu café da manhã!")
-            else cancelarSeguro(ID_CAFE)
+        configurarLembrete(
+            binding.cardCafe,
+            binding.switchCafe,
+            binding.txtHoraCafe,
+            ID_CAFE,
+            "HORA_CAFE",
+            "MIN_CAFE",
+            "DIAS_CAFE",
+            "KEY_CAFE",
+            8,
+            0,
+            "Todos os dias",
+            "Café da Manhã ☕",
+            "Hora de tomar o seu café da manhã!",
+            prefs
+        )
+
+        configurarLembrete(
+            binding.cardAlmoco,
+            binding.switchAlmoco,
+            binding.txtHoraAlmoco,
+            ID_ALMOCO,
+            "HORA_ALMOCO",
+            "MIN_ALMOCO",
+            "DIAS_ALMOCO",
+            "KEY_ALMOCO",
+            12,
+            30,
+            "Seg a Sex",
+            "Almoço 🍲",
+            "Está na hora do seu almoço!",
+            prefs
+        )
+
+        configurarLembrete(
+            binding.cardLanche,
+            binding.switchLanche,
+            binding.txtHoraLanche,
+            ID_LANCHE,
+            "HORA_LANCHE",
+            "MIN_LANCHE",
+            "DIAS_LANCHE",
+            "KEY_LANCHE",
+            16,
+            0,
+            "Todos os dias",
+            "Lanche da Tarde 🍎",
+            "Hora da pausa para o lanche!",
+            prefs
+        )
+
+        configurarLembrete(
+            binding.cardJantar,
+            binding.switchJantar,
+            binding.txtHoraJantar,
+            ID_JANTAR,
+            "HORA_JANTAR",
+            "MIN_JANTAR",
+            "DIAS_JANTAR",
+            "KEY_JANTAR",
+            19,
+            30,
+            "Todos os dias",
+            "Jantar 🥗",
+            "Hora do jantar!",
+            prefs
+        )
+
+        configurarLembrete(
+            binding.cardAgua,
+            binding.switchAgua,
+            binding.txtHoraAgua,
+            ID_AGUA,
+            "HORA_AGUA",
+            "MIN_AGUA",
+            "DIAS_AGUA",
+            "KEY_AGUA",
+            8,
+            0,
+            "A cada 2h",
+            "Beber Água 💧",
+            "Mantenha-se hidratado!",
+            prefs
+        )
+
+        configurarLembrete(
+            binding.cardDormir,
+            binding.switchDormir,
+            binding.txtHoraDormir,
+            ID_DORMIR,
+            "HORA_DORMIR",
+            "MIN_DORMIR",
+            "DIAS_DORMIR",
+            "KEY_DORMIR",
+            22,
+            30,
+            "Todos os dias",
+            "Hora de Dormir 😴",
+            "Boa noite!",
+            prefs
+        )
+    }
+
+
+    private fun abrirDialogoAgua(isChecked: Boolean) {
+
+        val prefs = requireContext().getSharedPreferences(
+            "LembretesPrefs",
+            Context.MODE_PRIVATE
+        )
+
+        val horaInicioSalva = prefs.getInt("HORA_AGUA_INICIO", 8)
+        val minutoInicioSalvo = prefs.getInt("MIN_AGUA_INICIO", 0)
+
+        val horaFimSalva = prefs.getInt("HORA_AGUA_FIM", 22)
+        val minutoFimSalvo = prefs.getInt("MIN_AGUA_FIM", 0)
+
+        val intervaloSalvo = prefs.getInt("INTERVALO_AGUA", 2)
+
+        val diasSalvos = prefs.getString(
+            "DIAS_AGUA",
+            "Todos os dias"
+        ) ?: "Todos os dias"
+
+        TimePickerDialog(
+            requireContext(),
+            { _, horaInicio, minutoInicio ->
+
+                TimePickerDialog(
+                    requireContext(),
+                    { _, horaFim, minutoFim ->
+
+                        val inicio = horaInicio * 60 + minutoInicio
+                        val fim = horaFim * 60 + minutoFim
+
+                        if (fim <= inicio) {
+
+                            Toast.makeText(
+                                requireContext(),
+                                "O horário final deve ser posterior ao inicial.",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            return@TimePickerDialog
+                        }
+
+                        val intervalos = intArrayOf(1, 2, 3, 4)
+
+                        val opcoesIntervalo = arrayOf(
+                            "A cada 1 hora",
+                            "A cada 2 horas",
+                            "A cada 3 horas",
+                            "A cada 4 horas"
+                        )
+
+                        var intervaloSelecionado =
+                            intervalos.indexOf(intervaloSalvo)
+                                .coerceAtLeast(0)
+
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Intervalo das notificações")
+                            .setSingleChoiceItems(
+                                opcoesIntervalo,
+                                intervaloSelecionado
+                            ) { _, which ->
+                                intervaloSelecionado = which
+                            }
+                            .setPositiveButton("Continuar") { _, _ ->
+
+                                val opcoesDias = arrayOf(
+                                    "Todos os dias",
+                                    "Seg a Sex",
+                                    "Fins de semana"
+                                )
+
+                                var diaSelecionado =
+                                    opcoesDias.indexOf(diasSalvos)
+                                        .coerceAtLeast(0)
+
+                                AlertDialog.Builder(requireContext())
+                                    .setTitle("Repetir em quais dias?")
+                                    .setSingleChoiceItems(
+                                        opcoesDias,
+                                        diaSelecionado
+                                    ) { _, which ->
+                                        diaSelecionado = which
+                                    }
+                                    .setPositiveButton("Salvar") { _, _ ->
+
+                                        val dias = opcoesDias[diaSelecionado]
+
+                                        prefs.edit()
+                                            .putInt(
+                                                "HORA_AGUA_INICIO",
+                                                horaInicio
+                                            )
+                                            .putInt(
+                                                "MIN_AGUA_INICIO",
+                                                minutoInicio
+                                            )
+                                            .putInt(
+                                                "HORA_AGUA_FIM",
+                                                horaFim
+                                            )
+                                            .putInt(
+                                                "MIN_AGUA_FIM",
+                                                minutoFim
+                                            )
+                                            .putInt(
+                                                "INTERVALO_AGUA",
+                                                intervalos[intervaloSelecionado]
+                                            )
+                                            .putString("DIAS_AGUA", dias)
+                                            .apply()
+
+                                        atualizarTextoAgua(prefs)
+
+                                        if (isChecked) {
+                                            LembreteScheduler.agendarProximoLembreteAgua(
+                                                requireContext()
+                                            )
+                                        }
+
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Lembrete de água configurado!",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    .setNegativeButton("Cancelar", null)
+                                    .show()
+                            }
+                            .setNegativeButton("Cancelar", null)
+                            .show()
+                    },
+                    horaFimSalva,
+                    minutoFimSalvo,
+                    true
+                ).apply {
+                    setTitle("Horário final")
+                }.show()
+            },
+            horaInicioSalva,
+            minutoInicioSalvo,
+            true
+        ).apply {
+            setTitle("Horário inicial")
+        }.show()
+    }
+
+
+    private fun configurarLembrete(
+        card: View,
+        switch: CompoundButton,
+        textoHora: TextView,
+        id: Int,
+        keyHora: String,
+        keyMin: String,
+        keyDias: String,
+        keySwitch: String,
+        horaPadrao: Int,
+        minutoPadrao: Int,
+        diasPadrao: String,
+        titulo: String,
+        mensagem: String,
+        prefs: android.content.SharedPreferences
+    ) {
+
+        card.setOnClickListener {
+
+            if (id == ID_AGUA) {
+
+                abrirDialogoAgua(switch.isChecked)
+
+            } else {
+
+                abrirDialogoEdicao(
+                    id,
+                    keyHora,
+                    keyMin,
+                    keyDias,
+                    horaPadrao,
+                    minutoPadrao,
+                    diasPadrao,
+                    titulo,
+                    mensagem,
+                    textoHora,
+                    switch.isChecked
+                )
+            }
         }
 
-        // Almoço
-        binding.cardAlmoco.setOnClickListener {
-            abrirDialogoEdicao(ID_ALMOCO, "HORA_ALMOCO", "MIN_ALMOCO", "DIAS_ALMOCO", 12, 30, "Seg a Sex", "Almoço 🍲", "Está na hora do seu almoço!", binding.txtHoraAlmoco, binding.switchAlmoco.isChecked)
-        }
-        binding.switchAlmoco.setOnCheckedChangeListener { _, isChecked ->
-            salvarEstadoSwitch("KEY_ALMOCO", isChecked)
-            if (isChecked) agendarSeguro(ID_ALMOCO, prefs.getInt("HORA_ALMOCO", 12), prefs.getInt("MIN_ALMOCO", 30), "Almoço 🍲", "Está na hora do seu almoço!")
-            else cancelarSeguro(ID_ALMOCO)
-        }
+        switch.setOnCheckedChangeListener { _, marcado ->
 
-        // Lanche
-        binding.cardLanche.setOnClickListener {
-            abrirDialogoEdicao(ID_LANCHE, "HORA_LANCHE", "MIN_LANCHE", "DIAS_LANCHE", 16, 0, "Todos os dias", "Lanche da Tarde 🍎", "Hora da pausa para o lanche!", binding.txtHoraLanche, binding.switchLanche.isChecked)
-        }
-        binding.switchLanche.setOnCheckedChangeListener { _, isChecked ->
-            salvarEstadoSwitch("KEY_LANCHE", isChecked)
-            if (isChecked) agendarSeguro(ID_LANCHE, prefs.getInt("HORA_LANCHE", 16), prefs.getInt("MIN_LANCHE", 0), "Lanche da Tarde 🍎", "Hora da pausa para o lanche!")
-            else cancelarSeguro(ID_LANCHE)
-        }
+            salvarEstadoSwitch(keySwitch, marcado)
 
-        // Jantar
-        binding.cardJantar.setOnClickListener {
-            abrirDialogoEdicao(ID_JANTAR, "HORA_JANTAR", "MIN_JANTAR", "DIAS_JANTAR", 19, 30, "Todos os dias", "Jantar 🥗", "Hora do jantar!", binding.txtHoraJantar, binding.switchJantar.isChecked)
-        }
-        binding.switchJantar.setOnCheckedChangeListener { _, isChecked ->
-            salvarEstadoSwitch("KEY_JANTAR", isChecked)
-            if (isChecked) agendarSeguro(ID_JANTAR, prefs.getInt("HORA_JANTAR", 19), prefs.getInt("MIN_JANTAR", 30), "Jantar 🥗", "Hora do jantar!")
-            else cancelarSeguro(ID_JANTAR)
-        }
+            if (marcado) {
 
-        // Água
-        binding.cardAgua.setOnClickListener {
-            abrirDialogoEdicao(ID_AGUA, "HORA_AGUA", "MIN_AGUA", "DIAS_AGUA", 8, 0, "A cada 2h", "Beber Água 💧", "Mantenha-se hidratado!", binding.txtHoraAgua, binding.switchAgua.isChecked)
-        }
-        binding.switchAgua.setOnCheckedChangeListener { _, isChecked ->
-            salvarEstadoSwitch("KEY_AGUA", isChecked)
-            if (isChecked) agendarSeguro(ID_AGUA, prefs.getInt("HORA_AGUA", 8), prefs.getInt("MIN_AGUA", 0), "Beber Água 💧", "Mantenha-se hidratado!")
-            else cancelarSeguro(ID_AGUA)
-        }
+                if (id == ID_AGUA) {
 
-        // Dormir
-        binding.cardDormir.setOnClickListener {
-            abrirDialogoEdicao(ID_DORMIR, "HORA_DORMIR", "MIN_DORMIR", "DIAS_DORMIR", 22, 30, "Todos os dias", "Hora de Dormir 😴", "Boa noite!", binding.txtHoraDormir, binding.switchDormir.isChecked)
-        }
-        binding.switchDormir.setOnCheckedChangeListener { _, isChecked ->
-            salvarEstadoSwitch("KEY_DORMIR", isChecked)
-            if (isChecked) agendarSeguro(ID_DORMIR, prefs.getInt("HORA_DORMIR", 22), prefs.getInt("MIN_DORMIR", 30), "Hora de Dormir 😴", "Boa noite!")
-            else cancelarSeguro(ID_DORMIR)
+                    LembreteScheduler.agendarProximoLembreteAgua(
+                        requireContext()
+                    )
+
+                } else {
+
+                    agendarSeguro(
+                        id,
+                        prefs.getInt(keyHora, horaPadrao),
+                        prefs.getInt(keyMin, minutoPadrao),
+                        titulo,
+                        mensagem
+                    )
+                }
+
+            } else {
+
+                cancelarSeguro(id)
+            }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _binding = null
+        }
     }
-}

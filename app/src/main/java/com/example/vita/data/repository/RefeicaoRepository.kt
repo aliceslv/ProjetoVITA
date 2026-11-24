@@ -1,107 +1,102 @@
 package com.example.vita.data.repository
 
-import com.example.vita.data.model.AlimentoConsumido
-import com.example.vita.data.model.Refeicao
+import com.example.vita.data.FirestorePaths
+import com.example.vita.ui.AlimentoConsumido
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import java.util.Date
 
 class RefeicaoRepository {
 
     private val db = FirebaseFirestore.getInstance()
 
-    private fun refeicoesReferencia(uid: String) =
-        db.collection("usuarios")
-            .document(uid)
-            .collection("refeicoes")
-
     fun salvarRefeicao(
         uid: String,
         tipo: String,
-        data: String,
         alimentos: List<AlimentoConsumido>,
-        sucesso: () -> Unit,
+        sucesso: (String) -> Unit,
         erro: (Exception) -> Unit
     ) {
-        val totalCalorias = alimentos.sumOf { it.calorias.toDouble() }.toFloat()
-        val totalCarboidratos = alimentos.sumOf { it.carboidratos.toDouble() }.toFloat()
-        val totalProteinas = alimentos.sumOf { it.proteinas.toDouble() }.toFloat()
-        val totalGorduras = alimentos.sumOf { it.gorduras.toDouble() }.toFloat()
 
-        val refeicao = hashMapOf(
+        val referencia = db.collection(FirestorePaths.USERS)
+            .document(uid)
+            .collection(FirestorePaths.REFEICOES)
+            .document()
+
+        val totalCalorias = alimentos.sumOf {
+            it.calorias.toDouble()
+        }
+
+        val totalCarboidratos = alimentos.sumOf {
+            it.carboidratos.toDouble()
+        }
+
+        val totalProteinas = alimentos.sumOf {
+            it.proteinas.toDouble()
+        }
+
+        val totalGorduras = alimentos.sumOf {
+            it.gorduras.toDouble()
+        }
+
+        val listaAlimentos = alimentos.map { alimento ->
+
+            hashMapOf(
+                "nome" to alimento.nome,
+                "quantidade" to alimento.gramas.toDouble(),
+                "unidade" to "g",
+                "gramas" to alimento.gramas.toDouble(),
+                "porcoes" to alimento.porcoes.toDouble(),
+                "calorias" to alimento.calorias.toDouble(),
+                "carboidratos" to alimento.carboidratos.toDouble(),
+                "proteinas" to alimento.proteinas.toDouble(),
+                "gorduras" to alimento.gorduras.toDouble(),
+                "origem" to alimento.origem
+            )
+        }
+
+        val dados = hashMapOf(
             "tipo" to tipo,
-            "data" to data,
-            "alimentos" to alimentos.map { alimento ->
-                hashMapOf(
-                    "nome" to alimento.nome,
-                    "gramas" to alimento.gramas,
-                    "porcoes" to alimento.porcoes,
-                    "calorias" to alimento.calorias,
-                    "carboidratos" to alimento.carboidratos,
-                    "proteinas" to alimento.proteinas,
-                    "gorduras" to alimento.gorduras
-                )
-            },
-            "totalCalorias" to totalCalorias,
-            "totalCarboidratos" to totalCarboidratos,
-            "totalProteinas" to totalProteinas,
-            "totalGorduras" to totalGorduras
+            "data" to Timestamp(Date()),
+            "alimentos" to listaAlimentos,
+            "total_calorias" to totalCalorias,
+            "total_carboidratos" to totalCarboidratos,
+            "total_proteinas" to totalProteinas,
+            "total_gorduras" to totalGorduras
         )
 
-        refeicoesReferencia(uid)
-            .add(refeicao)
+        referencia.set(dados)
             .addOnSuccessListener {
-                sucesso()
+                sucesso(referencia.id)
             }
-            .addOnFailureListener { exception ->
-                erro(exception)
+            .addOnFailureListener {
+                erro(it)
             }
     }
 
     fun buscarRefeicoes(
         uid: String,
-        resultado: (List<Refeicao>) -> Unit,
+        resultado: (List<Map<String, Any>>) -> Unit,
         erro: (Exception) -> Unit
     ) {
-        refeicoesReferencia(uid)
+        db.collection(FirestorePaths.USERS)
+            .document(uid)
+            .collection(FirestorePaths.REFEICOES)
+            .orderBy("data", Query.Direction.DESCENDING)
             .get()
-            .addOnSuccessListener { documentos ->
+            .addOnSuccessListener { consulta ->
 
-                val lista = documentos.map { documento ->
-
-                    val alimentosSalvos =
-                        documento.get("alimentos") as? List<Map<String, Any>> ?: emptyList()
-
-                    val alimentos = alimentosSalvos.map { item ->
-                        AlimentoConsumido(
-                            nome = item["nome"] as? String ?: "",
-                            gramas = (item["gramas"] as? Number)?.toFloat() ?: 0f,
-                            porcoes = (item["porcoes"] as? Number)?.toFloat() ?: 0f,
-                            calorias = (item["calorias"] as? Number)?.toFloat() ?: 0f,
-                            carboidratos = (item["carboidratos"] as? Number)?.toFloat() ?: 0f,
-                            proteinas = (item["proteinas"] as? Number)?.toFloat() ?: 0f,
-                            gorduras = (item["gorduras"] as? Number)?.toFloat() ?: 0f
-                        )
+                val lista = consulta.documents.mapNotNull { documento ->
+                    documento.data?.toMutableMap()?.apply {
+                        put("id", documento.id)
                     }
-
-                    Refeicao(
-                        id = documento.id,
-                        tipo = documento.getString("tipo") ?: "",
-                        data = documento.getString("data") ?: "",
-                        alimentos = alimentos,
-                        totalCalorias =
-                            (documento.get("totalCalorias") as? Number)?.toFloat() ?: 0f,
-                        totalCarboidratos =
-                            (documento.get("totalCarboidratos") as? Number)?.toFloat() ?: 0f,
-                        totalProteinas =
-                            (documento.get("totalProteinas") as? Number)?.toFloat() ?: 0f,
-                        totalGorduras =
-                            (documento.get("totalGorduras") as? Number)?.toFloat() ?: 0f
-                    )
                 }
 
                 resultado(lista)
             }
-            .addOnFailureListener { exception ->
-                erro(exception)
+            .addOnFailureListener {
+                erro(it)
             }
     }
 
@@ -111,14 +106,16 @@ class RefeicaoRepository {
         sucesso: () -> Unit,
         erro: (Exception) -> Unit
     ) {
-        refeicoesReferencia(uid)
+        db.collection(FirestorePaths.USERS)
+            .document(uid)
+            .collection(FirestorePaths.REFEICOES)
             .document(idRefeicao)
             .delete()
             .addOnSuccessListener {
                 sucesso()
             }
-            .addOnFailureListener { exception ->
-                erro(exception)
+            .addOnFailureListener {
+                erro(it)
             }
     }
 }

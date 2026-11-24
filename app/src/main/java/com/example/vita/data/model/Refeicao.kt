@@ -1,5 +1,7 @@
 package com.example.vita.data.model
 
+import com.example.vita.ui.AlimentoConsumido
+
 data class Refeicao(
     val id: String = "",
     val tipo: String = "",

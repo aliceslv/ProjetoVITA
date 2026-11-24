@@ -6,27 +6,28 @@
     android:layout_height="match_parent"
     android:background="@color/blue3">
 
-    <TextView
+    <ImageView
         android:id="@+id/btnVoltar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:text="←"
-        android:textColor="#FFFFFF"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/arrow"
         android:textSize="22sp"
         android:gravity="center"
         android:clickable="true"
+        android:padding="9dp"
         android:focusable="true"
+        android:contentDescription="@string/voltar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="33dp" />
 
     <TextView
         android:id="@+id/txtTopo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lembretes"
-        android:textColor="#FFFFFF"
+        android:text="@string/reminders"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:fontFamily="@font/inter24_semibold"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +39,7 @@
         android:id="@+id/linhaTopo"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="#193552"
+        android:background="@color/blue11"
         app:layout_constraintTop_toBottomOf="@id/txtTopo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,8 +68,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Seus lembretes"
-                android:textColor="#FFFFFF"
+                android:text="@string/your_reminders"
+                android:textColor="@color/white"
                 android:textSize="24sp"
                 android:fontFamily="@font/inter24_bold" />
 
@@ -77,8 +78,8 @@
                 android:id="@+id/txtAviso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="⚠️ As notificações estão desativadas nas configurações de privacidade. Os lembretes estão inativos."
-                android:textColor="#FFB000"
+                android:text="@string/not_off"
+                android:textColor="@color/yellow2"
                 android:textSize="13sp"
                 android:fontFamily="@font/inter24_medium"
                 android:background="@drawable/bg_search_input"
@@ -90,8 +91,8 @@
                 android:id="@+id/txtDescricao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Receba notificações nos horários certos \npara registrar refeições, beber água e cuidar da sua rotina."
-                android:textColor="@color/grey"
+                android:text="@string/not_info"
+                android:textColor="@color/grey2"
                 android:fontFamily="@font/inter24_regular"
                 android:textSize="14sp"
                 android:layout_marginTop="6dp" />
@@ -99,7 +100,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Refeições"
+                android:text="@string/reminders_meal"
                 android:textColor="@color/grey2"
                 android:textSize="15sp"
                 android:fontFamily="@font/inter24_semibold"
@@ -136,8 +137,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Café da manhã"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/breakf"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -146,9 +147,9 @@
                         android:id="@+id/txtHoraCafe"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:00 • Todos os dias"
+                        android:text="@string/reminder_bf"
                         android:fontFamily="@font/inter24_regular"
-                        android:textColor="#8195AA"
+                        android:textColor="@color/grey2"
                         android:textSize="12sp"
                         android:layout_marginTop="3dp" />
 
@@ -195,8 +196,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Almoço"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/lunch"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -205,8 +206,8 @@
                         android:id="@+id/txtHoraAlmoco"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="12:30 • Seg a Sex"
-                        android:textColor="#8195AA"
+                        android:text="@string/reminder_lunch"
+                        android:textColor="@color/grey2"
                         android:fontFamily="@font/inter24_regular"
                         android:textSize="12sp"
                         android:layout_marginTop="3dp" />
@@ -241,7 +242,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:background="@drawable/iclanche"
-                    android:textColor="#8EA1B6"
+                    android:textColor="@color/blue11"
                     android:textSize="24sp"
                     android:gravity="center" />
 
@@ -255,8 +256,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lanche da tarde"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/snack"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -265,8 +266,8 @@
                         android:id="@+id/txtHoraLanche"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="16:00 • Todos os dias"
-                        android:textColor="#8195AA"
+                        android:text="@string/reminder_snack"
+                        android:textColor="@color/grey2"
                         android:fontFamily="@font/inter24_regular"
                         android:textSize="12sp"
                         android:layout_marginTop="3dp" />
@@ -314,8 +315,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Jantar"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/dinner"
+                        android:textColor="@color/white"
                         android:textSize="15sp"
                         android:fontFamily="@font/inter24_semibold"
                         android:textStyle="bold" />
@@ -324,8 +325,8 @@
                         android:id="@+id/txtHoraJantar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="19:30 • Todos os dias"
-                        android:textColor="#8195AA"
+                        android:text="@string/reminder_dinner"
+                        android:textColor="@color/grey2"
                         android:textSize="12sp"
                         android:fontFamily="@font/inter24_regular"
                         android:layout_marginTop="3dp" />
@@ -345,8 +346,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hidratação"
-                android:textColor="#8EA1B6"
+                android:text="@string/hidro"
+                android:textColor="@color/grey2"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
@@ -382,8 +383,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Beber água"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/drink_water"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -392,8 +393,8 @@
                         android:id="@+id/txtHoraAgua"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:00 • A cada 2h (08:00 - 22:00)"
-                        android:textColor="#8195AA"
+                        android:text="@string/reminder_water"
+                        android:textColor="@color/grey2"
                         android:textSize="12sp"
                         android:fontFamily="@font/inter24_regular"
                         android:layout_marginTop="3dp" />
@@ -413,8 +414,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Saúde e Atividade"
-                android:textColor="#8EA1B6"
+                android:text="@string/health"
+                android:textColor="@color/grey2"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
@@ -437,7 +438,7 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:background="@drawable/iclua"
-                    android:textColor="#9A83E8"
+                    android:textColor="@color/bluelight2"
                     android:textSize="25sp"
                     android:gravity="center" />
 
@@ -451,8 +452,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hora de dormir"
-                        android:textColor="#FFFFFF"
+                        android:text="@string/sleep_time"
+                        android:textColor="@color/white"
                         android:fontFamily="@font/inter24_semibold"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -461,8 +462,8 @@
                         android:id="@+id/txtHoraDormir"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="22:30 • Todos os dias"
-                        android:textColor="#8195AA"
+                        android:text="@string/reminder_sleep"
+                        android:textColor="@color/grey2"
                         android:fontFamily="@font/inter24_regular"
                         android:textSize="12sp"
                         android:layout_marginTop="3dp" />

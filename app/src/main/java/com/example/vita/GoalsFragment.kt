@@ -12,7 +12,11 @@ import com.example.vita.databinding.FragmentGoalsBinding
 class GoalsFragment : Fragment() {
 
     private var _binding: FragmentGoalsBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentGoalsBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     // Resgata a mesma instância do UserViewModel
     private val userViewModel: UserViewModel by activityViewModels()

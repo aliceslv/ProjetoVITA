@@ -145,7 +145,18 @@
         <action
             android:id="@+id/action_registerFragment_to_inicioFragment"
             app:destination="@id/inicioFragment" />
+
+        <action
+            android:id="@+id/action_registerFragment_to_customFoodFragment"
+            app:destination="@id/customFoodFragment" />
     </fragment>
+
+    <!-- CUSTOM FOOD FRAGMENT -->
+    <fragment
+        android:id="@+id/customFoodFragment"
+        android:name="com.example.vita.CustomFoodFragment"
+        android:label="CustomFoodFragment"
+        tools:layout="@layout/fragment_custom_food" />
 
     <!-- ADD FRAGMENT -->
     <fragment

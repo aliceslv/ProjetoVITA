@@ -1,16 +1,18 @@
 package com.example.vita
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.example.vita.ui.InputUtils
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.vita.data.repository.UsuarioRepository
 import com.example.vita.databinding.FragmentProfileEditBinding
-import com.example.vita.json.JsonBD
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -18,10 +20,20 @@ import java.util.Locale
 class ProfileEditFragment : Fragment() {
 
     private var _binding: FragmentProfileEditBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentProfileEditBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
+
+    private val usuarioRepository = UsuarioRepository()
 
     private val opcoesMeta = listOf("Emagrecimento", "Manter peso", "Ganho de massa")
     private val opcoesNivelExercicio = listOf("Baixo", "Médio", "Alto", "Muito Alto")
+
+    // Variáveis locais para reter dados fixos do usuário necessários para o cálculo do IDR
+    private var sexoUsuario: String = "Masculino"
+    private var nascimentoUsuario: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +47,10 @@ class ProfileEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        InputUtils.configurarTeclado(view)
+
         configurarSpinners()
-        carregarDadosEAtualizarImc()
+        carregarDadosPerfil()
         configurarAcoes()
     }
 
@@ -58,39 +72,60 @@ class ProfileEditFragment : Fragment() {
         binding.spinnerNivelExercicio.adapter = adapterExercicio
     }
 
-    private fun carregarDadosEAtualizarImc() {
-        val emailLogado = obterEmailUsuarioLogado()
-        val jsonBD = JsonBD(requireContext())
-        val users = jsonBD.getUsers()
+    private fun carregarDadosPerfil() {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        for (i in 0 until users.length()) {
-            val user = users.getJSONObject(i)
-            if (user.optString("email").equals(emailLogado, ignoreCase = true)) {
+        if (uid == null) {
+            Toast.makeText(requireContext(), "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-                val pesoStr = user.optString("peso", "0")
-                val alturaStr = user.optString("altura", "0")
-                val pesoMetaStr = user.optString("pesoMeta", "0")
-                val metaStr = user.optString("meta", "")
-                val nivelExercicioStr = user.optString("nivelExercicio", "")
+        usuarioRepository.buscarPerfil(
+            uid = uid,
+            resultado = { dados ->
+                if (!isAdded || _binding == null) return@buscarPerfil
 
-                binding.inputPesoAtual.setText(pesoStr)
-                binding.inputAltura.setText(alturaStr)
-                binding.inputPesoMeta.setText(pesoMetaStr)
+                if (dados == null) {
+                    Toast.makeText(requireContext(), "Perfil não encontrado.", Toast.LENGTH_SHORT).show()
+                    return@buscarPerfil
+                }
 
-                val idxMeta = opcoesMeta.indexOfFirst { it.equals(metaStr, ignoreCase = true) }
+                // Armazena dados essenciais para cálculos futuros
+                sexoUsuario = dados["sexo"]?.toString() ?: "Masculino"
+                nascimentoUsuario = dados["nascimento"]?.toString() ?: ""
+
+                val peso = dados["peso"]?.toString() ?: ""
+                val altura = dados["altura"]?.toString() ?: ""
+                val pesoMeta = dados["pesoMeta"]?.toString() ?: ""
+                val meta = dados["meta"]?.toString() ?: ""
+                val nivelExercicio = dados["nivelExercicio"]?.toString() ?: ""
+
+                binding.inputPesoAtual.setText(peso)
+                binding.inputAltura.setText(altura)
+                binding.inputPesoMeta.setText(pesoMeta)
+
+                val idxMeta = opcoesMeta.indexOfFirst { it.equals(meta, ignoreCase = true) }
                 if (idxMeta >= 0) {
                     binding.spinnerMeta.setSelection(idxMeta)
                 }
 
-                val idxExercicio = opcoesNivelExercicio.indexOfFirst { it.equals(nivelExercicioStr, ignoreCase = true) }
+                val idxExercicio = opcoesNivelExercicio.indexOfFirst { it.equals(nivelExercicio, ignoreCase = true) }
                 if (idxExercicio >= 0) {
                     binding.spinnerNivelExercicio.setSelection(idxExercicio)
                 }
 
-                calcularEExibirImc(pesoStr, alturaStr)
-                break
+                // Atualiza o IMC na interface com os dados carregados
+                calcularEExibirImc(peso, altura)
+            },
+            erro = { erro ->
+                if (!isAdded || _binding == null) return@buscarPerfil
+                Toast.makeText(
+                    requireContext(),
+                    "Erro ao carregar perfil: ${erro.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-        }
+        )
     }
 
     private fun calcularEExibirImc(pesoStr: String, alturaStr: String) {
@@ -106,12 +141,12 @@ class ProfileEditFragment : Fragment() {
             binding.txtValorImc.text = String.format(Locale.US, "%.1f", imc)
 
             val (status, corResId) = when {
-                imc < 18.5 -> Pair("Abaixo do peso", R.color.orange)
+                imc < 18.5 -> Pair("Abaixo do peso", R.color.orange2)
                 imc < 25.0 -> Pair("Peso normal", R.color.green1)
-                imc < 30.0 -> Pair("Sobrepeso", R.color.orange)
-                imc < 35.0 -> Pair("Obesidade I", R.color.orange)
-                imc < 40.0 -> Pair("Obesidade II", R.color.orange)
-                else -> Pair("Obesidade III", R.color.orange)
+                imc < 30.0 -> Pair("Sobrepeso", R.color.orange2)
+                imc < 35.0 -> Pair("Obesidade I", R.color.orange2)
+                imc < 40.0 -> Pair("Obesidade II", R.color.orange2)
+                else -> Pair("Obesidade III", R.color.orange2)
             }
 
             binding.txtStatusImc.text = status
@@ -123,60 +158,86 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun salvarNovasMedidas() {
-        val emailLogado = obterEmailUsuarioLogado()
-        val novoPeso = binding.inputPesoAtual.text.toString().trim()
-        val novaAltura = binding.inputAltura.text.toString().trim()
-        val novoPesoMeta = binding.inputPesoMeta.text.toString().trim()
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (uid == null) {
+            Toast.makeText(requireContext(), "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val novoPesoStr = binding.inputPesoAtual.text.toString().trim()
+        val novaAlturaStr = binding.inputAltura.text.toString().trim()
+        val novoPesoMetaStr = binding.inputPesoMeta.text.toString().trim()
         val novaMeta = binding.spinnerMeta.selectedItem?.toString() ?: ""
         val novoNivelExercicio = binding.spinnerNivelExercicio.selectedItem?.toString() ?: ""
 
-        if (novoPeso.isEmpty() || novaAltura.isEmpty() || novoPesoMeta.isEmpty()) {
+        if (novoPesoStr.isEmpty() || novaAlturaStr.isEmpty() || novoPesoMetaStr.isEmpty()) {
             Toast.makeText(requireContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val jsonBD = JsonBD(requireContext())
-        val users = jsonBD.getUsers()
+        val pesoDouble = novoPesoStr.replace(",", ".").toDoubleOrNull()
+        val alturaDouble = novaAlturaStr.replace(",", ".").toDoubleOrNull()
+        val pesoMetaDouble = novoPesoMetaStr.replace(",", ".").toDoubleOrNull()
 
-        var sexo = "Masculino"
-        var nascimento = ""
-
-        for (i in 0 until users.length()) {
-            val user = users.getJSONObject(i)
-            if (user.optString("email").equals(emailLogado, ignoreCase = true)) {
-                sexo = user.optString("sexo", "Masculino")
-                nascimento = user.optString("nascimento", "")
-                break
-            }
+        if (pesoDouble == null || alturaDouble == null || pesoMetaDouble == null || pesoDouble <= 0 || alturaDouble <= 0) {
+            Toast.makeText(requireContext(), "Informe valores válidos para peso e altura.", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        val pesoDouble = novoPeso.replace(",", ".").toDoubleOrNull() ?: 0.0
-
+        // Realiza o cálculo do novo IDR com base nos dados atualizados + dados fixos (sexo e nascimento)
         val novoIdr = calcularIdr(
             peso = pesoDouble,
-            altura = novaAltura.toDoubleOrNull() ?: 0.0,
-            nascimento = nascimento,
-            sexo = sexo,
+            altura = if (alturaDouble > 3.0) alturaDouble / 100.0 else alturaDouble, // Garante altura em metros para TMB se necessário
+            nascimento = nascimentoUsuario,
+            sexo = sexoUsuario,
             nivelAtividade = novoNivelExercicio,
             meta = novaMeta
         )
 
-        val sucesso = jsonBD.atualizarMedidasUsuario(
-            email = emailLogado,
-            novoPeso = novoPeso,
-            novaAltura = novaAltura,
-            novoPesoMeta = novoPesoMeta,
-            novaMeta = novaMeta,
-            novoNivelExercicio = novoNivelExercicio,
-            novoIdr = novoIdr
+        val novaMetaAgua = (pesoDouble * 35).toInt()
+
+        // Prepara o mapa de dados a serem enviados para o Firestore
+        val dadosAtualizados = hashMapOf<String, Any>(
+            "peso" to pesoDouble,
+            "altura" to alturaDouble,
+            "pesoMeta" to pesoMetaDouble,
+            "meta" to novaMeta,
+            "nivelExercicio" to novoNivelExercicio,
+            "idr" to novoIdr, // Salva o novo IDR recalculado para consumo no Inicio Fragment
+            "metaAgua" to novaMetaAgua, // Salva nova meta de água recalculada
+            "updatedAt" to Timestamp.now()
         )
 
-        if (sucesso) {
-            Toast.makeText(requireContext(), "Dados, IDR e Meta de Água atualizados!", Toast.LENGTH_SHORT).show()
-            carregarDadosEAtualizarImc()
-        } else {
-            Toast.makeText(requireContext(), "Erro ao atualizar dados", Toast.LENGTH_SHORT).show()
-        }
+        binding.btnSalvarMedidas.isEnabled = false
+
+        usuarioRepository.atualizarPerfil(
+            uid = uid,
+            dados = dadosAtualizados,
+            sucesso = {
+                if (!isAdded || _binding == null) return@atualizarPerfil
+
+                binding.btnSalvarMedidas.isEnabled = true
+                Toast.makeText(
+                    requireContext(),
+                    "Dados, IDR e IMC atualizados com sucesso!",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                // Atualiza visualmente o IMC na própria tela de imediato
+                calcularEExibirImc(novoPesoStr, novaAlturaStr)
+            },
+            erro = { erro ->
+                if (!isAdded || _binding == null) return@atualizarPerfil
+
+                binding.btnSalvarMedidas.isEnabled = true
+                Toast.makeText(
+                    requireContext(),
+                    "Erro ao atualizar dados: ${erro.localizedMessage}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        )
     }
 
     private fun calcularIdr(
@@ -189,10 +250,13 @@ class ProfileEditFragment : Fragment() {
     ): Int {
         val idade = calcularIdade(nascimento)
 
+        // Se a altura estiver em centímetros (> 3.0), converte para metros para a fórmula de Harris-Benedict correta (ou ajuste se sua fórmula espera cm)
+        val alturaEmCm = if (altura < 3.0) altura * 100.0 else altura
+
         val tmb = if (sexo.equals("Feminino", ignoreCase = true)) {
-            (10.0 * peso) + (6.25 * altura) - (5.0 * idade) - 161.0
+            (10.0 * peso) + (6.25 * alturaEmCm) - (5.0 * idade) - 161.0
         } else {
-            (10.0 * peso) + (6.25 * altura) - (5.0 * idade) + 5.0
+            (10.0 * peso) + (6.25 * alturaEmCm) - (5.0 * idade) + 5.0
         }
 
         val fatorAtividade = when (nivelAtividade) {
@@ -244,11 +308,6 @@ class ProfileEditFragment : Fragment() {
         binding.btnSalvarMedidas.setOnClickListener {
             salvarNovasMedidas()
         }
-    }
-
-    private fun obterEmailUsuarioLogado(): String {
-        val sharedPref = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        return sharedPref.getString("USER_EMAIL", "") ?: ""
     }
 
     override fun onDestroyView() {

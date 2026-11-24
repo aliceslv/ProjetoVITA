@@ -5,5 +5,5 @@
     android:layout_height="wrap_content"
     android:padding="13dp"
     android:textSize="15sp"
-    android:textColor="#1C1C1E"
+    android:textColor="@color/black2"
     android:background="@drawable/dropdownbg" />

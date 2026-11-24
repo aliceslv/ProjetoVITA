@@ -10,9 +10,12 @@ import com.example.vita.databinding.FragmentAboutBinding // Import gerado automa
 
 class AboutFragment : Fragment() {
 
-    // Variável para o View Binding gerenciar o ciclo de vida da view
     private var _binding: FragmentAboutBinding? = null
-    private val binding get() = _binding!!
+
+    private val binding: FragmentAboutBinding
+        get() = checkNotNull(_binding) {
+            "Binding acessado fora do ciclo de vida da View."
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
