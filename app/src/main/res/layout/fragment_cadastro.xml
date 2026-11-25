@@ -1,167 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradientbg"
+    android:fillViewport="true"
+    android:clipToPadding="false"
+    android:paddingBottom="20dp"
     tools:context=".CadastroFragment">
 
-    <ImageView
-        android:id="@+id/icarrow"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/arrow"
-        android:scaleType="fitStart"
-        android:padding="7dp"
-        android:clickable="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="80dp"
-        android:contentDescription="@string/voltar"
-        android:layout_marginStart="15dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iclogo"
-        android:layout_width="170dp"
-        android:layout_height="170dp"
-        android:src="@drawable/iclogo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="86dp" />
+        <ImageView
+            android:id="@+id/icarrow"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/arrow"
+            android:scaleType="fitStart"
+            android:padding="7dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="15dp"
+            android:contentDescription="@string/voltar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-    <TextView
-        android:id="@+id/txtTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/create_acc"
-        android:fontFamily="@font/inter24_bold"
-        android:textColor="@color/white"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:letterSpacing="0.01"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="190dp"/>
-
-    <LinearLayout
-        android:id="@+id/layoutLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/txtTitulo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:id="@+id/iclogo"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:src="@drawable/iclogo"
+            android:layout_marginTop="86dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
-            android:id="@+id/txtJaTemConta"
+            android:id="@+id/txtTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_yes"
-            android:fontFamily="@font/inter24_medium"
+            android:text="@string/create_acc"
+            android:fontFamily="@font/inter24_bold"
             android:textColor="@color/white"
-            android:textSize="13sp"/>
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:letterSpacing="0.01"
+            android:layout_marginTop="190dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <LinearLayout
+            android:id="@+id/layoutLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/txtTitulo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/txtJaTemConta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_yes"
+                android:fontFamily="@font/inter24_medium"
+                android:textColor="@color/white"
+                android:textSize="13sp"/>
+
+            <Button
+                android:id="@+id/loginBtn3"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:text="@string/todo_login"
+                android:fontFamily="@font/istokweb_bold"
+                android:textSize="12sp"
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/blue5"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/boxCreate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clipToOutline="true"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutLogin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/edtNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/full_name"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/white"
+                android:textColorHint="@color/grey2"
+                android:textSize="16sp"
+                android:inputType="textPersonName"
+                android:padding="13dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:drawableStart="@drawable/profile"
+                android:drawablePadding="8dp"/>
+
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/white"
+                android:textColorHint="@color/grey2"
+                android:textSize="16sp"
+                android:inputType="textEmailAddress"
+                android:padding="13dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:drawableStart="@drawable/letter"
+                android:drawablePadding="8dp"/>
+
+            <EditText
+                android:id="@+id/edtSenha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/senha"
+                android:textColor="@color/black"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="@color/white"
+                android:textColorHint="@color/grey2"
+                android:textSize="16sp"
+                android:inputType="textPassword"
+                android:padding="13dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:drawableStart="@drawable/lock"
+                android:drawablePadding="8dp"/>
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/loginBtn3"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/todo_login"
+            android:id="@+id/createBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:padding="13dp"
+            android:text="@string/register_acc"
             android:fontFamily="@font/istokweb_bold"
-            android:textSize="12sp"
-            android:padding="8dp"
+            android:textSize="18sp"
             android:textColor="@color/white"
-            android:backgroundTint="@color/blue5"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"/>
-    </LinearLayout>
+            android:backgroundTint="@color/green1"
+            app:layout_constraintTop_toBottomOf="@id/boxCreate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    <LinearLayout
-        android:id="@+id/boxCreate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:clipToOutline="true"
-        app:layout_constraintTop_toBottomOf="@id/layoutLogin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="15dp">
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/edtNome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/full_name"
-            android:textColor="@color/black"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/white"
-            android:textColorHint="@color/grey2"
-            android:textSize="16sp"
-            android:inputType="textPersonName"
-            android:padding="13dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:drawableStart="@drawable/profile"
-            android:drawablePadding="8dp"/>
-
-        <EditText
-            android:id="@+id/edtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:textColor="@color/black"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/white"
-            android:textColorHint="@color/grey2"
-            android:textSize="16sp"
-            android:inputType="textEmailAddress"
-            android:padding="13dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:drawableStart="@drawable/letter"
-            android:drawablePadding="8dp"/>
-
-        <EditText
-            android:id="@+id/edtSenha"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/senha"
-            android:textColor="@color/black"
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/white"
-            android:textColorHint="@color/grey2"
-            android:textSize="16sp"
-            android:inputType="textPassword"
-            android:padding="13dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:drawableStart="@drawable/lock"
-            android:drawablePadding="8dp"/>
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/createBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:padding="13dp"
-        android:text="@string/register_acc"
-        android:fontFamily="@font/istokweb_bold"
-        android:textSize="18sp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/green1"
-        app:layout_constraintTop_toBottomOf="@id/boxCreate"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

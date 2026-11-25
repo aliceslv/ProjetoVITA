@@ -178,6 +178,8 @@ class AddFragment : Fragment() {
         binding.tvProteinas.text = String.format(Locale.US, "%.1fg", proteinasTotais)
         binding.tvGorduras.text = String.format(Locale.US, "%.1fg", gordurasTotais)
         binding.tvCaloriasPorGrama.text = String.format(Locale.US, "%.0f kcal", caloriasTotais)
+        binding.tvPorcaoPadrao.text = String.format(Locale("pt", "BR"), "%.0f g (1 unidade)", gramasPorPorcao
+        )
     }
 
     private fun criarAlimentoAtual(): AlimentoConsumido {
